@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js'; // ✅ quan trọng!
 
+
 window.Pusher = Pusher;
 
 const echo = new Echo({
@@ -21,5 +22,5 @@ export default function App() {
       });
   }, []);
 
-  return <h1>Listening for location updates...</h1>;
+  return <div className='h-screen flex justify-center items-center px-2 py-2'><h1 className='text-violet-900'>Listening for location updates...</h1></div>
 }
