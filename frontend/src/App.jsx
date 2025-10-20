@@ -1,35 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from 'react';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js'; // ✅ quan trọng!
 
-function App() {
-  const [count, setCount] = useState(0)
+window.Pusher = Pusher;
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const echo = new Echo({
+  broadcaster: 'reverb', // ✅ Laravel 11+ có sẵn broadcaster này
+  key: import.meta.env.VITE_REVERB_APP_KEY,
+  wsHost: import.meta.env.VITE_REVERB_HOST,
+  wsPort: import.meta.env.VITE_REVERB_PORT,
+  forceTLS: false,
+  enabledTransports: ['ws'],
+});
+
+export default function App() {
+  useEffect(() => {
+    echo.channel('courier-location')
+      .listen('.location.updated', (e) => {
+        console.log('📡 New location event received:', e);
+      });
+  }, []);
+
+  return <h1>Listening for location updates...</h1>;
 }
-
-export default App
