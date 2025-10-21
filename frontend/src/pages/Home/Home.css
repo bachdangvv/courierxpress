@@ -1,0 +1,43 @@
+.home-hero-container {
+    background-color: rgba(121, 82, 63, 1);
+}
+
+.hero-content {
+    position: relative;
+}
+
+.hero-person-img {
+    object-fit: cover;
+}
+
+.hero-nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    cursor: pointer;
+    background-color: rgba(255, 197, 2, 1);
+}
+
+.hero-nav-link:hover::before {
+    width: 100%;
+    cursor: pointer;
+    transition: 500ms ease-in-out;
+}
+
+.tracking-btn:hover {
+    background-color: rgba(255, 197, 2, 1);
+    transition: 400ms;
+}
+
+@media (max-width: 1200px) {
+    .hero-person-img {
+        display: none;
+    }
+
+    .right-hero-container {
+        display: none;
+    }
+}

@@ -1,40 +1,52 @@
-import { useEffect, useState } from 'react';
-import { echo } from './echo';
+// import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { echo } from './echo';
+
+// Importing pages
+import Home from './pages/Home/Home.jsx';
+import User from './pages/User/User.jsx';
 
 function App() {
-  const [events, setEvents] = useState([]);
+  // const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    console.log('✅ Subscribing to courier-location...');
-    const channel = echo.channel('courier-location');
+  // useEffect(() => {
+  //   console.log('✅ Subscribing to courier-location...');
+  //   const channel = echo.channel('courier-location');
 
-    const handler = (payload) => {
-      console.log('📡 location.updated:', payload);
-      setEvents((prev) => [payload, ...prev].slice(0, 10));
-    };
+  //   const handler = (payload) => {
+  //     console.log('📡 location.updated:', payload);
+  //     setEvents((prev) => [payload, ...prev].slice(0, 10));
+  //   };
 
-    channel.listen('.location.updated', handler);
+  //   channel.listen('.location.updated', handler);
 
-    // cleanup avoids duplicate subscriptions in React Fast Refresh
-    return () => {
-      channel.stopListening('.location.updated', handler);
-      echo.leave('courier-location');
-    };
-  }, []);
+  //   // cleanup avoids duplicate subscriptions in React Fast Refresh
+  //   return () => {
+  //     channel.stopListening('.location.updated', handler);
+  //     echo.leave('courier-location');
+  //   };
+  // }, []);
 
   return (
-    <main style={{ fontFamily: 'system-ui', padding: 24 }}>
-      <h1>Courier Live Locations</h1>
-      <p>Open your Laravel route <code>/test-location</code> to emit an event.</p>
+    // <main style={{ fontFamily: 'system-ui', padding: 24 }}>
+    //   <h1>Courier Live Locations</h1>
+    //   <p>Open your Laravel route <code>/test-location</code> to emit an event.</p>
 
-      <ul>
-        {events.map((e, i) => (
-          <li key={i}>
-            <strong>{e.agentId}</strong> → ({e.lat},{' '}{e.lng}) [{e.status}] at {new Date(e.at).toLocaleString()}
-          </li>
-        ))}
-      </ul>
-    </main>
+    //   <ul>
+    //     {events.map((e, i) => (
+    //       <li key={i}>
+    //         <strong>{e.agentId}</strong> → ({e.lat},{' '}{e.lng}) [{e.status}] at {new Date(e.at).toLocaleString()}
+    //       </li>
+    //     ))}
+    //   </ul>
+    // </main>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/user" element={<User />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
+    </Router>
   );
 }
 
