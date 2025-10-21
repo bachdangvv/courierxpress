@@ -1,9 +1,9 @@
 export default function HomeInput() {
     return (
         <>
-            <div className='hero-input-container flex justify-center items-center text-center md:gap-4'>
+            <div className='hero-input-container w-full h-full flex justify-center items-center text-center md:gap-4'>
                 <input
-                    className='hero-input w-[750px] h-[50px] rounded px-[10px] text-black'
+                    className='hero-input w-full lg:h-[50px] w-full h-[50px] rounded px-[10px] text-black'
                     placeholder='Tracking number'
                 />
 
@@ -13,8 +13,8 @@ export default function HomeInput() {
                 Track</button>
 
                 <div className="help-container flex justify-center items-center text-center gap-3">
-                    <i class="bi bi-question-circle text-white"></i>
-                    <span className="text-white underline cursor-pointer">Help</span>
+                    <i class="bi bi-question-circle text-white hidden lg:block"></i>
+                    <span className="text-white underline cursor-pointer hidden lg:block">Help</span>
                 </div>
             </div>
 
