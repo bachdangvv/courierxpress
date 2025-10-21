@@ -23,8 +23,8 @@ export default function App() {
   }, []);
 
   return (
-      <div className='h-screen w-screen flex justify-center items-center bg-gray-900 p-2'>
-    <h1 className="text-3xl font-bold text-white">Listening for location updates...</h1>
+      <div className="h-screen w-screen flex justify-center items-center text-center bg-gray-900 p-2">
+    <h1 className="block text-3xl font-bold text-white">Listening for location updates...</h1>
       </div>
   );
 }
