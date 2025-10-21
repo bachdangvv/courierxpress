@@ -22,5 +22,9 @@ export default function App() {
       });
   }, []);
 
-  return <div className='h-screen flex justify-center items-center px-2 py-2'><h1 className='text-violet-900'>Listening for location updates...</h1></div>
+  return (
+      <div className='h-screen w-screen flex justify-center items-center bg-gray-900 p-2'>
+    <h1 className="text-3xl font-bold text-white">Listening for location updates...</h1>
+      </div>
+  );
 }
