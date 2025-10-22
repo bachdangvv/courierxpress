@@ -6,6 +6,7 @@ import chipMap from '../../assets/chip.webp';
 
 // Importing components
 import HomeInput from './HomeInput';
+import FAQ from './FAQ';
 
 export default function Home() {
     const brandRepresentative = 'https://assets.ups.com/adobe/assets/urn:aaid:aem:2701ad76-d7ab-4a97-b70c-bc237d98fae8/as/app-teaser-hp-bc1246470.avif?assetname=app-teaser-hp-bc1246470.png';

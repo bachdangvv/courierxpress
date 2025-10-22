@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "question": "Updated Tariff and Rate and Service Guides",
+        "answer": [
+            "The UPS Tariff/Terms and Conditions of Service and the UPS Rate and Service Guides have been updated effective October 1, 2025.",
+            "The updated UPS Tariff/Terms and Conditions of Service can be found here:",
+            "The updated UPS Rate and Service Guides can be found here:",
+            "Shipping Costs and Rates"
+        ]
+    },
+
+    {
+        "id": 2,
+        "question": "U.S. Export and Import Paper Commercial Invoice Services Surcharge",
+        "answer": [
+            "Effective September 21, 2025, UPS is making the following changes to U.S. Export and Import Paper Commercial Invoice Services.",
+            "A fee of $25.00 per shipment will be applied to the shipper when the commercial invoice is not provided by the shipper in digital form using UPS Paperless® Invoice services prior to the processing of the commercial invoice by UPS."
+        ]
+    },
+
+    {
+        "id": 3,
+        "question": "Surge Fee Announced",
+        "answer": [
+            "Surge Fees will apply to certain shipments effective September 28, 2025.",
+            "View Surge Fees"
+        ]
+    },
+
+    {
+        "id": 4,
+        "question": "Demand Surcharge Update",
+        "answer": [
+            "Updated Demand Surcharge information is now available for review, including Demand Surcharge rates for certain domestic shipments effective September 28, 2025.",
+            "Read more on applicable Demand Surcharges"
+        ]
+    },
+
+    {
+        "id": 5,
+        "question": "Updates Impacting U.S. Imports",
+        "answer": [
+            "Effective, August 29, 2025, UPS is revising the Entry Preparation Charge for certain UPS® Standard from Canada shipments. Effective September 8, 2025, An International Processing Fee will apply to certain U.S. import shipments. For more information, see ups.com/rates."
+        ]
+    },
+
+    {
+        "id": 6,
+        "question": "Implementation of International Processing Fee",
+        "answer": [
+            "Effective September 8, 2025, an International Processing will apply to U.S. import shipments. For more information, see ups.com/rates."
+        ]
+    },
+
+    {
+        "id": 7,
+        "question": "Domestic Large Package Surcharge and Additional Handling Charge",
+        "answer": [
+            "Changes to the definition of Domestic Large Package Surcharge and Additional Handling Charge that were previously scheduled for August 17, 2025 have been delayed until on or after December 22, 2025.  The previously announced change in the way UPS determines package dimensions for the purpose of assessing charges remains scheduled for August 18, 2025, and all other previously announced updates remain scheduled as described on ups.com and ups.com/rates.  For more information, see ups.com/rates."
+        ]
+    },
+
+    {
+        "id": 8,
+        "question": "Package Dimensions",
+        "answer": [
+            "Effective August 18, 2025, UPS is modifying the way it determines package dimensions for the purpose of assessing charges. For more information, see ups.com/rates."
+        ]
+    },
+
+    {
+        "id": 8,
+        "question": "Learn More About Recent Trade Policy and Tariff Changes",
+        "answer": [
+            "We'll help you stay informed about the impacts of the new tariffs."
+        ]
+    }
+]
