@@ -194,6 +194,8 @@ export default function Home() {
 
             <section className='faq-section flex flex-col justify-center items-center mb-[80px]'>
                 <h1 className='important-update-heading text-5xl mb-[50px]'>Important Updates</h1>
+
+                <FAQ />
             </section>
         </main>
         </>
