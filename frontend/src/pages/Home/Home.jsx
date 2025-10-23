@@ -1,3 +1,4 @@
+// Importing CSS
 import './Home.css';
 
 // Importing Images
@@ -15,15 +16,16 @@ export default function Home() {
 
     return (
         <>
-        <section className='home-hero-container flex justify-center items-center w-screen h-[300px] md:h-[500px] pb-8 gap-5'>
+        <section className='home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pb-8 gap-5'>
             <div className='hero-content h-full w-full max-w-[1400px] lg:grid lg:grid-cols-[4fr_1fr] md:grid md:grid-cols-[1fr] items-center text-center gap-3 lg:px-0 px-5 mx-auto'>
-                <div className='left-hero-container w-full flex flex-col justify-center items-start gap-2'>
+                <div className='left-hero-container w-full flex flex-col justify-center items-center md:items-start pt-5 md:pt-0 gap-2'>
                     <div className='hero-nav-links flex justify-center items-center text-center gap-x-5 mb-4'>
                         <div className='hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl'>Track</div>
                         <div className='hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl'>Quote</div>
                         <div className='hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl'>Ship</div>
                     </div>
 
+                    {/* Home input component */}
                     <HomeInput />
                 </div>
 
@@ -36,7 +38,7 @@ export default function Home() {
             </div>
         </section>
         
-        <main className='mx-auto justify-center items-center max-w-[1600px]'>
+        <main className='mx-auto flex flex-col justify-center items-center max-w-[1600px]'>
             <section className='features-section w-full h-full flex flex-col justify-center items-center container gap-20 mb-[80px] px-4'>
                 <div className='features-introduction-container w-full max-w-[800px]'>
                     <h1 className='features-introduction-heading text-bold text-4xl mb-5'>Regulations Change. UPS Can Help You Keep Moving.</h1>
@@ -46,7 +48,7 @@ export default function Home() {
                     </p>
                 </div>
 
-                <div className='features-card-container w-full h-full flex gap-10'>
+                <div className='features-card-container w-full h-full grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 place-content-center gap-10'>
                     <div className='feature-card rounded cursor-pointer p-[30px]'>
                         <h1 className='text-2xl mb-5'>Tariff Impacts</h1>
 
@@ -79,7 +81,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className='feature-product-section w-full flex justify-center items-center mb-[80px] gap-10'>
+            <section className='feature-product-section w-full flex flex-col md:flex-row justify-center items-center mb-[80px] gap-10'>
                 <div>
                     <img
                         className='object-cover w-full h-full max-w-[850px] max-h-[450px]'
@@ -95,7 +97,7 @@ export default function Home() {
                     </p>
 
                     <button
-                        className="order-btn w-[145px] h-[45px] rounded-[25px] opacity-100 bg-amber-400"
+                        className="order-btn w-full md:w-[145px] h-[45px] rounded-[25px] opacity-100 bg-amber-400"
                     >
                     Order Now</button>
                 </div>
@@ -109,7 +111,7 @@ export default function Home() {
                         Use code *GOINTL2025* to save on worldwide services all season long.
                     </p>
 
-                    <p className='text-white underline'>*Term and Condition aplly.</p>
+                    <p className='text-white underline cursor-pointer'>*Term and Condition aplly.</p>
                 </div>
 
                 <div className='w-full md:w-auto'>
@@ -195,6 +197,7 @@ export default function Home() {
             <section className='faq-section flex flex-col justify-center items-center mb-[80px]'>
                 <h1 className='important-update-heading text-5xl mb-[50px]'>Important Updates</h1>
 
+                {/* FAQ Component */}
                 <FAQ />
             </section>
         </main>

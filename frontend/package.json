@@ -13,6 +13,7 @@
     "classnames": "^2.5.1",
     "laravel-echo": "^2.2.4",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.546.0",
     "pusher-js": "^8.4.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
