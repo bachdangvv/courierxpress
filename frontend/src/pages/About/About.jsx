@@ -4,11 +4,14 @@ import React from 'react';
 import MidLineHeading from '../../components/MidLineHeading/MidLineHeading.jsx';
 import YellowButton from '../../components/YellowButton.jsx';
 
+// Importing Images
+import aboutLogisticBanner from '../../assets/about_logistic_banner.jpg'
+
 // Importing CSS
 import './About.css';
 
 const About = () => {
-    const customerFirst = '/content/dam/upsstories/images/our-stories/customer-first/5-things-every-business-should-know-about-returns-in-2025/HappyNRF-1023x960.jpg';
+    
 
     return (
         <>
@@ -19,7 +22,8 @@ const About = () => {
                 <div className='brand-philosophy-container'>
                     <div className='brand-philosophy-image'>
                         <img
-                            src={customerFirst}
+                            className='w-full h-full relative'
+                            src={aboutLogisticBanner}
                         />
                     </div>
 
