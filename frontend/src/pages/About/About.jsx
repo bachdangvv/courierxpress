@@ -43,10 +43,10 @@ const About = () => {
 
             <section className='brand-stories-container w-full flex flex-col justify-center items-center mb-[80px]'>
                 <div className='story-cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center lg:content-between gap-10 mb-[40px]'>
-                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded'>
+                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded-lg'>
                         <div className='story-image w-full h-full max-h-[280px]'>
                             <img
-                                className='w-full h-full object-cover'
+                                className='w-full h-full object-cover rounded-lt-lg rounded-tr-lg'
                                 src={storyCard1}
                             />
                         </div>
@@ -62,10 +62,10 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded'>
+                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded-lg'>
                         <div className='story-image w-full h-full max-h-[280px]'>
                             <img
-                                className='w-full h-full object-cover'
+                                className='w-full h-full object-cover rounded-tl-lg rounded-tr-lg'
                                 src={storyCard2}
                             />
                         </div>
@@ -81,10 +81,10 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded'>
+                    <div className='story-card w-full h-full max-w-[400px] max-h-[650px] shadow-lg rounded-lg'>
                         <div className='story-image w-full h-full max-h-[280px]'>
                             <img
-                                className='w-full h-full object-cover'
+                                className='w-full h-full object-cover rounded-tl-lg rounded-tr-lg'
                                 src={storyCard3}
                             />
                         </div>
