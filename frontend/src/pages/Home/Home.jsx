@@ -41,7 +41,7 @@ export default function Home() {
         <main className='mx-auto flex flex-col justify-center items-center max-w-[1600px]'>
             <section className='features-section w-full h-full flex flex-col justify-center items-center container gap-20 mb-[80px] px-4'>
                 <div className='features-introduction-container w-full max-w-[800px]'>
-                    <h1 className='features-introduction-heading text-bold text-4xl mb-5'>Regulations Change. UPS Can Help You Keep Moving.</h1>
+                    <h1 className='features-introduction-heading font-bold text-4xl mb-5'>Regulations Change. UPS Can Help You Keep Moving.</h1>
 
                     <p className='mt-5'>
                         From shifting tariffs to evolving compliance rules, UPS stays ahead so you don't fall behind. Our digital solutions and global logistics expertise turn complexity into clarity, so you can focus on delivering for your customers.
@@ -90,7 +90,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h1 className='text-4xl mb-[40px]'>Stock Up for the Holiday Rush</h1>
+                    <h1 className='text-4xl font-bold mb-[40px]'>Stock Up for the Holiday Rush</h1>
 
                     <p className='text-xl text-gray-500 mb-[25px]'>
                         Go into this holiday season stress-free and order your shipping supplies early.
@@ -124,7 +124,7 @@ export default function Home() {
 
             <section className='download-section w-full h-full flex flex-col-reverse md:flex-row justify-between items-center mb-[80px]'>
                 <div>
-                    <h1 className='download-heading text-4xl mb-[40px]'>Download & Play to Save</h1>
+                    <h1 className='download-heading font-bold text-4xl mb-[40px]'>Download & Play to Save</h1>
 
                     <p className='mb-[20px]'>
                         Save $5 on a UPS My Choice Premium membership*when you play Delivery Day in the UPS App.
@@ -148,7 +148,7 @@ export default function Home() {
 
             <section className='branding-section flex flex-col justify-center items-center mb-[80px]'>
                 <div className='items-center text-center mb-[40px]'>
-                    <h1 className='branding-heading text-5xl mb-[50px]'>World-Class Services You Can Count On</h1>
+                    <h1 className='branding-heading font-bold text-5xl mb-[50px]'>World-Class Services You Can Count On</h1>
 
                     <p>Customer first, people led, innovation driven.</p>
                 </div>
@@ -195,7 +195,7 @@ export default function Home() {
             </section>
 
             <section className='faq-section flex flex-col justify-center items-center mb-[80px]'>
-                <h1 className='important-update-heading text-5xl mb-[50px]'>Important Updates</h1>
+                <h1 className='important-update-heading font-bold text-5xl mb-[50px]'>Important Updates</h1>
 
                 {/* FAQ Component */}
                 <FAQ />
