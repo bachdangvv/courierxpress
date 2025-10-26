@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from "react-dom/client";
+import AuthProvider, { useAuth } from "./auth";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -11,6 +13,18 @@ import User from './pages/User/User.jsx';
 import Help from './pages/About/About.jsx';
 import About from './pages/About/About.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
+import Login from "./pages/login.jsx";
+import Register from "./pages/Register";
+import Admin from "./pages/Admin";
+import Agent from "./pages/Agent";
+import Customer from "./pages/Customer";
+
+function Guard({ role, children }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace/>;
+  if (role && user.role !== role) return <Navigate to="/" replace/>;
+  return children;
+}
 
 function App() {
   return (
@@ -23,10 +37,17 @@ function App() {
             <Route path='/about' element={<About />} />
             <Route path='/help' element={<Help />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/admin" element={<Guard role="admin"><Admin/></Guard>}/>
+          <Route path="/agent" element={<Guard role="agent"><Agent/></Guard>}/>
+          <Route path="/customer" element={<Guard role="customer"><Customer/></Guard>}/>
           </Routes>
         </Router>
     </main>
   );
 }
+
+
 
 export default App;
