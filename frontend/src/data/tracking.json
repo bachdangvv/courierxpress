@@ -1,0 +1,126 @@
+[
+  {
+    "trackingCode": "CX100001US",
+    "status": "In Transit",
+    "estimatedDelivery": "2025-10-30",
+    "currentLocation": "Dallas, TX",
+    "sender": {
+      "name": "Michael Johnson",
+      "address": "2451 Elm Street, Los Angeles, CA",
+      "phone": "+1 213-555-0198"
+    },
+    "receiver": {
+      "name": "Emily Davis",
+      "address": "5623 Maple Avenue, Dallas, TX",
+      "phone": "+1 972-555-0246"
+    },
+    "history": [
+      { "date": "2025-10-24", "location": "Los Angeles, CA", "status": "Picked Up" },
+      { "date": "2025-10-25", "location": "Phoenix, AZ", "status": "Departed Facility" },
+      { "date": "2025-10-26", "location": "Dallas, TX", "status": "In Transit" }
+    ],
+    "carrier": {
+      "name": "CourierXpress",
+      "phone": "1900-1234"
+    }
+  },
+  {
+    "trackingCode": "CX100002US",
+    "status": "Delivered",
+    "estimatedDelivery": "2025-10-25",
+    "currentLocation": "New York, NY",
+    "sender": {
+      "name": "Jessica Smith",
+      "address": "890 Lakeview Drive, Chicago, IL",
+      "phone": "+1 312-555-0772"
+    },
+    "receiver": {
+      "name": "William Brown",
+      "address": "1337 Park Avenue, New York, NY",
+      "phone": "+1 646-555-0191"
+    },
+    "history": [
+      { "date": "2025-10-22", "location": "Chicago, IL", "status": "Picked Up" },
+      { "date": "2025-10-23", "location": "Cleveland, OH", "status": "Departed Facility" },
+      { "date": "2025-10-24", "location": "New York, NY", "status": "Out for Delivery" },
+      { "date": "2025-10-25", "location": "New York, NY", "status": "Delivered" }
+    ],
+    "carrier": {
+      "name": "CourierXpress",
+      "phone": "1900-1234"
+    }
+  },
+  {
+    "trackingCode": "CX100003US",
+    "status": "Pending Pickup",
+    "estimatedDelivery": "2025-11-01",
+    "currentLocation": "San Francisco, CA",
+    "sender": {
+      "name": "Daniel Miller",
+      "address": "475 Market Street, San Francisco, CA",
+      "phone": "+1 415-555-0330"
+    },
+    "receiver": {
+      "name": "Sophia Martinez",
+      "address": "980 Hillcrest Road, Portland, OR",
+      "phone": "+1 503-555-0145"
+    },
+    "history": [
+      { "date": "2025-10-26", "location": "San Francisco, CA", "status": "Order Created" }
+    ],
+    "carrier": {
+      "name": "CourierXpress",
+      "phone": "1900-1234"
+    }
+  },
+  {
+    "trackingCode": "CX100004US",
+    "status": "Out for Delivery",
+    "estimatedDelivery": "2025-10-27",
+    "currentLocation": "Miami, FL",
+    "sender": {
+      "name": "Christopher Wilson",
+      "address": "654 Ocean Boulevard, Atlanta, GA",
+      "phone": "+1 404-555-0279"
+    },
+    "receiver": {
+      "name": "Olivia Anderson",
+      "address": "777 Lincoln Road, Miami, FL",
+      "phone": "+1 305-555-0123"
+    },
+    "history": [
+      { "date": "2025-10-24", "location": "Atlanta, GA", "status": "Picked Up" },
+      { "date": "2025-10-25", "location": "Orlando, FL", "status": "Arrived at Facility" },
+      { "date": "2025-10-26", "location": "Miami, FL", "status": "Out for Delivery" }
+    ],
+    "carrier": {
+      "name": "CourierXpress",
+      "phone": "1900-1234"
+    }
+  },
+  {
+    "trackingCode": "CX100005US",
+    "status": "Delayed",
+    "estimatedDelivery": "2025-10-31",
+    "currentLocation": "Denver, CO",
+    "sender": {
+      "name": "Matthew Harris",
+      "address": "2994 Forest Lane, Seattle, WA",
+      "phone": "+1 206-555-0888"
+    },
+    "receiver": {
+      "name": "Ava Thompson",
+      "address": "1620 Cherry Street, Denver, CO",
+      "phone": "+1 720-555-0160"
+    },
+    "history": [
+      { "date": "2025-10-23", "location": "Seattle, WA", "status": "Picked Up" },
+      { "date": "2025-10-24", "location": "Boise, ID", "status": "Departed Facility" },
+      { "date": "2025-10-25", "location": "Denver, CO", "status": "Delayed due to weather" }
+    ],
+    "carrier": {
+      "name": "CourierXpress",
+      "phone": "1900-1234"
+    }
+  }
+]
