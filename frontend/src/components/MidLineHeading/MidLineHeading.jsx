@@ -3,7 +3,7 @@ import './MidLineHeading.css';
 
 const MidLineHeading = ({ children }) => {
     return (
-        <h1 className='middle-line-heading text-5xl mb-[50px]'>{children}</h1>
+        <h1 className='middle-line-heading font-bold text-5xl mb-[50px]'>{children}</h1>
     );
 };
 

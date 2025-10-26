@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import YellowButton from "../../components/YellowButton";
+
 export default function HomeInput() {
     return (
         <>
@@ -6,11 +9,8 @@ export default function HomeInput() {
                     className='hero-input w-full lg:h-[50px h-[50px] rounded px-[10px] mb-3 text-black'
                     placeholder='Tracking number'
                 />
-
-                <button
-                    className="tracking-btn w-full md:w-[100px] h-[45px] rounded-[25px] opacity-100 bg-amber-400"
-                >
-                Track</button>
+                
+                <Link to='/tracking'><YellowButton variant="widthAuto">Track</YellowButton></Link>
 
                 <div className="help-container flex justify-center items-center text-center gap-3">
                     <i className="bi bi-question-circle text-white hidden lg:block"></i>

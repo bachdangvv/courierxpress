@@ -23,7 +23,7 @@ const Tracking = () => {
         );
 
         if(found) {
-            navigate(`/tracking/${found.trackingCode}}`);
+            navigate(`/tracking/${trackingCode}`);
         } else {
             setError('Invalid Tracking Code');
         }
