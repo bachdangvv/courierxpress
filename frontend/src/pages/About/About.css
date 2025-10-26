@@ -1,0 +1,11 @@
+.customer-first-heading::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    width: 30px;
+    height: 4px;
+    background-color: rgba(255, 215, 38, 1);
+}

@@ -12,6 +12,8 @@ import Home from './pages/Home/Home.jsx';
 import User from './pages/User/User.jsx';
 import Help from './pages/About/About.jsx';
 import About from './pages/About/About.jsx';
+import Tracking from './pages/Tracking/Tracking.jsx';
+import TrackingDetail from './pages/TrackingDetail/TrackingDetail.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
 import Login from "./pages/login.jsx";
 import Register from "./pages/Register";
@@ -36,6 +38,8 @@ function App() {
             <Route path="/user" element={<User />} />
             <Route path='/about' element={<About />} />
             <Route path='/help' element={<Help />} />
+            <Route path='/tracking' element={<Tracking />} />
+            <Route path='/tracking/:trackingCode' element={<TrackingDetail />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
