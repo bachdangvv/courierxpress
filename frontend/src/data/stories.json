@@ -1,0 +1,127 @@
+[
+    {
+        "id": 1,
+        "image_src": "../../assets/stories/story1.jpg",
+        "heading": "See how Coco Gauff, Emma Grede and UPS help deliver sweet success for this small business",
+        "content": "We're shipping Petrova Chocolates' treats nationwide - and Canada's up next"
+    },
+
+    {
+        "id": 2,
+        "image_src": "../../assets/stories/story2.jpg",
+        "heading": "Small business, big growth: How UPS helps businesses succeed",
+        "content": "Did someone say add to cart?"
+    },
+
+    {
+        "id": 3,
+        "image_src": "../../assets/stories/story3.jpg",
+        "heading": "5 things every business should know about returns in 2025 and beyond",
+        "content": "Our Returns Landscape survey reveals info that can help you *and* your customers"
+    },
+
+    {
+        "id": 4,
+        "image_src": "../../assets/stories/story4.jpg",
+        "heading": "UPS helps businesses grow with sustainable shipping and easy returns",
+        "content": "See how we've saved over a million gallons of paint from ending up in the environment"
+    },
+
+    {
+        "id": 5,
+        "image_src": "../../assets/stories/story5.jpg",
+        "heading": "40 years of service and a lifetime of UPS pride",
+        "content": "Years after retirement, Sabrina Montgomery still knows the UPS safety habits by heart"
+    },
+
+    {
+        "id": 6,
+        "image_src": "../../assets/stories/story6.jpg",
+        "heading": "5 things you didn't know The UPS Store could do for your small business",
+        "content": "This just in! The UPS Store is No. 1 on Forbes' Best Customer Service list for three years running"
+    },
+
+    {
+        "id": 7,
+        "image_src": "../../assets/stories/story7.jpg",
+        "heading": "UPS tees up for the 2025 Ryder Cup",
+        "content": "We're delivering for fans on and off the course"
+    },
+
+    {
+        "id": 8,
+        "image_src": "../../assets/stories/story8.jpg",
+        "heading": "Seamus Golf swings big through UPS's Ryder Cup partnership",
+        "content": "How we're teeing up small business success"
+    },
+
+    {
+        "id": 9,
+        "image_src": "../../assets/stories/story9.jpg",
+        "heading": "💨 Beat the holiday rush: shop early, ship early with UPS 📦",
+        "content": "Know shipping deadlines and take the pressure out of last-minute shopping"
+    },
+
+    {
+        "id": 10,
+        "image_src": "../../assets/stories/story10.jpg",
+        "heading": "Shipping tips to get the most out of your holiday sales",
+        "content": "Shoppers are getting an early start - is your online shop ready?"
+    },
+
+    {
+        "id": 11,
+        "image_src": "../../assets/stories/story11.jpg",
+        "heading": "Smarter supply chains start here - with UPS expertise leading the way",
+        "content": "Nearly 30-year partnership finds new ways to serve customers and the planet"
+    },
+
+    {
+        "id": 12,
+        "image_src": "../../assets/stories/story12.jpg",
+        "heading": "UPS driver retires after 58 years and over 5 million accident-free miles",
+        "content": "We're celebrating one of the safest drivers in our company's history"
+    },
+
+    {
+        "id": 13,
+        "image_src": "../../assets/stories/story13.jpg",
+        "heading": "Learn how we're helping businesses in Asia reach new markets with these 3 new improvements",
+        "content": "… And why these upgrades are big for businesses around the world, too"
+    },
+
+    {
+        "id": 14,
+        "image_src": "../../assets/stories/story14.jpg",
+        "heading": "How one entrepreneur got a surprise mentorship session with Emma Grede",
+        "content": "Find out how UPS supports small business growth"
+    },
+
+    {
+        "id": 15,
+        "image_src": "../../assets/stories/story15.jpg",
+        "heading": "3 ways UPS helps businesses navigate global trade and tariffs",
+        "content": "See how to unlock new international markets with UPS"
+    },
+
+    {
+        "id": 16,
+        "image_src": "../../assets/stories/story16.jpg",
+        "heading": "'Subway Takes' creator Kareem Rahma teams up with UPS for small biz love",
+        "content": "Watch 'UPS Business Trips' now!"
+    },
+
+    {
+        "id": 17,
+        "image_src": "../../assets/stories/story17.jpg",
+        "heading": "UPS drivers sweep national safety awards, winning in 7 out of 11 regions",
+        "content": "Meet the outstanding professionals recognized for being among the safest wheels on the road"
+    },
+
+    {
+        "id": 18,
+        "image_src": "../../assets/stories/story18.jpg",
+        "heading": "UPS and American Express collaborate to make logistics and payments easier than ever for businesses",
+        "content": "Two iconic brands, nearly three centuries of expertise"
+    }
+]
