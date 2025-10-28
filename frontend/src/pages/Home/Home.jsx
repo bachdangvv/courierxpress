@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <div className="sup-header"></div>
 
-      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pb-8 gap-5">
+      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pt-[100px] pb-8 gap-5">
         <div className="hero-content h-full w-full max-w-[1400px] lg:grid lg:grid-cols-[4fr_1fr] md:grid md:grid-cols-[1fr] items-center text-center gap-3 lg:px-0 px-5 mx-auto">
           <div className="left-hero-container w-full flex flex-col justify-center items-center md:items-start pt-5 md:pt-0 gap-2">
             <div className="hero-nav-links flex justify-center items-center text-center gap-x-5 mb-4">

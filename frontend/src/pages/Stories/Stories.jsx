@@ -12,7 +12,7 @@ import './Stories.css';
 const Stories = () => {
     return (
         <>
-            <main className='mx-auto flex flex-col justify-center items-center max-w-[1400px]'>
+            <main className='mx-auto flex flex-col justify-center items-center max-w-[1400px] mt-[100px]'>
                 <div className='stories-heading w-full flex justify-center items-center text-center h-auto mb-[80px]'>
                     <MidLineHeading>All Stories</MidLineHeading>
                 </div>

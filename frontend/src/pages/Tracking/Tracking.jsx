@@ -31,7 +31,7 @@ const Tracking = () => {
 
     return (
         <>
-            <main className='flex flex-col justify-center items-center max-w-[1300px] mx-auto'>
+            <main className='flex flex-col justify-center items-center max-w-[1300px] mx-auto mt-[100px]'>
                 <form
                     onSubmit={trackOrder}
                     className='tracking-section grid grid-cols-1 lg:grid-cols-[2fr_1fr] place-content-center gap-5 w-full mb-[80px]'
