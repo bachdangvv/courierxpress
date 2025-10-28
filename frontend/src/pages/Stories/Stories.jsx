@@ -6,9 +6,6 @@ import storiesData from '../../data/stories.json';
 // Importing Components
 import MidLineHeading from '../../components/MidLineHeading/MidLineHeading';
 
-// Importing CSS
-import './Stories.css';
-
 const Stories = () => {
     return (
         <>
