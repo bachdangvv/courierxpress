@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "question": "Why do I now owe import charges on my international shipments?",
+        "answer": [
+            "With the elimination of de minimis, all shipments imported into the U.S. regardless of origin country or shipment value could be subject to duties, taxes and brokerage fees. Typically, these costs are the responsibility of the person receiving the shipment. We've outlined some basic information about specific import fees as well as the latest tariff and de minimis updates."
+        ]
+    },
+
+    {
+        "id": 2,
+        "question": "What do I need to enroll in the UPS Billing Center?v",
+        "answer": [
+            "If you already receive invoices from us but are not yet enrolled in the UPS Billing Center, you will need to have an invoice from the last 45 days. As part of enrollment, you will be asked to enter several pieces of information found on the invoice, including:",
+            "1. Account Number",
+            "2. Invoice Number",
+            "3. Amount Date",
+            "4. Invoice Date",
+            "Make sure to enter each value exactly as shown on the invoice. Once you've done so, you will be enrolled and have access to the Billing Center.",
+            "If you do not currently receive invoices from UPS, you will first need to create a UPS.com username and open a payment account. If you already have a username, you can go directly to the open a payment account step."
+        ]
+    },
+
+    {
+        "id": 3,
+        "question": "How do I find and view an invoice?",
+        "answer": [
+            "Once you've logged into the Billing Center, select either My Account Invoices or My Plan Invoices.",
+            "All your details are organized in a table view, with sortable column headers, search functionality, and filtering capabilities to find what you're looking for.",
+            "Use the Search, Filter, and Calendar functions to narrow down your search. Click the column headers to sort by column as well.",
+            "To print or download, select the option from the Actions menu in the right-hand column."
+        ]
+    },
+
+    {
+        "id": 4,
+        "question": "Why can't I pay my bill through the UPS Billing Center?",
+        "answer": [
+            "If you have (A) a 10-digit temporary account number or (B) a Trade Direct invoice, you won't be able to pay your bill in the Billing Center.",
+            "Please call the number on your invoice to pay your bill over the phone."
+        ]
+    },
+
+    {
+        "id": 5,
+        "question": "I don't understand a charge on my bill. What do I do?",
+        "answer": [
+            "The most efficient way to dispute charges is by logging into the Billing Center and selecting Help and Support Center for detailed instructions.",
+            "If you have a paper bill or a 10-digit account number, call the phone number on your invoice. If you don't have an invoice, call 1-800-811-1648 for domestic billing support or 1-866-493-7140 for import billing support."
+        ]
+    },
+
+    {
+        "id": 6,
+        "question": "How do I update an expired payment card?",
+        "answer": [
+            "If you pay your bills using your digital wallet in the Billing Center, you can easily update the expiration date on any payment card by selecting Edit below your expired card while you're in the grid view of your wallet. Alternatively, if you're viewing your wallet in a list, find the card you want to update and select Edit under the Actions column.",
+            "If you're not using the Billing Center and are looking to update a payment card you have associated to your shipping account, you can find your card details within the accounts and payment options section of your UPS.com profile. There you can choose the payment method to update by selecting Edit under the Actions column.",
+            "Update Payment Methods in Your Profile"
+        ]
+    }
+]

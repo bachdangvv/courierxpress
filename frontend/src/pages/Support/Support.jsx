@@ -4,7 +4,12 @@ import cn from 'classnames';
 // Importing Components
 import YellowButton from '../../components/YellowButton';
 import MidLineHeading from '../../components/MidLineHeading/MidLineHeading';
-import ShipAndTrackFAQ from './SupportComponents/ShipAndTrack';
+
+import ShippingRender from './SupportComponents/Shipping.jsx';
+import LostRender from './SupportComponents/Lost.jsx';
+import BillingRender from './SupportComponents/Billing.jsx';
+import AccountPasswordRender from './SupportComponents/AccountPassword.jsx';
+import AdditionalContactsRender from './SupportComponents/AdditionalContacts.jsx';
 
 // Importing Images
 import warningIcon from '../../assets/warning_icon.png';
@@ -18,33 +23,20 @@ const Support = () => {
     const forestImage = 'https://assets.ups.com/adobe/assets/urn:aaid:aem:ba676bcd-899d-4fd9-a2db-54602ec94bf3/as/va-fall-background.avif';
 
     const FAQTabs = [
-        {
-            id: 1,
-            tabName: "Ship and Track"
-        },
-        {
-            id: 2,
-            tabName: "Lost or Damaged Package"
-        },
-        {
-            id: 3,
-            tabName: "Billing"
-        },
-        {
-            id: 4,
-            tabName: "Account and Password"
-        },
-        {
-            id: 5,
-            tabName: "Additional Contacts"
-        }
-    ];
+    { id: 'shipping', label: 'Shipping and Tracking', component: <ShippingRender /> },
+    { id: 'lost', label: 'Lost or Damaged Package', component: <LostRender /> },
+    { id: 'billing', label: 'Billing', component: <BillingRender /> },
+    { id: 'account', label: 'Account and Password', component: <AccountPasswordRender /> },
+    { id: 'contact', label: 'Additinal Contact', component: <AdditionalContactsRender /> },
+  ];
 
-    const [activeFAQTab, setActiveFAQTab] = useState(0);
+    const [activeFAQTab, setActiveFAQTab] = useState('shipping');
 
-    const handleActiveFAQTab = (tabIndex) => {
-        setActiveFAQTab(activeFAQTab === tabIndex ? null : tabIndex);
-        };
+    const handleTabClick = (tabID) => {
+        setActiveFAQTab(tabID);
+    };
+
+    const ActiveFAQComponent = FAQTabs.find((tab) => tab.id === activeFAQTab)?.component;
 
     return (
         <>
@@ -132,22 +124,23 @@ const Support = () => {
                         <MidLineHeading>FAQ</MidLineHeading>
                     </div>
 
-                    <div className='faq-field-selector flex justify-center items-center text-left gap-8 w-full h-auto border-b border-slate-600 py-4 px-8 mb-[80px]'>
-                        {FAQTabs.map((data, index) => (
+                    {/* FAQ Section */}
+                    <div className='faq-field-selector flex justify-center items-center text-left gap-8 w-full h-auto border-b border-slate-600 py-4 px-8 mb-[40px]'>
+                        {FAQTabs.map((tab) => (
                             <button
-                                key={data.id}
-                                onClick={() => handleActiveFAQTab(index)}
+                                key={tab.id}
+                                onClick={() => handleTabClick(tab.id)}
                                 className={cn(
-                                    'outline-none bg-transparent text-black relative',
-                                    { 'text-emerald-800 before:content-[""] before:block before:absolute before:bottom-[-16px] before:left-1/2 before:transform before:-translate-x-1/2 before:w-[80%] before:h-[4px] before:bg-emerald-800': activeFAQTab === index }
+                                    'outline-none bg-transparent text-black text-[12px] md:text-lg relative',
+                                    { 'text-emerald-800 before:content-[""] before:block before:absolute before:bottom-[-16px] before:left-1/2 before:transform before:-translate-x-1/2 before:w-[80%] before:h-[4px] before:bg-emerald-800': activeFAQTab === tab.id }
                                 )}
                             >
-                            {data.tabName}</button>
+                            {tab.label}</button>
                         ))}
                     </div>
 
-                    <div className='support-faq-container flex justify-center items-center w-full h-auto p-5'>
-                        <ShipAndTrackFAQ/>
+                    <div className='support-faq-container flex justify-center items-center w-full h-auto p-4'>
+                        {ActiveFAQComponent}
                     </div>
                 </div>
             </main>

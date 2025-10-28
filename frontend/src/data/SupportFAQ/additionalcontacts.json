@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "question": "Are my UPS username and account the same thing?",
+        "answer": [
+            "Great question! No, your UPS username and UPS account number aren't the same.",
+            "Your username is your login that will give you access to your customized tracking dashboard and shipment history.",
+            "Your account number is a unique six-digit number used to identify your UPS account."
+        ]
+    },
+
+    {
+        "id": 2,
+        "question": "Do I need a UPS account to ship?",
+        "answer": [
+            "No, you don't need an account to ship with UPS. You can create a one-time shipment and pay each time you ship, no questions asked.",
+            "However, with your UPS account you'll gain access to potential shipping discounts and a more streamlined shipping process with tools like stored payment methods, address books and online billing."
+        ]
+    },
+
+    {
+        "id": 3,
+        "question": "How do I open a UPS account?",
+        "answer": [
+            "Setting up your UPS account is easy and only takes a few minutes. Just answer a few questions and you'll be off and running.",
+            "Note: you'll need to be logged in with your username in order to add an account to your UPS profile. Don't have a username? Not a problem ' we'll help you sign up for one prior to adding your account.",
+            "You can get started here."
+        ]
+    },
+
+    {
+        "id": 4,
+        "question": "How do I reset my password or find my username?",
+        "answer": [
+            "To set a new password, enter your username and email address here and we'll get you on your way.",
+            "To recover your username, enter your username here and we'll send you a reminder."
+        ]
+    },
+
+    {
+        "id": 5,
+        "question": "I don't have access to the email address or phone number associated with my username. Now what?",
+        "answer": [
+            "These are the only methods available to reset your password. You'll need to create a new username."
+        ]
+    }
+]

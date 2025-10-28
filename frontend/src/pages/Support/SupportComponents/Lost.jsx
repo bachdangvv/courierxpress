@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import BillingData from '../../../data/SupportFAQ/billing.json';
+import lostPackageData from '../../../data/SupportFAQ/lostdamagedpackage.json';
 import cn from 'classnames';
 
-const BillingRender = () => {
+const LostRender = () => {
     const [activeQuestion, setActiveQuestion] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -12,7 +12,7 @@ const BillingRender = () => {
     return (
         <>
         <div className='w-full h-full max-w-[1000px] flex flex-col justify-center items-center'>
-            {BillingData.map((data) => {
+            {lostPackageData.map((data) => {
                 const isActive = activeQuestion === data.id;
                 
                 return (
@@ -58,4 +58,4 @@ const BillingRender = () => {
     )
 };
 
-export default BillingRender;
+export default LostRender;

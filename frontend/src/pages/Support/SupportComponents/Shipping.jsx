@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import ShipAndTrackData from '../../../data/SupportFAQ/shiptrack.json';
+import ShippingData from '../../../data/SupportFAQ/shipping.json';
 import cn from 'classnames';
 
-const ShipAndTrackFAQ = () => {
+const ShippingRender = () => {
     const [activeQuestion, setActiveQuestion] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -12,7 +12,7 @@ const ShipAndTrackFAQ = () => {
     return (
         <>
         <div className='w-full h-full max-w-[1000px] flex flex-col justify-center items-center'>
-            {ShipAndTrackData.map((data) => {
+            {ShippingData.map((data) => {
                 const isActive = activeQuestion === data.id;
                 
                 return (
@@ -58,4 +58,4 @@ const ShipAndTrackFAQ = () => {
     )
 };
 
-export default ShipAndTrackFAQ;
+export default ShippingRender;
