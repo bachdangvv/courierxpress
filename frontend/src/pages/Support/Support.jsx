@@ -13,7 +13,6 @@ import shippingBox from '../../assets/shipping_box.avif';
 import myAccountIcon from '../../assets/my_account.webp';
 
 // Importing CSS
-import './Support.css';
 
 const Support = () => {
     const forestImage = 'https://assets.ups.com/adobe/assets/urn:aaid:aem:ba676bcd-899d-4fd9-a2db-54602ec94bf3/as/va-fall-background.avif';
@@ -41,10 +40,10 @@ const Support = () => {
         }
     ];
 
-    const [activeFAQTab, setActiveFAQTab] = useState(null);
+    const [activeFAQTab, setActiveFAQTab] = useState(0);
 
     const handleActiveFAQTab = (tabIndex) => {
-        setActiveFAQTab(tabIndex === activeFAQTab ? null : tabIndex);
+        setActiveFAQTab(activeFAQTab === tabIndex ? null : tabIndex);
         };
 
     return (
@@ -139,8 +138,8 @@ const Support = () => {
                                 key={data.id}
                                 onClick={() => handleActiveFAQTab(index)}
                                 className={cn(
-                                    'outline-none bg-transparent text-black',
-                                    { 'active-faq-tab': activeFAQTab === index }
+                                    'outline-none bg-transparent text-black relative',
+                                    { 'text-emerald-800 before:content-[""] before:block before:absolute before:bottom-[-16px] before:left-1/2 before:transform before:-translate-x-1/2 before:w-[80%] before:h-[4px] before:bg-emerald-800': activeFAQTab === index }
                                 )}
                             >
                             {data.tabName}</button>
