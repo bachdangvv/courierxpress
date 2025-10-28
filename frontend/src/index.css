@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 #root {
-    overflow-x: hidden;
-    margin: 0 auto;
+  overflow-x: hidden;
+  margin: 0 auto;
+  padding: 0;
 }

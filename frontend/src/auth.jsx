@@ -15,10 +15,13 @@ export default function AuthProvider({ children }) {
     if (t) setToken(t);
 
     const hydrate = async () => {
-      if (!t) { setBooted(true); return; }     // no token => unauthenticated
+      if (!t) {
+        setBooted(true);
+        return;
+      } // no token => unauthenticated
       try {
         const { data } = await api.get("/auth/me");
-        setUser(data.user || data);            // support both shapes
+        setUser(data.user || data); // support both shapes
       } catch (err) {
         // 401 -> token invalid/expired; clear silently (do NOT call /logout)
         localStorage.removeItem("token");
@@ -42,15 +45,31 @@ export default function AuthProvider({ children }) {
     return data.user; // let caller redirect by role
   };
 
+  // Register function for agents and customers
+  const register = async ({ name, email, password, role }) => {
+    const { data } = await api.post("/auth/register", {
+      name: String(name).trim(),
+      email: String(email).trim().toLowerCase(),
+      password: String(password).trim(),
+      role: role || "customer",
+    });
+    localStorage.setItem("token", data.token);
+    setToken(data.token);
+    setUser(data.user);
+    return data.user;
+  };
+
   const logout = async () => {
-    try { await api.post("/auth/logout"); } catch {}
+    try {
+      await api.post("/auth/logout");
+    } catch {}
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthCtx.Provider value={{ user, booted, login, logout }}>
+    <AuthCtx.Provider value={{ user, booted, login, logout, register }}>
       {children}
     </AuthCtx.Provider>
   );

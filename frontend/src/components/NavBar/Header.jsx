@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Truck, User, LogIn } from "lucide-react";
-import './Header.css';
+import "./Header.css";
 
 export default function Header() {
   const location = useLocation();
@@ -90,69 +90,30 @@ export default function Header() {
               ×
             </button>
 
-            {/* Tabs cho Agent / Customer */}
-            <div className="tabs">
+            <h3>Chọn loại tài khoản</h3>
+            <p>Vui lòng chọn vai trò của bạn để đăng nhập hoặc đăng ký:</p>
+
+            <div className="login-options">
               <button
-                className={`tab ${activeTab === "employee" ? "active" : ""}`}
-                onClick={() => setActiveTab("employee")}
+                className="option-btn agent-btn"
+                onClick={() => {
+                  setShowLogin(false);
+                  window.location.href = "/agent/login"; // hoặc dùng navigate('/agent/login')
+                }}
               >
-                Agent
+                Đăng nhập / Đăng ký Agent
               </button>
+
               <button
-                className={`tab ${activeTab === "customer" ? "active" : ""}`}
-                onClick={() => setActiveTab("customer")}
+                className="option-btn customer-btn"
+                onClick={() => {
+                  setShowLogin(false);
+                  window.location.href = "/customer/login";
+                }}
               >
-                Customer
+                Đăng nhập / Đăng ký Customer
               </button>
             </div>
-
-            {/* FORM LOGIN */}
-            {!isRegister && (
-              <form className="login-form" onSubmit={handleLoginSubmit}>
-                <h3>Login</h3>
-                <input type="text" placeholder="Username" required />
-                <input type="password" placeholder="Password" required />
-                <button type="submit" className="submit-btn">
-                  {activeTab === "employee"
-                    ? "Login as Employee"
-                    : "Login as Customer"}
-                </button>
-                <p className="switch-text">
-                  Chưa có tài khoản?{" "}
-                  <span
-                    className="switch-link"
-                    onClick={() => setIsRegister(true)}
-                  >
-                    Đăng ký tại đây
-                  </span>
-                </p>
-              </form>
-            )}
-
-            {/* FORM REGISTER */}
-            {isRegister && (
-              <form className="register-form" onSubmit={handleRegisterSubmit}>
-                <h3>Register</h3>
-                <input type="text" placeholder="Full Name" required />
-                <input type="text" placeholder="Username" required />
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Password" required />
-                <button type="submit" className="submit-btn register-btn">
-                  {activeTab === "employee"
-                    ? "Register as Agent"
-                    : "Register as Customer"}
-                </button>
-                <p className="switch-text">
-                  Đã có tài khoản?{" "}
-                  <span
-                    className="switch-link"
-                    onClick={() => setIsRegister(false)}
-                  >
-                    Đăng nhập tại đây
-                  </span>
-                </p>
-              </form>
-            )}
           </div>
         </div>
       )}
