@@ -79,28 +79,26 @@ export default function Home() {
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Import Fees Explain</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                Recent changes in U.S. import policy may impact your international shipments. Learn what these changes could mean for your deliveries.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn About Import Fees
               </h3>
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Understanding Customs</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                We've outlined some helpful information about the customs process, along with tips to help you avoid potential holds or delays.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn More About Customs
               </h3>
             </div>
           </div>

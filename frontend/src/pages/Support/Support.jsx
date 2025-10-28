@@ -40,7 +40,7 @@ const Support = () => {
 
     return (
         <>
-            <div className='flex flex-col justify-center items-center w-full bg-gray-200 px-6 py-10 mt-[100px]'>
+            <div className='flex flex-col justify-center items-center w-full bg-gray-200 px-6 py-10 mt-[70px]'>
                 <div className='flex justify-start items-start text-left w-full mb-5 px-10'>
                     <h1 className="features-introduction-heading font-bold text-4xl mb-5">
                         Help and Support Center
