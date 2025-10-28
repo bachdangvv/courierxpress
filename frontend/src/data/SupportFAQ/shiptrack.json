@@ -1,0 +1,71 @@
+[
+    {
+        "id": 1,
+        "question": "Where's my package?",
+        "answer": [
+            "Tracking your package on UPS.com will give you the most up-to-date information about the status of your shipment. We've recently upgraded our online tracking experience, so now you have access to the same level of detail as our customer service agents. You can also click Get Updates while tracking your package to get shipment status alerts sent to you throughout your package's journey."
+        ]
+    },
+
+    {
+        "id": 2,
+        "question": "My shipment says “Out for Delivery.” What time will it be delivered?",
+        "answer": [
+            "Generally, our drivers can deliver as late as 9 p.m. During the holiday season, our drivers may deliver even later.",
+            "If we are unable to deliver a package that shows a status of 'out for delivery,' we'll try another delivery on the next business day.",
+            "Not sure what your tracking status means? Here's a list of common tracking statuses."
+        ]
+    },
+
+    {
+        "id": 3,
+        "question": "Why hasn't my driver delivered my package yet?",
+        "answer": [
+            "If your driver left a UPS Delivery Notice, it's because their first attempt at delivering or picking up your package was unsuccessful. Here’s what to do next with your delivery notice.",
+            "If they didn't leave a delivery notice, it's because they need more information on how to deliver it. You can log into UPS My Choice® to provide them the info they need to get your package to you."
+        ]
+    },
+
+    {
+        "id": 4,
+        "question": "How do I change a delivery I'm receiving?",
+        "answer": [
+            "You can make a delivery change to a package by logging in and using UPS My Choice® or make a one-time change as a guest..",
+            "Changing a delivery with UPS My Choice can be done in three easy steps:",
+            "1. Open Your Dashboard: Log into My Choice to view your dashboard.",
+            "2. Select Your Package: Select Delivery Options. If you odn't see 'Delivery Options,' that means the shipper has restricted this option*.",
+            "3. Follow the Prompts: Reroute your package to a different location or change the delivery date.",
+            "Don't have My Choice? Make a one-time change by following the steps below.",
+            "1. Track your package.",
+            "2. Click 'Change My Delivery.'",
+            "3. Check your email for the temporary passcode that will allow you to make the change.",
+            "Sometimes, shippers restrict change delivery options based on package contents."
+        ]
+    },
+
+    {
+        "id": 5,
+        "question": "How do I change a delivery I've sent?",
+        "answer": [
+            "Using UPS Delivery Intercept®, you can request delivery changes for a package you sent before we try and make the first delivery attempt. Delivery intercept offers a few different options to have the delivery updated:",
+            "Request the package be returned to you.",
+            "Redirect the package to another address.",
+            "Reschedule the delivery for another day.",
+            "Request the package be held for pickup by the recipient.",
+            "Please note: A UPS intercept request can be canceled or changed before it's been completed. Fees may apply for all types of requests, however, you'll only be charged if the request is completed."
+        ]
+    },
+
+    {
+        "id": 6,
+        "question": "I won't be home. Can I put a hold on my deliveries?",
+        "answer": [
+            "You can use My Choice to request a hold on your deliveries in a few different ways:",
+            "We can hold onto your package and deliver it once you're back in town.",
+            "You can request we leave your package with a neighbor.",
+            "We can reroute your package to another address, in certain cases.",
+            "You can request we hold onto your package for you to pick up at a UPS location",
+            "Don't have My Choice? Sign up for free."
+        ]
+    }
+]

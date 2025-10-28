@@ -1,0 +1,8 @@
+.active-faq-tab {
+    color: green;
+}
+
+.active-faq-tab::before {
+    content: '';
+    
+}
