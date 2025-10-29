@@ -34,6 +34,8 @@ import DashboardHome from "./components/agentspage/DashboardHome.jsx";
 import AgentOrders from "./components/agentspage/AgentOrders.jsx";
 import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
+import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
+import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
 
 function Guard({ role, children }) {
   const { user } = useAuth();
@@ -62,6 +64,26 @@ function AgentGuard({ children }) {
 
   return children;
 }
+// Guard for Customer routes (uses separate token storage)
+function CustomerGuard({ children }) {
+  const customerToken = localStorage.getItem("customerToken");
+  const customerUser = localStorage.getItem("customerUser");
+
+  if (!customerToken || !customerUser) {
+    return <Navigate to="/customer/login" replace />;
+  }
+
+  try {
+    const user = JSON.parse(customerUser);
+    if (user.role !== "customer") {
+      return <Navigate to="/customer/login" replace />;
+    }
+  } catch (e) {
+    return <Navigate to="/customer/login" replace />;
+  }
+
+  return children;
+}
 
 function App() {
   const { user } = useAuth();
@@ -84,6 +106,8 @@ function App() {
     (path === "/admin-dashboard" && user?.role === "admin") ||
     path === "/agent/login" ||
     path === "/agent/register" ||
+    path === "/customer/login" ||
+    path === "/customer/register" ||
     path.startsWith("/agent/dashboard") ||
     path.startsWith("/agent/orders") ||
     path.startsWith("/agent/earnings") ||
@@ -171,6 +195,14 @@ function App() {
                 <XpressAdminDashboard />
               </Guard>
             }
+          />
+
+          {/* Customer Routes */}
+          <Route path="/customer/login" element={<CustomerLogin />} />
+          <Route path="/customer/register" element={<CustomerRegister />} />
+          <Route
+            path="/customer/CustomerRegister"
+            element={<CustomerRegister />}
           />
         </Routes>
       </Router>

@@ -108,7 +108,7 @@ export default function XpressAdminDashboard({ bgImage, dashboardName }) {
         dashboardName={dashboardName}
       />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ml-72">
         <Topbar query={query} setQuery={setQuery} />
 
         <main className="p-6">
@@ -168,8 +168,8 @@ function Sidebar({ active, setActive, nav, dashboardName }) {
 
 function Topbar({ query, setQuery }) {
   return (
-    <div className="ml-72 bg-white border-b border-slate-200 p-4 sticky top-0 z-20">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+    <div className="bg-white border-b border-slate-200 p-4 sticky top-0 z-20">
+      <div className="w-full flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <button className="md:hidden p-2 rounded bg-slate-100">☰</button>
 
@@ -211,7 +211,7 @@ function Topbar({ query, setQuery }) {
 
 function DashboardView({ stats, orders, drivers }) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -257,7 +257,7 @@ function StatCard({ title, value }) {
 
 function OrdersView({ orders }) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Orders</h2>
 
       <div className="bg-white rounded shadow p-4">
@@ -330,7 +330,7 @@ function StatusPill({ status }) {
 
 function CustomersView({ customers }) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Customers</h2>
 
       <div className="bg-white rounded shadow p-4">
@@ -367,7 +367,7 @@ function CustomersView({ customers }) {
 
 function DriversView({ drivers }) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Drivers</h2>
 
       <div className="bg-white rounded shadow p-4">
@@ -410,7 +410,7 @@ function ReportsView() {
   const max = Math.max(...sample);
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Reports</h2>
 
       <div className="bg-white rounded shadow p-4">
@@ -442,7 +442,7 @@ function ReportsView() {
 
 function SettingsView() {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Settings</h2>
 
       <div className="bg-white p-6 rounded shadow">

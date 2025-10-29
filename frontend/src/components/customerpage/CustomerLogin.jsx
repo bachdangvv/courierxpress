@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Truck, Mail, Lock } from "lucide-react";
 import axios from "axios";
 
-export default function AgentLogin() {
+export default function CustomerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,18 +19,18 @@ export default function AgentLogin() {
         password,
       });
 
-      // Check if user is an agent
-      if (res.data.user.role !== "agent") {
-        setError("This account is not an Agent!");
+      // Check if user is an customer
+      if (res.data.user.role !== "customer") {
+        setError("This is not a Customer account!");
         setLoading(false);
         return;
       }
 
       // Save token and user info
-      localStorage.setItem("agentToken", res.data.token);
-      localStorage.setItem("agentUser", JSON.stringify(res.data.user));
+      localStorage.setItem("customerToken", res.data.token);
+      localStorage.setItem("customerUser", JSON.stringify(res.data.user));
 
-      window.location.href = "/agent/dashboard";
+      window.location.href = "/customer/dashboard";
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
@@ -49,11 +49,11 @@ export default function AgentLogin() {
         <div className="text-center text-white px-10">
           <Truck className="w-16 h-16 mx-auto mb-6" />
           <h1 className="text-3xl font-bold mb-4">
-            CourierXpress Agent Portal
+            CourierXpress Customer Portal
           </h1>
           <p className="text-blue-100 leading-relaxed text-lg">
-            Connect – Delivery – Success with CourierXpress. Access to receive
-            and manage your orders.
+            Connect – Delivery – Success with CourierXpress. Join to send your
+            product!
           </p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/679/679720.png"
@@ -70,7 +70,7 @@ export default function AgentLogin() {
             <Truck className="w-10 h-10 text-blue-600" />
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Logging Agent
+            Logging Customer
           </h2>
 
           <form onSubmit={handleLogin}>
@@ -81,7 +81,7 @@ export default function AgentLogin() {
               </label>
               <input
                 type="email"
-                placeholder="agent@example.com"
+                placeholder="customer@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -127,10 +127,10 @@ export default function AgentLogin() {
           <p className="text-sm text-center text-gray-500 mt-3">
             Don't have an account?{" "}
             <a
-              href="/agent/register"
+              href="/customer/CustomerRegister"
               className="text-blue-600 font-semibold hover:underline"
             >
-              Sign up to become an Agent
+              Sign up to become a Customer
             </a>
           </p>
         </div>
