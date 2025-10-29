@@ -21,7 +21,7 @@ const About = () => {
 
     return (
         <>
-        <main className='mx-auto flex flex-col justify-center items-center max-w-[1300px]'>
+        <main className='mx-auto flex flex-col justify-center items-center max-w-[1300px] mt-[100px]'>
             <section className='brand-philosophy items-center text-center mb-[80px]'>
                 <MidLineHeading>Moving our world forward by delivering what matters.</MidLineHeading>
 

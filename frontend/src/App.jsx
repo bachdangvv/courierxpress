@@ -16,7 +16,7 @@ import { useState } from "react";
 // Importing pages
 import Home from "./pages/Home/Home.jsx";
 import User from "./pages/User/User.jsx";
-import Help from "./pages/About/About.jsx";
+import Support from "./pages/Support/Support.jsx";
 import About from "./pages/About/About.jsx";
 import Tracking from "./pages/Tracking/Tracking.jsx";
 import TrackingDetail from "./pages/TrackingDetail/TrackingDetail.jsx";
@@ -122,7 +122,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
-          <Route path="/help" element={<Help />} />
+          <Route path="/support" element={<Support />} />
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/tracking/:trackingCode" element={<TrackingDetail />} />
           <Route path="/stories" element={<Stories />} />

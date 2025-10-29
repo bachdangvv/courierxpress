@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "question": "My package says it was delivered, but I can't find it. Where is it?",
+        "answer": [
+            "Your driver will try to leave your package out of plain sight to protect it.",
+            "Check exterior doors and places like porches, back patios or garages. Also check with anyone who may have picked up your package, like a neighbor.",
+            "If you still can't find it, we encourage opening a loss investigation within 30 days of the expected delivery date.",
+            "Open a Missing Package Claim"
+        ]
+    },
+
+    {
+        "id": 2,
+        "question": "What do I do if my package was delivered damaged?",
+        "answer": [
+            "If your package was damaged during its delivery, we encourage starting a damage claim within 30 days of receiving the package in question.",
+            "Open a Damage Claim"
+        ]
+    },
+
+    {
+        "id": 3,
+        "question": "What documents will I need to submit to support my claim?",
+        "answer": [
+            "All claims will require some documentation to help us provide an accurate resolution.",
+            "Items such as receipts, invoices and purchase orders can help identify merchandise. Attaching photos of damaged packages is also encouraged for damage claims.",
+            "Without enough supporting documentation, the processing of your claim could be delayed or denied altogether."
+        ]
+    },
+
+    {
+        "id": 4,
+        "question": "Why can't I submit my claim on UPS.com?",
+        "answer": [
+            "Shipper Restriction",
+            "The shipper of your package has a restriction on the account, which doesn't allow recipients or third parties to begin the claim process. Contact the shipper for further assistance.",
+            "Account Authentication",
+            "1. Your account hasn't been authenticated to us yet, so we can't allow the claims process to be started. To authenticate your account:",
+            "2. Select Payment Options in the upper right-hand corner. Next, select Existing Account from the Add Payment Method dropdown. Finally, select Add and follow the prompts to add an account number.",
+            "Surepost Packages",
+            "1. Claims on Surepost packages are accepted on packages that have been delivered by us. However, once the exception scan that indicates the package has been handed over to the Post Office is recorded, claims are no longer accepted.",
+            "Release Package",
+            "Packages that you've chosen for our driver to release (releasing to your address requiring a signature or choosing to release a package to your apartment building through your My Choice account) are not eligible to be submitted for claims.",
+            "Past Liability",
+            "Submitting a claim has to be taken care of within a timely manner of delivery. The timeframe for submitting claims varies by country.",
+            "Current Investigation Open",
+            "You can't submit a claim because one is already open regarding your issue."
+        ]
+    },
+
+    {
+        "id": 5,
+        "question": "What does my claims status mean?",
+        "answer": [
+            "Claim Issued: The claim was issued and paperwork was sent to the shipper. If you're the shipper, payment documents are required. Select View Details from the claims dashboard and select upload payment documents.",
+            "Shipment Inspection Scheduled: UPS has scheduled an inspection of the damaged package. Updates to the inspection status will be on your dashboard as they become available.",
+            "Claim Reported - Supporting Document(s) Received: Your submitted documents or photos have been successfully uploaded to your claim.",
+            "Claim Review in Progress: Your claim is being reviewed by our claims department.",
+            "Claim Review Complete: Your claim investigation has been completed, and the results of the investigation are forthcoming.",
+            "Claim Not Approved - Insufficient Merchandise Description: UPS needs a detailed merchandise description to complete the investigation. You'll see an icon in the dashboard alerting you that further action needed.",
+            "Claim Not Approved - Unable to Contact Receiver: UPS needs accurate receiver contact information to complete the investigation. You'll see an icon in the dashboard alerting you that further action is needed.",
+            "Payment Has Been Processed for Your Claim: Payment details are available on the dashboard to the authenticated shipper or shipper's appointed representative."
+        ]
+    }
+]

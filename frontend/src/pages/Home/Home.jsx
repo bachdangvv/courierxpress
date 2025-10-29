@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <div className="sup-header"></div>
 
-      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pb-8 gap-5">
+      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pt-[100px] pb-8 gap-5">
         <div className="hero-content h-full w-full max-w-[1400px] lg:grid lg:grid-cols-[4fr_1fr] md:grid md:grid-cols-[1fr] items-center text-center gap-3 lg:px-0 px-5 mx-auto">
           <div className="left-hero-container w-full flex flex-col justify-center items-center md:items-start pt-5 md:pt-0 gap-2">
             <div className="hero-nav-links flex justify-center items-center text-center gap-x-5 mb-4">
@@ -79,28 +79,26 @@ export default function Home() {
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Import Fees Explain</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                Recent changes in U.S. import policy may impact your international shipments. Learn what these changes could mean for your deliveries.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn About Import Fees
               </h3>
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Understanding Customs</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                We've outlined some helpful information about the customs process, along with tips to help you avoid potential holds or delays.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn More About Customs
               </h3>
             </div>
           </div>

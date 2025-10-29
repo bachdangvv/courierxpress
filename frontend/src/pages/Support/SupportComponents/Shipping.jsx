@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import ShippingData from '../../../data/SupportFAQ/shipping.json';
 import cn from 'classnames';
 
-// Importing Data
-import FAQData from '../../data/faq.json';
-
-export default function FAQ() {
+const ShippingRender = () => {
     const [activeQuestion, setActiveQuestion] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -14,13 +12,13 @@ export default function FAQ() {
     return (
         <>
         <div className='w-full h-full max-w-[1000px] flex flex-col justify-center items-center'>
-            {FAQData.map((data) => {
+            {ShippingData.map((data) => {
                 const isActive = activeQuestion === data.id;
                 
                 return (
                     <div 
                         key={data.id}
-                        className='mb-4 last:mb-0 w-full h-full bg-white shadow-lg rounded-lg'
+                        className='mb-4 last:mb-0 w-full h-full bg-white rounded-lg shadow-lg'
                     >
                         <button
                             className={cn('w-full h-full text-black text-left text-xl focus:outline-none p-4 bg-whitewhite rounded-lg hover:shadow:xl flex justify-between items-center', {
@@ -59,3 +57,5 @@ export default function FAQ() {
         </>
     )
 };
+
+export default ShippingRender;
