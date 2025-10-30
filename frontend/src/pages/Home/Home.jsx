@@ -158,7 +158,7 @@ export default function Home() {
             </h1>
 
             <p className="mb-[20px]">
-              Save $5 on a UPS My Choice Premium membership*when you play
+              Save $5 on a UPS My Choice Premium membership when you play
               Delivery Day in the UPS App.
             </p>
 

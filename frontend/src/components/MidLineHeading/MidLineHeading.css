@@ -1,8 +1,3 @@
-.middle-line-heading {
-    position: relative;
-    margin-bottom: 80px;
-}
-
 .middle-line-heading::before {
     content: '';
     position: absolute;
@@ -10,6 +5,16 @@
     bottom: -25px;
     transform: translateX(-50%);
     width: 80px;
+    height: 4px;
+    background-color: rgba(255, 197, 2, 1);
+}
+
+.left-line-heading::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -25px;
+    width: 100px;
     height: 4px;
     background-color: rgba(255, 197, 2, 1);
 }

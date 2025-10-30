@@ -15,7 +15,7 @@ export default function HomeInput() {
         );
 
         if(found) {
-            navigate(`/tracking/${trackingCode}`);
+            navigate(`shipping-services/tracking/${trackingCode}`);
         } else {
             setError('Invalid Tracking Code');
         }
