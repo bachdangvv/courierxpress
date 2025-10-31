@@ -1,6 +1,5 @@
-// src/auth.jsx (core parts)
 import { createContext, useContext, useEffect, useState } from "react";
-import api, { setToken } from "./api";
+import api from "./api";
 
 const AuthCtx = createContext(null);
 export const useAuth = () => useContext(AuthCtx);
@@ -9,23 +8,14 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [booted, setBooted] = useState(false);
 
-  // boot: attach token if present, then fetch /auth/me
+  // Khi app load, thử fetch user từ session
   useEffect(() => {
-    const t = localStorage.getItem("token");
-    if (t) setToken(t);
-
     const hydrate = async () => {
-      if (!t) {
-        setBooted(true);
-        return;
-      } // no token => unauthenticated
       try {
-        const { data } = await api.get("/auth/me");
-        setUser(data.user || data); // support both shapes
-      } catch (err) {
-        // 401 -> token invalid/expired; clear silently (do NOT call /logout)
-        localStorage.removeItem("token");
-        setToken(null);
+        // Gọi API /api/user để kiểm tra session
+        const { data } = await api.get("/api/user");
+        setUser(data);
+      } catch {
         setUser(null);
       } finally {
         setBooted(true);
@@ -34,37 +24,42 @@ export default function AuthProvider({ children }) {
     hydrate();
   }, []);
 
+  // Login (Sanctum cookie)
   const login = async (email, password) => {
-    const { data } = await api.post("/auth/login", {
+    // 1. Lấy CSRF cookie trước
+    await api.get("/sanctum/csrf-cookie");
+
+    // 2. Gửi yêu cầu login
+    await api.post("/login", {
       email: String(email).trim().toLowerCase(),
       password: String(password).trim(),
     });
-    localStorage.setItem("token", data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return data.user; // let caller redirect by role
+
+    // 3. Sau khi login thành công, gọi lại /api/user để lấy thông tin
+    const { data } = await api.get("/api/user");
+    setUser(data);
+    return data;
   };
 
-  // Register function for agents and customers
+  // Register
   const register = async ({ name, email, password, role }) => {
-    const { data } = await api.post("/auth/register", {
+    await api.get("/sanctum/csrf-cookie");
+    await api.post("/register", {
       name: String(name).trim(),
       email: String(email).trim().toLowerCase(),
       password: String(password).trim(),
       role: role || "customer",
     });
-    localStorage.setItem("token", data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return data.user;
+    const { data } = await api.get("/api/user");
+    setUser(data);
+    return data;
   };
 
+  // Logout
   const logout = async () => {
     try {
-      await api.post("/auth/logout");
+      await api.post("/logout");
     } catch {}
-    localStorage.removeItem("token");
-    setToken(null);
     setUser(null);
   };
 

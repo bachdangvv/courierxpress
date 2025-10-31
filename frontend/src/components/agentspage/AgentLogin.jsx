@@ -1,45 +1,66 @@
 import React, { useState } from "react";
 import { Truck, Mail, Lock } from "lucide-react";
 import axios from "axios";
+import { useAuth } from "../../auth";
+import api from "../../api";
+import { useNavigate } from "react-router-dom";
 
 export default function AgentLogin() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
+  
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); // prevent native form submit to :5173
     setError("");
 
+    // ⬇️ Temporary debug first
+    await api
+      .post("/debug/echo", { email, password })
+      .then((r) => console.log("🔍 Backend received:", r.data))
+      .catch((err) =>
+        console.error("Debug error:", err?.response?.data || err)
+      );
+
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
-        email,
-        password,
-      });
+      const u = await login(email, password);
+      // role-based redirect
+      if (u.role === "agent") {
+        nav("/agent/dashboard", { replace: true });
+      } else {
+        nav("/" + u.role, { replace: true });
+      }
+    } catch (e) {
+      const msg = e?.response?.data?.message || e?.message || "Login failed";
+      setError(msg);
+      console.error("Login error", e?.response?.data || e);
+    }
 
       // Check if user is an agent
-      if (res.data.user.role !== "agent") {
-        setError("Tài khoản này không phải là Agent!");
-        setLoading(false);
-        return;
-      }
+    //   if (res.data.user.role !== "agent") {
+    //     setError("Tài khoản này không phải là Agent!");
+    //     setLoading(false);
+    //     return;
+    //   }
 
-      // Save token and user info
-      localStorage.setItem("agentToken", res.data.token);
-      localStorage.setItem("agentUser", JSON.stringify(res.data.user));
+    //   // Save token and user info
+    //   localStorage.setItem("agentToken", res.data.token);
+    //   localStorage.setItem("agentUser", JSON.stringify(res.data.user));
 
-      window.location.href = "/agent/dashboard";
-    } catch (err) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("Sai email hoặc mật khẩu!");
-      }
-    } finally {
-      setLoading(false);
-    }
+    //   window.location.href = "/agent/dashboard";
+    // } catch (err) {
+    //   if (err.response?.data?.message) {
+    //     setError(err.response.data.message);
+    //   } else {
+    //     setError("Sai email hoặc mật khẩu!");
+    //   }
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (

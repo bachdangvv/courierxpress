@@ -46,6 +46,19 @@ export default function Customer(){
 
   return (
     <div className="grid">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <section>
         <h3>Place an Order</h3>
         <PlaceOrder onPlaced={load}/>

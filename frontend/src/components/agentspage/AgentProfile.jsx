@@ -2,13 +2,36 @@ import React, { useState, useEffect } from "react";
 import { User, Mail, Phone, MapPin, Camera } from "lucide-react";
 
 export default function AgentProfile() {
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    avatar: "",
-  });
+
+  const [noti,setNoti]=useState([]);
+  const [plac,setPlac]=useState({data:[]});
+  const [loc,setLoca]=useState({data:[]});
+  const [stat,setStat]=useState({data:[]});
+  const [avai,setAvai]=useState({data:[]});
+
+  const load = async ()=> {
+    const [n, p, l, s, a] = await Promise.all([
+      api.get('/agent/notifications'),
+      api.get('/agent/placed'),
+      api.get('/agent/couriers/{courier}/location'),
+      api.get('/agent/couriers/{courier}/status'),
+      api.get('/agent/availability')
+    ]);
+    setNoti(n.data.data); setPlac(p.data); setLoca(l.data); 
+    setStat(s.data); setAvai(a.data);
+  };
+
+  useEffect(()=>{ load(); },[]);
+
+  useEffect(() => {
+    if (!echo || !user?.agent?.id) return;
+    const ch = echo.private(`agent.${user.agent.id}`)
+      .listen(".status.updated", load)
+      .listen(".courier.location", load);
+    return () => {
+      try { ch.stopListening(".status.updated").stopListening(".courier.location"); } catch { }
+    };
+  }, [echo, user]);
 
   useEffect(() => {
     // Load agent data from localStorage

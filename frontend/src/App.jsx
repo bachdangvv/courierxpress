@@ -29,39 +29,46 @@ import Customer from "./pages/Customer";
 import XpressAdminDashboard from "../src/components/adminpage/XpressAdminDashboard.jsx";
 import AgentLogin from "./components/agentspage/AgentLogin.jsx";
 import AgentRegister from "./components/agentspage/AgentRegister.jsx";
-import AgentDashboard from "./components/agentspage/AgentDashBoard.jsx";
+import AgentDashboard from "./components/agentspage/AgentDashboard.jsx";
 import DashboardHome from "./components/agentspage/DashboardHome.jsx";
 import AgentOrders from "./components/agentspage/AgentOrders.jsx";
 import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
 
+function AgentGuard({ role, children }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/agent/login" replace />;
+  if (role && user.role !== role) return <Navigate to="/agent/login" replace />;
+  return children;
+}
+
 function Guard({ role, children }) {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
-  if (role && user.role !== role) return <Navigate to="/" replace />;
+  if (role && user.role !== role) return <Navigate to="/login" replace />;
   return children;
 }
 
 // Guard for Agent routes (uses separate token storage)
-function AgentGuard({ children }) {
-  const agentToken = localStorage.getItem("agentToken");
-  const agentUser = localStorage.getItem("agentUser");
+// function AgentGuard({ children }) {
+//   const agentToken = localStorage.getItem("agentToken");
+//   const agentUser = localStorage.getItem("agentUser");
 
-  if (!agentToken || !agentUser) {
-    return <Navigate to="/agent/login" replace />;
-  }
+//   if (!agentToken || !agentUser) {
+//     return <Navigate to="/agent/login" replace />;
+//   }
 
-  try {
-    const user = JSON.parse(agentUser);
-    if (user.role !== "agent") {
-      return <Navigate to="/agent/login" replace />;
-    }
-  } catch (e) {
-    return <Navigate to="/agent/login" replace />;
-  }
+//   try {
+//     const user = JSON.parse(agentUser);
+//     if (user.role !== "agent") {
+//       return <Navigate to="/agent/login" replace />;
+//     }
+//   } catch (e) {
+//     return <Navigate to="/agent/login" replace />;
+//   }
 
-  return children;
-}
+//   return children;
+// }
 
 function App() {
   const { user } = useAuth();
@@ -119,7 +126,7 @@ function App() {
           <Route
             path="/agent/dashboard"
             element={
-              <AgentGuard>
+              <AgentGuard role="agent">
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -129,7 +136,7 @@ function App() {
           <Route
             path="/agent/orders"
             element={
-              <AgentGuard>
+              <AgentGuard role="agent">
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -139,7 +146,7 @@ function App() {
           <Route
             path="/agent/earnings"
             element={
-              <AgentGuard>
+              <AgentGuard role="agent">
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -149,7 +156,7 @@ function App() {
           <Route
             path="/agent/profile"
             element={
-              <AgentGuard>
+              <AgentGuard role="agent">
                 <AgentDashboard />
               </AgentGuard>
             }
