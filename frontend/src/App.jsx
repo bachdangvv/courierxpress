@@ -21,8 +21,8 @@ import About from "./pages/About/About.jsx";
 import ShippingServices from "./pages/ShippingServices/ShippingServices.jsx";
 import CreateShipment from "./pages/CreateShipment/CreateShipment.jsx";
 import AdditionalDetails from "./pages/CreateShipment/AdditionalDetails.jsx";
-import Payment from './pages/CreateShipment/Payment.jsx';
-import Confirmation from './pages/CreateShipment/Confirmation.jsx';
+import Payment from "./pages/CreateShipment/Payment.jsx";
+import Confirmation from "./pages/CreateShipment/Confirmation.jsx";
 import Tracking from "./pages/Tracking/Tracking.jsx";
 import TrackingDetail from "./pages/TrackingDetail/TrackingDetail.jsx";
 import Stories from "./pages/Stories/Stories.jsx";
@@ -135,22 +135,31 @@ function App() {
               </CustomerGuard>
             }
           />
+          <Route
+            path="/shipping-services/shipment-info"
+            element={<CreateShipment />}
+          />
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
           <Route path="/shipping-services" element={<ShippingServices />} />
-<<<<<<< HEAD
           <Route
             path="/shipping-services/shipment-info"
             element={<CreateShipment />}
           />
-=======
-          <Route path="/shipping-services/shipment-info" element={<CreateShipment />} />
-          <Route path="/shipping-services/additional-details/:shipmentID" element={<AdditionalDetails />} />
-          <Route path="/shipping-services/payment/:shipmentID" element={<Payment />} />
-          <Route path="/shipping-services/confirmation/:shipmentID" element={<Confirmation />} /> 
->>>>>>> e8eca2ff90ae5ec63a58e62ca1188673170393fb
+          <Route
+            path="/shipping-services/additional-details/:shipmentID"
+            element={<AdditionalDetails />}
+          />
+          <Route
+            path="/shipping-services/payment/:shipmentID"
+            element={<Payment />}
+          />
+          <Route
+            path="/shipping-services/confirmation/:shipmentID"
+            element={<Confirmation />}
+          />
           <Route path="/shipping-services/tracking" element={<Tracking />} />
           <Route
             path="/shipping-services/tracking/:trackingCode"
