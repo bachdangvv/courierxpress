@@ -38,6 +38,7 @@ import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
 import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
 import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
+import CustomerDashboard from "./components/customerpage/CustomerDashboard.jsx";
 
 function Guard({ role, children }) {
   const { user } = useAuth();
@@ -110,6 +111,8 @@ function App() {
     path === "/agent/register" ||
     path === "/customer/login" ||
     path === "/customer/register" ||
+    path === "/customer/CustomerRegister" ||
+    path === "/customer/dashboard" ||
     path.startsWith("/agent/dashboard") ||
     path.startsWith("/agent/orders") ||
     path.startsWith("/agent/earnings") ||
@@ -121,14 +124,28 @@ function App() {
         {!hideHeader && <Header />}
         <Routes>
           {/* ...existing routes... */}
+          <Route
+            path="/customer/dashboard"
+            element={
+              <CustomerGuard>
+                <CustomerDashboard />
+              </CustomerGuard>
+            }
+          />
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
           <Route path="/shipping-services" element={<ShippingServices />} />
-          <Route path="/shipping-services/shipment-info" element={<CreateShipment />} />
+          <Route
+            path="/shipping-services/shipment-info"
+            element={<CreateShipment />}
+          />
           <Route path="/shipping-services/tracking" element={<Tracking />} />
-          <Route path="/shipping-services/tracking/:trackingCode" element={<TrackingDetail />} />
+          <Route
+            path="/shipping-services/tracking/:trackingCode"
+            element={<TrackingDetail />}
+          />
           <Route path="/stories" element={<Stories />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/login" element={<Login />} />

@@ -41,7 +41,7 @@ export default function CustomerRegister() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: "agent",
+        role: "customer",
       });
       // Save token and redirect to dashboard
       localStorage.setItem("customerToken", res.data.token);
@@ -69,7 +69,7 @@ export default function CustomerRegister() {
         <div className="text-center text-white px-10">
           <Truck className="w-16 h-16 mx-auto mb-6" />
           <h1 className="text-3xl font-bold mb-4">
-            Become a CourierXpress Customer
+            Become Customer of CourierXpress
           </h1>
           <p className="text-blue-100 leading-relaxed text-lg">
             Join our professional delivery team. Earn flexible income and grow
@@ -77,7 +77,7 @@ export default function CustomerRegister() {
           </p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/2769/2769339.png"
-            alt="Agent illustration"
+            alt="Customer illustration"
             className="w-72 mx-auto mt-8 opacity-90"
           />
         </div>
@@ -178,7 +178,7 @@ export default function CustomerRegister() {
           <p className="text-sm text-center text-gray-500 mt-5">
             Already have an account?{" "}
             <a
-              href="/agent/login"
+              href="/customer/login"
               className="text-blue-600 font-semibold hover:underline"
             >
               Login here

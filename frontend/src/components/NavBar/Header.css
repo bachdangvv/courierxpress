@@ -1,3 +1,28 @@
+/* Dropdown styles for More menu */
+.dropdown-menu {
+  background: #e3f0ff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s,
+    transform 0.2s;
+  max-height: 0;
+  opacity: 0;
+  transform: scaleY(0.95);
+  overflow: hidden;
+}
+.dropdown-open {
+  max-height: 160px;
+  opacity: 1;
+  transform: scaleY(1);
+  animation: fadeIn 0.2s;
+}
+.dropdown-closed {
+  max-height: 0;
+  opacity: 0;
+  transform: scaleY(0.95);
+}
+.dropdown-link:focus {
+  background: #dbeafe;
+}
 /* === HEADER TRANSPARENT === */
 .rixetix-header {
   position: fixed;
@@ -36,7 +61,7 @@
 }
 
 .logo-icon {
-  color: #ffffff;
+  color: #e4c726;
   font-size: 1.6rem;
   transition: color 0.3s;
 }
@@ -44,12 +69,12 @@
 .logo-text {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #e4c726;
   transition: color 0.3s;
 }
 
 .logo-highlight {
-  color: #4f46e5;
+  color: #473fe9;
 }
 
 .rixetix-header.scrolled .logo-icon {
@@ -69,7 +94,7 @@
 }
 
 .nav-item a {
-  color: #ffffff;
+  color: #000000;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s;
@@ -90,8 +115,8 @@
 
 /* LOGIN BUTTON */
 .login-btn {
-  background-color: #4f46e5;
-  color: #fff;
+  background-color: rgb(255, 190, 27) !important;
+  color: #080808 !important;
   font-weight: 500;
   padding: 0.5rem 1.25rem;
   border-radius: 25px !important;
@@ -101,7 +126,7 @@
 }
 
 .login-btn:hover {
-  background-color: #4338ca;
+  background-color: #b98411 !important;
 }
 
 /* === LOGIN / REGISTER POPUP === */

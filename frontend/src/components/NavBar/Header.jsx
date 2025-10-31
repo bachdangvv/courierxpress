@@ -20,11 +20,11 @@ export default function Header() {
 
   const navItems = [
     { path: "/", label: "Home" },
-    { path: "/services", label: "Services" },
-    { path: "/fleet", label: "Fleet" },
+    { path: "/support", label: "Support" },
     { path: "/contact", label: "Contact" },
-    { path: "/more", label: "More" },
   ];
+  const [showMore, setShowMore] = useState(false);
+  const [showServices, setShowServices] = useState(false);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -32,15 +32,6 @@ export default function Header() {
       `${
         activeTab === "employee" ? "Employee" : "Customer"
       } logged in successfully!`
-    );
-  };
-
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    alert(
-      `${
-        activeTab === "employee" ? "Agent" : "Customer"
-      } registered successfully!`
     );
   };
 
@@ -69,6 +60,124 @@ export default function Header() {
                   <Link to={item.path}>{item.label}</Link>
                 </li>
               ))}
+              <li
+                className="nav-item relative"
+                onMouseEnter={() => setShowServices(true)}
+                onMouseLeave={() => setShowServices(false)}
+              >
+                <span
+                  className={`cursor-pointer ${
+                    [
+                      "/shipping-services/shipment-info",
+                      "/shipping-services",
+                      "/shipping-services/tracking",
+                      "/shipping-services/tracking/:trackingCode",
+                    ].includes(location.pathname)
+                      ? "active"
+                      : ""
+                  }`}
+                  tabIndex={0}
+                  onFocus={() => setShowServices(true)}
+                  onBlur={() => setShowServices(false)}
+                >
+                  Services
+                </span>
+                <ul
+                  className={`dropdown-menu absolute left-0 mt-2 w-44 rounded z-10 ${
+                    showServices ? "dropdown-open" : "dropdown-closed"
+                  }`}
+                  onMouseEnter={() => setShowServices(true)}
+                  onMouseLeave={() => setShowServices(false)}
+                >
+                  <li>
+                    <Link
+                      to="/shipping-services/shipment-info"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowServices(true)}
+                    >
+                      Create Order
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/shipping-services"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowServices(true)}
+                    >
+                      Shipping Services
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/shipping-services/tracking"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowServices(true)}
+                    >
+                      Tracking Order
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/shipping-services/tracking/123456"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowServices(true)}
+                    >
+                      Tracking Detail
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+              <li
+                className="nav-item relative"
+                onMouseEnter={() => setShowMore(true)}
+                onMouseLeave={() => setShowMore(false)}
+              >
+                <span
+                  className={`cursor-pointer ${
+                    location.pathname === "/about" ||
+                    location.pathname === "/stories"
+                      ? "active"
+                      : ""
+                  }`}
+                  tabIndex={0}
+                  onFocus={() => setShowMore(true)}
+                  onBlur={() => setShowMore(false)}
+                >
+                  More
+                </span>
+                <ul
+                  className={`dropdown-menu absolute left-0 mt-2 w-36 rounded z-10 ${
+                    showMore ? "dropdown-open" : "dropdown-closed"
+                  }`}
+                  onMouseEnter={() => setShowMore(true)}
+                  onMouseLeave={() => setShowMore(false)}
+                >
+                  <li>
+                    <Link
+                      to="/about"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowMore(true)}
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/stories"
+                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
+                      tabIndex={0}
+                      onFocus={() => setShowMore(true)}
+                    >
+                      Stories
+                    </Link>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </nav>
 
