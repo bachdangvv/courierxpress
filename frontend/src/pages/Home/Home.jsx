@@ -8,6 +8,8 @@ import chipMap from "../../assets/chip.webp";
 // Importing components
 import HomeInput from "./HomeInput";
 import FAQ from "./FAQ";
+import { Link } from "react-router-dom";
+import YellowButton from "../../components/YellowButton";
 
 export default function Home() {
   const brandRepresentative =
@@ -145,9 +147,9 @@ export default function Home() {
           </div>
 
           <div className="w-full md:w-auto">
-            <button className="ship-and-save-btn w-full md:w-[170px] h-[45px] rounded-[25px] opacity-100 bg-amber-400">
-              Ship and Save
-            </button>
+            <Link to='/shipping-services'>
+              <YellowButton>Ship and Save</YellowButton>
+            </Link>
           </div>
         </section>
 

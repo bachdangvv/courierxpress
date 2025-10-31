@@ -11,6 +11,7 @@ import InternationalOption from './components/InternationalOption';
 
 // Importing Images
 import shippingServicesImage from '../../assets/shipping_services.webp';
+import { Link } from 'react-router-dom';
 
 const ShippingServices = () => {
     
@@ -39,7 +40,7 @@ const ShippingServices = () => {
                     </p>
 
                     <div className='services-buttons flex flex-col md:flex-row justify-start items-center gap-5 w-full h-auto max-w-full md:max-w-[580px]'>
-                        <YellowButton>Ship Now</YellowButton>
+                        <Link to='/shipping-services/shipment-info'><YellowButton>Ship Now</YellowButton></Link>
                         <BlueButton>Get a Quote</BlueButton>
                     </div>
                 </div>    
