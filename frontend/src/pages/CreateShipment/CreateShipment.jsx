@@ -151,7 +151,7 @@ const CreateShipment = () => {
                             </div>
                         </fieldset>
 
-                        <YellowButton variant='widthAuto' type="submit">Create Shipment</YellowButton>
+                        <YellowButton variant='widthAuto' type="submit">Additional Details</YellowButton>
                         </form>
 
                         <div className='shipping-summary flex flex-col justify-start items-center w-full h-auto gap-5 rounded-lg shadow-lg bg-white p-5'>

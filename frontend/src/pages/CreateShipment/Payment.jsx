@@ -121,22 +121,14 @@ const Payment = () => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-full h-auto rounded-lg shadow-lg bg-white p-5">
             <Heading variant='left' size='small' marginBottom='none'>Payment Method</Heading>
 
-            <div className='flex flex-col justify-start items-start gap-4'>
-              <span className='font-semibold'>Card Information:</span>
-
-              <select
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                id="card-type"
-                name="card-type"
-                className='border border-gray-300 rounded p-3 w-full mb-2 bg-transparent'
-                required
-              >
-                <option value="">Card Type</option>
-                <option value="visa">Visa</option>
-                <option value="mastercard">Mastercard</option>
-                <option value="amex">American Express</option>
-              </select>
+                            <div className='flex flex-col justify-start items-start gap-4'>
+                                <span className='font-semibold'>Card Information:</span>
+                                <select onChange={(e) => setPaymentMethod(e.target.value)} id="card-type" name="card-type" className='border border-gray-300 rounded p-3 w-full mb-2 bg-transparent' required>
+                                    <option value="">Card Type</option>
+                                    <option value="visa">Visa</option>
+                                    <option value="mastercard">Mastercard</option>
+                                    <option value="amex">American Express</option>
+                                </select>
 
               <div className='grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] place-content-center gap-5 w-full h-auto'>
                 <div className='w-full'>
