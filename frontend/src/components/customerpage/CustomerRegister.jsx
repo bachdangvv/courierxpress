@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Truck, Mail, Lock, User } from "lucide-react";
 import axios from "axios";
 
-export default function AgentRegister() {
+export default function CustomerRegister() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -41,13 +41,13 @@ export default function AgentRegister() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: "agent",
+        role: "customer",
       });
       // Save token and redirect to dashboard
-      localStorage.setItem("agentToken", res.data.token);
-      localStorage.setItem("agentUser", JSON.stringify(res.data.user));
-      alert("Success! Welcome to CourierXpress.");
-      window.location.href = "/agent/dashboard";
+      localStorage.setItem("customerToken", res.data.token);
+      localStorage.setItem("customerUser", JSON.stringify(res.data.user));
+      alert("Đăng ký thành công! Chào mừng bạn đến với CourierXpress.");
+      window.location.href = "/customer/dashboard";
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
@@ -55,7 +55,7 @@ export default function AgentRegister() {
         const errors = Object.values(err.response.data.errors).flat();
         setError(errors.join(", "));
       } else {
-        setError("Registration failed. Please try again!");
+        setError("Fail. Please try again!");
       }
     } finally {
       setLoading(false);
@@ -69,7 +69,7 @@ export default function AgentRegister() {
         <div className="text-center text-white px-10">
           <Truck className="w-16 h-16 mx-auto mb-6" />
           <h1 className="text-3xl font-bold mb-4">
-            Become Agent of CourierXpress
+            Become Customer of CourierXpress
           </h1>
           <p className="text-blue-100 leading-relaxed text-lg">
             Join our professional delivery team. Earn flexible income and grow
@@ -77,7 +77,7 @@ export default function AgentRegister() {
           </p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/2769/2769339.png"
-            alt="Agent illustration"
+            alt="Customer illustration"
             className="w-72 mx-auto mt-8 opacity-90"
           />
         </div>
@@ -90,7 +90,7 @@ export default function AgentRegister() {
             <Truck className="w-10 h-10 text-blue-600" />
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Register Agent
+            Register Customer
           </h2>
 
           <form onSubmit={handleRegister}>
@@ -120,7 +120,7 @@ export default function AgentRegister() {
               <input
                 type="email"
                 name="email"
-                placeholder="agent@example.com"
+                placeholder="customer@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -178,7 +178,7 @@ export default function AgentRegister() {
           <p className="text-sm text-center text-gray-500 mt-5">
             Already have an account?{" "}
             <a
-              href="/agent/login"
+              href="/customer/login"
               className="text-blue-600 font-semibold hover:underline"
             >
               Login here

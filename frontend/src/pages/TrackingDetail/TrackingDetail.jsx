@@ -27,7 +27,7 @@ const TrackingDetail = () => {
 
     return (
         <>
-           <main className='flex flex-col justify-center items-center max-w-[1500px] mx-auto'>
+           <main className='flex flex-col justify-center items-center max-w-[1500px] mx-auto mt-[70px]'>
                 <MidLineHeading>Tracking Detail</MidLineHeading>
 
                 <section className='tracking-detail-section grid grid-cols-1 lg:grid-cols-[2fr_1fr] place-content-center gap-5 w-full h-auto p-3'>

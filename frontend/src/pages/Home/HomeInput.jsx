@@ -15,7 +15,7 @@ export default function HomeInput() {
         );
 
         if(found) {
-            navigate(`/tracking/${trackingCode}`);
+            navigate(`shipping-services/tracking/${trackingCode}`);
         } else {
             setError('Invalid Tracking Code');
         }
@@ -43,7 +43,7 @@ export default function HomeInput() {
 
                         <div className="help-container flex justify-center items-center text-center gap-3">
                             <i className="bi bi-question-circle text-white hidden lg:block"></i>
-                            <span className="text-white underline cursor-pointer hidden lg:block">Help</span>
+                            <Link to='/support' className="text-white underline cursor-pointer hidden lg:block">Help</Link>
                         </div>
                     </div>
 

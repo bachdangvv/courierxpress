@@ -16,8 +16,13 @@ import { useState } from "react";
 // Importing pages
 import Home from "./pages/Home/Home.jsx";
 import User from "./pages/User/User.jsx";
-import Help from "./pages/About/About.jsx";
+import Support from "./pages/Support/Support.jsx";
 import About from "./pages/About/About.jsx";
+import ShippingServices from "./pages/ShippingServices/ShippingServices.jsx";
+import CreateShipment from "./pages/CreateShipment/CreateShipment.jsx";
+import AdditionalDetails from "./pages/CreateShipment/AdditionalDetails.jsx";
+import Payment from "./pages/CreateShipment/Payment.jsx";
+import Confirmation from "./pages/CreateShipment/Confirmation.jsx";
 import Tracking from "./pages/Tracking/Tracking.jsx";
 import TrackingDetail from "./pages/TrackingDetail/TrackingDetail.jsx";
 import Stories from "./pages/Stories/Stories.jsx";
@@ -34,13 +39,6 @@ import DashboardHome from "./components/agentspage/DashboardHome.jsx";
 import AgentOrders from "./components/agentspage/AgentOrders.jsx";
 import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
-
-function AgentGuard({ role, children }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/agent/login" replace />;
-  if (role && user.role !== role) return <Navigate to="/agent/login" replace />;
-  return children;
-}
 
 function Guard({ role, children }) {
   const { user } = useAuth();
@@ -67,8 +65,28 @@ function Guard({ role, children }) {
 //     return <Navigate to="/agent/login" replace />;
 //   }
 
-//   return children;
-// }
+  return children;
+}
+// Guard for Customer routes (uses separate token storage)
+function CustomerGuard({ children }) {
+  const customerToken = localStorage.getItem("customerToken");
+  const customerUser = localStorage.getItem("customerUser");
+
+  if (!customerToken || !customerUser) {
+    return <Navigate to="/customer/login" replace />;
+  }
+
+  try {
+    const user = JSON.parse(customerUser);
+    if (user.role !== "customer") {
+      return <Navigate to="/customer/login" replace />;
+    }
+  } catch (e) {
+    return <Navigate to="/customer/login" replace />;
+  }
+
+  return children;
+}
 
 function App() {
   const { user } = useAuth();
@@ -91,6 +109,10 @@ function App() {
     (path === "/admin-dashboard" && user?.role === "admin") ||
     path === "/agent/login" ||
     path === "/agent/register" ||
+    path === "/customer/login" ||
+    path === "/customer/register" ||
+    path === "/customer/CustomerRegister" ||
+    path === "/customer/dashboard" ||
     path.startsWith("/agent/dashboard") ||
     path.startsWith("/agent/orders") ||
     path.startsWith("/agent/earnings") ||
@@ -102,12 +124,44 @@ function App() {
         {!hideHeader && <Header />}
         <Routes>
           {/* ...existing routes... */}
+          <Route
+            path="/customer/dashboard"
+            element={
+              <CustomerGuard>
+                <CustomerDashboard />
+              </CustomerGuard>
+            }
+          />
+          <Route
+            path="/shipping-services/shipment-info"
+            element={<CreateShipment />}
+          />
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/tracking" element={<Tracking />} />
-          <Route path="/tracking/:trackingCode" element={<TrackingDetail />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/shipping-services" element={<ShippingServices />} />
+          <Route
+            path="/shipping-services/shipment-info"
+            element={<CreateShipment />}
+          />
+          <Route
+            path="/shipping-services/additional-details/:shipmentID"
+            element={<AdditionalDetails />}
+          />
+          <Route
+            path="/shipping-services/payment/:shipmentID"
+            element={<Payment />}
+          />
+          <Route
+            path="/shipping-services/confirmation/:shipmentID"
+            element={<Confirmation />}
+          />
+          <Route path="/shipping-services/tracking" element={<Tracking />} />
+          <Route
+            path="/shipping-services/tracking/:trackingCode"
+            element={<TrackingDetail />}
+          />
           <Route path="/stories" element={<Stories />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/login" element={<Login />} />
@@ -178,6 +232,14 @@ function App() {
                 <XpressAdminDashboard />
               </Guard>
             }
+          />
+
+          {/* Customer Routes */}
+          <Route path="/customer/login" element={<CustomerLogin />} />
+          <Route path="/customer/register" element={<CustomerRegister />} />
+          <Route
+            path="/customer/CustomerRegister"
+            element={<CustomerRegister />}
           />
         </Routes>
       </Router>

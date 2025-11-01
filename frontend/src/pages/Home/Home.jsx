@@ -8,6 +8,8 @@ import chipMap from "../../assets/chip.webp";
 // Importing components
 import HomeInput from "./HomeInput";
 import FAQ from "./FAQ";
+import { Link } from "react-router-dom";
+import YellowButton from "../../components/YellowButton";
 
 export default function Home() {
   const brandRepresentative =
@@ -79,28 +81,26 @@ export default function Home() {
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Import Fees Explain</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                Recent changes in U.S. import policy may impact your international shipments. Learn what these changes could mean for your deliveries.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn About Import Fees
               </h3>
             </div>
 
             <div className="feature-card rounded cursor-pointer p-[30px]">
-              <h1 className="text-2xl mb-5">Tariff Impacts</h1>
+              <h1 className="text-2xl mb-5">Understanding Customs</h1>
 
               <p className="mb-10">
-                Get the latest tariff updates as well as resources to help you
-                navigate these changes and strealine global shipping.
+                We've outlined some helpful information about the customs process, along with tips to help you avoid potential holds or delays.
               </p>
 
               <h3 className="text-blue-500 cursor-pointer">
-                Tariff Rousouce Guide
+                Learn More About Customs
               </h3>
             </div>
           </div>
@@ -147,9 +147,9 @@ export default function Home() {
           </div>
 
           <div className="w-full md:w-auto">
-            <button className="ship-and-save-btn w-full md:w-[170px] h-[45px] rounded-[25px] opacity-100 bg-amber-400">
-              Ship and Save
-            </button>
+            <Link to='/shipping-services'>
+              <YellowButton>Ship and Save</YellowButton>
+            </Link>
           </div>
         </section>
 
@@ -160,7 +160,7 @@ export default function Home() {
             </h1>
 
             <p className="mb-[20px]">
-              Save $5 on a UPS My Choice Premium membership*when you play
+              Save $5 on a UPS My Choice Premium membership when you play
               Delivery Day in the UPS App.
             </p>
 
