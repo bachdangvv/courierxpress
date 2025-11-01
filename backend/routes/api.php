@@ -19,7 +19,7 @@ use App\Http\Controllers\CustomerController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/track/{trackingCode}', [CustomerController::class, 'trackByCode']);
+    Route::get('/customer/track/{trackingCode}', [CustomerController::class, 'trackByCode']);
     
 
     // =========================
