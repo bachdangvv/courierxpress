@@ -42,10 +42,10 @@ return new class extends Migration {
             $t->string('to_zip')->nullable();
 
             // Coordinates (sender + receiver)
-            // $t->decimal('sender_lng', 11, 7)->nullable();
-            // $t->decimal('sender_lat', 10, 7)->nullable();
-            // $t->decimal('to_lng', 11, 7)->nullable();
-            // $t->decimal('to_lat', 10, 7)->nullable();
+            $t->decimal('sender_lng', 11, 7)->nullable();
+            $t->decimal('sender_lat', 10, 7)->nullable();
+            $t->decimal('to_lng', 11, 7)->nullable();
+            $t->decimal('to_lat', 10, 7)->nullable();
             $t->timestamp('last_located_at')->nullable();
 
             // Package detail

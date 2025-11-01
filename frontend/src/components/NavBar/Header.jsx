@@ -1,38 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Truck, User, LogIn } from "lucide-react";
 import "./Header.css";
+import { useAuth } from "../../auth"; // <-- update path if needed
 
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
   const [showLogin, setShowLogin] = useState(false);
   const [activeTab, setActiveTab] = useState("employee");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isRegister, setIsRegister] = useState(false); // 🔹 kiểm soát ẩn/hiện form
+  const [showMore, setShowMore] = useState(false);
+  const [showServices, setShowServices] = useState(false);
+
+  // user dropdown
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close user dropdown on route change
+  useEffect(() => {
+    setOpenUserMenu(false);
+  }, [location.pathname]);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    function onDocClick(e) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setOpenUserMenu(false);
+      }
+    }
+    if (openUserMenu) document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [openUserMenu]);
 
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/support", label: "Support" },
     { path: "/contact", label: "Contact" },
   ];
-  const [showMore, setShowMore] = useState(false);
-  const [showServices, setShowServices] = useState(false);
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    alert(
-      `${
-        activeTab === "employee" ? "Employee" : "Customer"
-      } logged in successfully!`
-    );
+  const dashboardPath = (role) => {
+    if (role === "customer") return "/customer/dashboard";
+    if (role === "agent") return "/agent/dashboard";
+    if (role === "admin") return "/admin/dashboard";
+    return "/"; // fallback
+  };
+
+  const handleGotoDashboard = () => {
+    navigate(dashboardPath(user?.role));
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      navigate("/", { replace: true });
+    }
   };
 
   return (
@@ -60,6 +91,7 @@ export default function Header() {
                   <Link to={item.path}>{item.label}</Link>
                 </li>
               ))}
+
               <li
                 className="nav-item relative"
                 onMouseEnter={() => setShowServices(true)}
@@ -69,9 +101,9 @@ export default function Header() {
                   className={`cursor-pointer ${
                     [
                       "/shipping-services/shipment-info",
+                      "/shipping-services/create-shipment",
                       "/shipping-services",
                       "/shipping-services/tracking",
-                      "/shipping-services/tracking/:trackingCode",
                     ].includes(location.pathname)
                       ? "active"
                       : ""
@@ -82,6 +114,7 @@ export default function Header() {
                 >
                   Services
                 </span>
+
                 <ul
                   className={`dropdown-menu absolute left-0 mt-2 w-44 rounded z-10 ${
                     showServices ? "dropdown-open" : "dropdown-closed"
@@ -119,18 +152,9 @@ export default function Header() {
                       Tracking Order
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      to="/shipping-services/tracking/123456"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowServices(true)}
-                    >
-                      Tracking Detail
-                    </Link>
-                  </li>
                 </ul>
               </li>
+
               <li
                 className="nav-item relative"
                 onMouseEnter={() => setShowMore(true)}
@@ -181,18 +205,57 @@ export default function Header() {
             </ul>
           </nav>
 
-          <button
-            className="login-btn, login-btn flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
-            onClick={() => setShowLogin(true)}
-          >
-            <LogIn size={18} />
-            Login
-          </button>
+          {/* Right side: Login or User menu */}
+          {!user ? (
+            <button
+              className="login-btn flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+              onClick={() => setShowLogin(true)}
+            >
+              <LogIn size={18} />
+              Login
+            </button>
+          ) : (
+            <div className="relative" ref={userMenuRef}>
+              <button
+                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-md transition"
+                onClick={() => setOpenUserMenu((v) => !v)}
+              >
+                <User size={18} />
+                <span className="hidden sm:inline">
+                  {user.name || user.email || "Account"}
+                </span>
+              </button>
+
+              {/* User dropdown */}
+              <ul
+                className={`dropdown-menu absolute right-0 mt-2 w-48 rounded z-20 ${
+                  openUserMenu ? "dropdown-open" : "dropdown-closed"
+                }`}
+              >
+                <li>
+                  <button
+                    className="dropdown-link w-full text-left px-4 py-2 hover:bg-blue-100 text-gray-700"
+                    onClick={handleGotoDashboard}
+                  >
+                    Dashboard
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-link w-full text-left px-4 py-2 hover:bg-blue-100 text-gray-700"
+                    onClick={handleLogout}
+                  >
+                    Sign out
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </header>
 
       {/* LOGIN / REGISTER POPUP */}
-      {showLogin && (
+      {showLogin && !user && (
         <div className="login-overlay">
           <div className="login-box">
             <button className="close-btn" onClick={() => setShowLogin(false)}>
@@ -207,7 +270,7 @@ export default function Header() {
                 className="option-btn agent-btn"
                 onClick={() => {
                   setShowLogin(false);
-                  window.location.href = "/agent/login"; // hoặc dùng navigate('/agent/login')
+                  navigate("/agent/login");
                 }}
               >
                 Đăng nhập / Đăng ký Agent
@@ -217,7 +280,7 @@ export default function Header() {
                 className="option-btn customer-btn"
                 onClick={() => {
                   setShowLogin(false);
-                  window.location.href = "/customer/login";
+                  navigate("/customer/login");
                 }}
               >
                 Đăng nhập / Đăng ký Customer
