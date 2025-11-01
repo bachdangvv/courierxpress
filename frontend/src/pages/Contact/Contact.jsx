@@ -24,7 +24,7 @@ const Contact = () => {
 
                 <section className='impact-changes-section flex flex-col justify-start items-center gap-5 w-full h-auto pt-8 mb-[80px]'>
                     <div className='impact-section-heading flex justify-center items-start gap-10 w-full h-auto'>
-                        <img src={warningIcon} className=''/>
+                        <img src={warningIcon} className='hidden md:block'/>
                         <Heading variant='left'>Changes to De Minimis May Impact Charges</Heading>
                     </div>
 
