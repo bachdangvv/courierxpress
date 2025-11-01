@@ -68,7 +68,7 @@ export default function Home() {
         </div>
       </section>
 
-      <main className="mx-auto flex flex-col justify-center items-center max-w-[1600px]">
+      <main className="mx-auto flex flex-col justify-center items-center max-w-[1600px] p-5">
         <section className="features-section w-full h-full flex flex-col justify-center items-center container gap-20 mb-[80px] px-4">
           <div className="features-introduction-container w-full max-w-[800px]">
             <h1 className="features-introduction-heading font-bold text-4xl mb-5">
