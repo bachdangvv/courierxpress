@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Truck, Mail, Lock } from "lucide-react";
 import { useAuth } from "../../auth";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function CustomerLogin() {
   const [email, setEmail] = useState("");
@@ -8,25 +9,32 @@ export default function CustomerLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { customerlogin } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+   // 1) Prefer state.from from guard
+  const fromState = location.state?.from?.pathname;
+
+  // 2) Or use ?redirect=/path from the URL
+  const params = new URLSearchParams(location.search);
+  const fromQuery = params.get("redirect");
+
+  // 3) Fallback to dashboard if nothing else
+  const fallback = "/customer/dashboard";
+  const target = fromState || fromQuery || fallback;
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // prevent native form submit to :5173
+    e.preventDefault();
     setError("");
-
+    setLoading(true);
     try {
       await customerlogin(email, password, "customer");
-
-      window.location.href = "/customer/dashboard";
+      navigate(target, { replace: true }); // ✅ no full reload, preserves SPA state
     } catch (err) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("Wrong username or password!");
-      }
+      setError(err.response?.data?.message || "Wrong username or password!");
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">

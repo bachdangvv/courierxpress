@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // =========================
     // Admin
     // =========================
-    Route::middleware('can:admin')->group(function () {
+    Route::middleware('web','can:admin')->group(function () {
         // panels
         Route::get('/admin/placed',                 [AdminController::class, 'placedList']);       // list couriers with status=Placed
         Route::get('/admin/agents',                 [AdminController::class, 'agents']);           // available agents
@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // =========================
     // Agent
     // =========================
-    Route::middleware('can:agent')->group(function () {
+    Route::middleware('web','can:agent')->group(function () {
         Route::get('/agent/notifications',                [AgentController::class, 'notifications']);
         Route::post('/agent/couriers/{courier}/location', [AgentController::class, 'updateLocation']);
         Route::post('/agent/couriers/{courier}/status', [AgentController::class, 'updateCourierStatus']);
@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // =========================
     // Customer
     // =========================
-    Route::middleware('can:customer')->group(function () {
+    Route::middleware('web','can:customer')->group(function () {
         Route::post('/customer/order',                        [CustomerController::class, 'placeOrder']);      // place courier
         Route::get('/customer/couriers',                      [CustomerController::class, 'myCouriers']);      // history (paginated)
         Route::get('/customer/couriers/{courier}/locations',  [CustomerController::class, 'courierLocations']); // map timeline

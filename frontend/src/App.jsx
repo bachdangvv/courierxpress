@@ -8,6 +8,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
+import { useLocation } from "react-router-dom";
 
 // Importing Components
 import Header from "./components/NavBar/Header.jsx";
@@ -68,7 +69,7 @@ export function AgentGuard({ children }) {
     // Nếu đăng nhập bằng role khác → đẩy về đúng dashboard
     if (user.role === "customer") return <Navigate to="/customer/dashboard" replace />;
     if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/agent/login" replace />;
   }
 
   return children;
@@ -83,7 +84,33 @@ export function CustomerGuard({ children }) {
   if (user.role !== "customer") {
     if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
     if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/customer/login" replace />;
+  }
+
+  return children;
+}
+
+export function CustomerShipmentGuard({ children }) {
+  const { user, booted } = useAuth();
+  const location = useLocation();
+
+  if (!booted) return <p>Loading...</p>;
+
+  if (!user) {
+    const redirect = encodeURIComponent(location.pathname + location.search + location.hash);
+    return (
+      <Navigate
+        to={`/customer/login?redirect=${redirect}`}
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
+
+  if (user.role !== "customer") {
+    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/customer/login" replace />;
   }
 
   return children;
@@ -107,7 +134,8 @@ function App() {
   // Only show Header if not on admin dashboard, agent login/register, and not admin
   const path = window.location.pathname;
   const hideHeader =
-    (path === "/admin-dashboard" && user?.role === "admin") ||
+    (path === "/admin" && user?.role === "admin") ||
+    path === "/login" ||
     path === "/agent/login" ||
     path === "/agent/register" ||
     path === "/customer/login" ||
@@ -134,8 +162,20 @@ function App() {
             }
           />
           <Route
+            path="/shipping-services/create-shipment"
+            element={
+              <CustomerShipmentGuard>
+                <CreateShipment />
+              </CustomerShipmentGuard>
+            }
+          />
+          <Route
             path="/shipping-services/shipment-info"
-            element={<CreateShipment />}
+            element={
+              <CustomerShipmentGuard>
+                <CreateShipment />
+              </CustomerShipmentGuard>
+            }
           />
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
@@ -143,20 +183,28 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/shipping-services" element={<ShippingServices />} />
           <Route
-            path="/shipping-services/shipment-info"
-            element={<CreateShipment />}
-          />
-          <Route
             path="/shipping-services/additional-details/:shipmentID"
-            element={<AdditionalDetails />}
+            element={
+              <CustomerShipmentGuard>
+                <AdditionalDetails />
+              </CustomerShipmentGuard>
+            }
           />
           <Route
             path="/shipping-services/payment/:shipmentID"
-            element={<Payment />}
+            element={
+              <CustomerShipmentGuard>
+                <Payment />
+              </CustomerShipmentGuard>
+            }
           />
           <Route
             path="/shipping-services/confirmation/:shipmentID"
-            element={<Confirmation />}
+            element={
+              <CustomerShipmentGuard>
+                <Confirmation />
+              </CustomerShipmentGuard>
+            }
           />
           <Route path="/shipping-services/tracking" element={<Tracking />} />
           <Route

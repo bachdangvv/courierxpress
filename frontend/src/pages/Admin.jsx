@@ -16,9 +16,9 @@ export default function Admin() {
     try {
       setError("");
       const [p, a, n] = await Promise.all([
-        api.get(`/admin/placed?page=${page}`),
-        api.get(`/admin/agents/assignable?page=${page}`),
-        api.get(`/admin/notifications?page=1`)
+        api.get(`/api/admin/placed?page=${page}`),
+        api.get(`/api/admin/agents/assignable?page=${page}`),
+        api.get(`/api/admin/notifications?page=1`)
       ]);
       setPlaced(p.data.data || []);
       setAgents(a.data || []);
@@ -48,7 +48,7 @@ export default function Admin() {
   const loadAssignableAgents = async () => {
   try {
     setLoadingAgents(true);
-    const res = await api.get("/admin/agents?assignable=1");
+    const res = await api.get("/api/admin/agents?assignable=1");
 
     // Convert ANY structure into a clean array
     let data = res.data;
@@ -70,7 +70,7 @@ export default function Admin() {
 
   const assign = async (id, agent_id) => {
     try {
-      await api.post(`/admin/couriers/${id}/assign/${agent_id}`);
+      await api.post(`/api/admin/couriers/${id}/assign/${agent_id}`);
       load();
     } catch (err) {
       alert(err?.response?.data?.message || "Failed to assign courier");
@@ -79,7 +79,7 @@ export default function Admin() {
 
   const cancel = async (id) => {
     try {
-      await api.post(`/admin/couriers/${id}/cancel`);
+      await api.post(`/api/admin/couriers/${id}/cancel`);
       load();
     } catch (err) {
       alert(err?.response?.data?.message || "Failed to cancel courier");

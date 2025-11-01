@@ -6,47 +6,6 @@ import { Package, MapPin, Clock } from "lucide-react";
 import api from '../../api';
 
 export default function AgentOrders() {
-  // const orders = [
-  //   {
-  //     id: "#CX-0001",
-  //     customer: "Nguyễn Văn A",
-  //     from: "Hà Nội",
-  //     to: "Hồ Chí Minh",
-  //     status: "Đang giao",
-  //     time: "10:30 AM",
-  //   },
-  //   {
-  //     id: "#CX-0002",
-  //     customer: "Trần Thị B",
-  //     from: "Đà Nẵng",
-  //     to: "Nha Trang",
-  //     status: "Chờ lấy hàng",
-  //     time: "11:15 AM",
-  //   },
-  //   {
-  //     id: "#CX-0003",
-  //     customer: "Lê Văn C",
-  //     from: "Hải Phòng",
-  //     to: "Quảng Ninh",
-  //     status: "Hoàn tất",
-  //     time: "09:00 AM",
-  //   },
-  // ];
-
-  
-
-  // const getStatusColor = (status) => {
-  //   switch (status) {
-  //     case "Đang giao":
-  //       return "bg-blue-100 text-blue-600";
-  //     case "Chờ lấy hàng":
-  //       return "bg-yellow-100 text-yellow-600";
-  //     case "Hoàn tất":
-  //       return "bg-green-100 text-green-600";
-  //     default:
-  //       return "bg-gray-100 text-gray-600";
-  //   }
-  // };
     const { user } = useAuth();
       const echo = useEcho();
       const [noti,setNoti]=useState([]);
