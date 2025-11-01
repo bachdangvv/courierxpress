@@ -111,7 +111,7 @@ const Payment = () => {
                         >
                             <Heading variant='left' size='small' marginBottom='none'>Payment Method</Heading>
 
-                            <div className='flex flex-col justify-start itemsstart gap-4'>
+                            <div className='flex flex-col justify-start items-start gap-4'>
                                 <span className='font-semibold'>Card Information:</span>
                                 <select onChange={(e) => setPaymentMethod(e.target.value)} id="card-type" name="card-type" className='border border-gray-300 rounded p-3 w-full mb-2 bg-transparent' required>
                                     <option value="">Card Type</option>
