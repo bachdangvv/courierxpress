@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customer/couriers',                      [CustomerController::class, 'myCouriers']);      // history (paginated)
         Route::get('/customer/couriers/{courier}/locations',  [CustomerController::class, 'courierLocations']); // map timeline
         Route::get('/customer/notifications',                 [CustomerController::class, 'notifications']);
+        Route::get('/customer/track/{trackingCode}',          [CustomerController::class, 'trackByCode']);
     });
 });
 
