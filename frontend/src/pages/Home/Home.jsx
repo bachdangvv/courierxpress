@@ -1,5 +1,6 @@
 // Importing CSS
 import "./Home.css";
+import cn from 'classnames';
 
 // Importing Images
 import customerFirst from "../../assets/customer_first.webp";
@@ -7,44 +8,60 @@ import chipMap from "../../assets/chip.webp";
 
 // Importing components
 import HomeInput from "./HomeInput";
+import HomeShipment from "./HomeShipment";
 import FAQ from "./FAQ";
 import { Link } from "react-router-dom";
 import YellowButton from "../../components/YellowButton";
+import { useState } from "react";
 
 export default function Home() {
-  const brandRepresentative =
-    "https://assets.ups.com/adobe/assets/urn:aaid:aem:2701ad76-d7ab-4a97-b70c-bc237d98fae8/as/app-teaser-hp-bc1246470.avif?assetname=app-teaser-hp-bc1246470.png";
-  const featureProduct =
-    "https://assets.ups.com/adobe/assets/urn:aaid:aem:9dc04be7-dd04-4616-9321-d56d4442b85d/as/holiday-shipping-box-us-2025.avif?assetname=holiday-shipping-box-us-2025.png";
-  const downloadImage =
-    "https://assets.ups.com/adobe/assets/urn:aaid:aem:ab49a4ac-cf2a-458c-b2b2-deef9bf347ac/as/delivery-day-mobile-image.avif?assetname=delivery-day-mobile-image.png";
+    const brandRepresentative =
+      "https://assets.ups.com/adobe/assets/urn:aaid:aem:2701ad76-d7ab-4a97-b70c-bc237d98fae8/as/app-teaser-hp-bc1246470.avif?assetname=app-teaser-hp-bc1246470.png";
+    const featureProduct =
+      "https://assets.ups.com/adobe/assets/urn:aaid:aem:9dc04be7-dd04-4616-9321-d56d4442b85d/as/holiday-shipping-box-us-2025.avif?assetname=holiday-shipping-box-us-2025.png";
+    const downloadImage =
+      "https://assets.ups.com/adobe/assets/urn:aaid:aem:ab49a4ac-cf2a-458c-b2b2-deef9bf347ac/as/delivery-day-mobile-image.avif?assetname=delivery-day-mobile-image.png";
+
+      const heroTabs = [
+        {id: 'track', label: 'Track', component: <HomeInput />},
+        {id: 'shipment', label: 'Ship', component: <HomeShipment />}
+      ];
+
+      const [activeHeroTab, setActiveHeroTab] = useState('track');
+
+      const handleTabClick = (tab) => {
+        setActiveHeroTab(tab);
+      };
+
+      const activeHeroComponent = heroTabs.find((tab) => tab.id === activeHeroTab)?.component;
 
   return (
     <>
       <div className="sup-header"></div>
 
-      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[400px] md:h-[500px] pt-[100px] pb-8 gap-5">
+      <section className="home-hero-container flex flex-col justify-center items-center w-screen h-[720px] sm:h-[500px] p-5 pb-8 gap-5">
         <div className="hero-content h-full w-full max-w-[1400px] lg:grid lg:grid-cols-[4fr_1fr] md:grid md:grid-cols-[1fr] items-center text-center gap-3 lg:px-0 px-5 mx-auto">
-          <div className="left-hero-container w-full flex flex-col justify-center items-center md:items-start pt-5 md:pt-0 gap-2">
+          <div className="left-hero-container w-full flex flex-col justify-center items-center md:items-start pb-[150px] pt-5 gap-2">
             <div className="hero-nav-links flex justify-center items-center text-center gap-x-5 mb-4">
-              <div className="hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl">
-                Track
-              </div>
-              <div className="hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl">
-                Quote
-              </div>
-              <div className="hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl">
-                Ship
-              </div>
+              {heroTabs.map((tab) => (
+                <button onClick={() => handleTabClick(tab.id)} key={tab.id} className={cn(
+                  'hero-nav-link cursor-pointer relative overflow-hidden text-white text-4xl h-auto pb-2 before:content[""] before:absolute before:left-0 before:bottom-0 before:h-[4px] before:bg-[#FFD726] before:scale-x-0 before:origin-left hover:before:scale-x-100',
+                  {'before:w-full before:scale-x-100': activeHeroTab === tab.id}
+                )}>
+                    {tab.label}
+                </button>
+              ))}
             </div>
 
             {/* Home input component */}
-            <HomeInput />
+            <div className="w-full h-[150px] mt-5">
+              {activeHeroComponent}
+            </div>
           </div>
 
-          <div className="right-hero-container flex justify-center items-end w-full h-full">
+          <div className="right-hero-container flex justify-center items-end w-full h-full pb-8">
             <img
-              className="hero-person-img w-0 h-0 lg:w-full lg:h-full max-w-[400px] max-h-[400px]"
+              className="hero-person-img hidden xl:block max-w-[400px] max-h-[400px]"
               src={brandRepresentative}
             />
           </div>
