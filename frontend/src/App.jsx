@@ -26,6 +26,7 @@ import Payment from "./pages/CreateShipment/Payment.jsx";
 import Confirmation from "./pages/CreateShipment/Confirmation.jsx";
 import Tracking from "./pages/Tracking/Tracking.jsx";
 import TrackingDetail from "./pages/TrackingDetail/TrackingDetail.jsx";
+import Contact from "./pages/Contact/Contact.jsx";
 import Stories from "./pages/Stories/Stories.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import Login from "./pages/login.jsx";
@@ -181,6 +182,7 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/shipping-services" element={<ShippingServices />} />
           <Route
             path="/shipping-services/additional-details/:shipmentID"

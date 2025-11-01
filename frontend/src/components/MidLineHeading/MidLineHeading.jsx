@@ -16,9 +16,9 @@ const MidLineHeading = ({
     };
 
     const variantSize = {
-        big: 'text-5xl',
-        medium: 'text-4xl',
-        small: 'text-2xl'
+        big: 'md:text-5xl',
+        medium: 'md:text-4xl',
+        small: 'md:text-2xl'
     };
 
     const marginSize = {
@@ -30,8 +30,9 @@ const MidLineHeading = ({
         <h1 className={cn(
             baseStyle,
             variantStyles[variant],
-            variantSize[size],
-            marginSize[marginBottom]
+            marginSize[marginBottom],
+            'text-3xl',
+            variantSize[size]
         )}>{children}</h1>
     );
 };
