@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Truck, Mail, Lock } from "lucide-react";
-import axios from "axios";
 import { useAuth } from "../../auth";
-import api from "../../api";
-import { useNavigate } from "react-router-dom";
+
 
 export default function AgentLogin() {
-  const { login } = useAuth();
+  const { agentlogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const nav = useNavigate();
+  
   
 
   const handleLogin = async (e) => {
@@ -19,28 +17,14 @@ export default function AgentLogin() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
-        email,
-        password,
-      });
-
-      // Check if user is an agent
-      if (res.data.user.role !== "agent") {
-        setError("This account is not an Agent!");
-        setLoading(false);
-        return;
-      }
-
-      // Save token and user info
-      localStorage.setItem("agentToken", res.data.token);
-      localStorage.setItem("agentUser", JSON.stringify(res.data.user));
+      await agentlogin(email, password, "agent");
 
       window.location.href = "/agent/dashboard";
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError("Sai email hoặc mật khẩu!");
+        setError("Wrong username or password!");
       }
     } finally {
       setLoading(false);

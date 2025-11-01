@@ -39,50 +39,51 @@ import DashboardHome from "./components/agentspage/DashboardHome.jsx";
 import AgentOrders from "./components/agentspage/AgentOrders.jsx";
 import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
+import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
+import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
+import CustomerDashboard from "./components/customerpage/CustomerDashboard.jsx";
 
-function Guard({ role, children }) {
-  const { user } = useAuth();
+export function Guard({ role, children }) {
+  const { user, booted } = useAuth();
+
+  // Chưa hydrate xong => đợi
+  if (!booted) return <p>Loading...</p>;
+
+  // Chưa login
   if (!user) return <Navigate to="/login" replace />;
+
+  // Sai role (nếu có yêu cầu)
   if (role && user.role !== role) return <Navigate to="/login" replace />;
-  return children;
-}
-
-// Guard for Agent routes (uses separate token storage)
-// function AgentGuard({ children }) {
-//   const agentToken = localStorage.getItem("agentToken");
-//   const agentUser = localStorage.getItem("agentUser");
-
-//   if (!agentToken || !agentUser) {
-//     return <Navigate to="/agent/login" replace />;
-//   }
-
-//   try {
-//     const user = JSON.parse(agentUser);
-//     if (user.role !== "agent") {
-//       return <Navigate to="/agent/login" replace />;
-//     }
-//   } catch (e) {
-//     return <Navigate to="/agent/login" replace />;
-//   }
 
   return children;
 }
-// Guard for Customer routes (uses separate token storage)
-function CustomerGuard({ children }) {
-  const customerToken = localStorage.getItem("customerToken");
-  const customerUser = localStorage.getItem("customerUser");
 
-  if (!customerToken || !customerUser) {
-    return <Navigate to="/customer/login" replace />;
+export function AgentGuard({ children }) {
+  const { user, booted } = useAuth();
+
+  if (!booted) return <p>Loading...</p>;
+
+  if (!user) return <Navigate to="/agent/login" replace />;
+  if (user.role !== "agent") {
+    // Nếu đăng nhập bằng role khác → đẩy về đúng dashboard
+    if (user.role === "customer") return <Navigate to="/customer/dashboard" replace />;
+    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/login" replace />;
   }
 
-  try {
-    const user = JSON.parse(customerUser);
-    if (user.role !== "customer") {
-      return <Navigate to="/customer/login" replace />;
-    }
-  } catch (e) {
-    return <Navigate to="/customer/login" replace />;
+  return children;
+}
+
+export function CustomerGuard({ children }) {
+  const { user, booted } = useAuth();
+
+  if (!booted) return <p>Loading...</p>;
+
+  if (!user) return <Navigate to="/customer/login" replace />;
+  if (user.role !== "customer") {
+    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;
@@ -180,7 +181,7 @@ function App() {
           <Route
             path="/agent/dashboard"
             element={
-              <AgentGuard role="agent">
+              <AgentGuard>
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -190,7 +191,7 @@ function App() {
           <Route
             path="/agent/orders"
             element={
-              <AgentGuard role="agent">
+              <AgentGuard>
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -200,7 +201,7 @@ function App() {
           <Route
             path="/agent/earnings"
             element={
-              <AgentGuard role="agent">
+              <AgentGuard>
                 <AgentDashboard />
               </AgentGuard>
             }
@@ -210,7 +211,7 @@ function App() {
           <Route
             path="/agent/profile"
             element={
-              <AgentGuard role="agent">
+              <AgentGuard>
                 <AgentDashboard />
               </AgentGuard>
             }

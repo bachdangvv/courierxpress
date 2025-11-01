@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
             // Sanctum ability middlewares:
             'role' => \App\Http\Middleware\EnsureUserRole::class,
         ]);
+        $middleware->web(append: [
+        \Illuminate\Http\Middleware\HandleCors::class, // ✅ Bật CORS cho route web
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
