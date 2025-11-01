@@ -1,41 +1,27 @@
 import React, { useState } from "react";
 import { Truck, Mail, Lock } from "lucide-react";
-import axios from "axios";
+import { useAuth } from "../../auth";
 
 export default function CustomerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { customerlogin } = useAuth();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); // prevent native form submit to :5173
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
-        email,
-        password,
-      });
-
-      // Check if user is an customer
-      if (res.data.user.role !== "customer") {
-        setError("This is not a Customer account!");
-        setLoading(false);
-        return;
-      }
-
-      // Save token and user info
-      localStorage.setItem("customerToken", res.data.token);
-      localStorage.setItem("customerUser", JSON.stringify(res.data.user));
+      await customerlogin(email, password, "customer");
 
       window.location.href = "/customer/dashboard";
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError("Email or password is incorrect!");
+        setError("Wrong username or password!");
       }
     } finally {
       setLoading(false);
