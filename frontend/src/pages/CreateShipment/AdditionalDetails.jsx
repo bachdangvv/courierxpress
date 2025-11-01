@@ -5,6 +5,7 @@ import YellowButton from '../../components/YellowButton';
 import cn from 'classnames';
 
 const AdditionalDetails = () => {
+    // Hook
     const { shipmentID } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
@@ -13,6 +14,7 @@ const AdditionalDetails = () => {
     const [shipmentInfo, setShipmentInfo] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
 
+    // Package Data
     const [packageData, setPackageData] = useState({
         weight: "",
         length: "",
@@ -100,45 +102,65 @@ const AdditionalDetails = () => {
                             </div>
                         ))}
                     </div>
-
+                    
+                    {/* Form */}
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col gap-14 w-full h-auto rounded-lg shadow-lg bg-white p-5"
+                        className="flex flex-col gap-10 w-full h-auto rounded-lg shadow-lg bg-white p-5"
                         >
                             <Heading variant='left' size='small' marginBottom='none'>Package Details</Heading>
+                            <div className='flex flex-col justify-start items-start gap-4'>
+                                <span>Specific description of shipment contents for label:</span>
+                                <textarea className='resize-none border border-gray-500 rounded w-full p-2' placeholder='Package Content' rows={2} cols={50}></textarea>
+                            </div>
 
-                            <input
-                            type="number"
-                            placeholder="Weight (kg)"
-                            value={packageData.weight}
-                            onChange={(e) => handleChange('weight', e.target.value)}
-                            required
-                            className="border border-gray-300 rounded p-3 w-full mb-2 bg-transparent"
-                            />
-                            <input
-                            type="number"
-                            placeholder="Length (cm)"
-                            value={packageData.length}
-                            onChange={(e) => handleChange('length', e.target.value)}
-                            required
-                            className="border p-2 rounded bg-transparent"
-                            />
-                            <input
-                            type="number"
-                            placeholder="Width (cm)"
-                            value={packageData.width}
-                            onChange={(e) => handleChange('width', e.target.value)}
-                            required
-                            className="border p-2 rounded bg-transparent"
-                            />
-                            <input
-                            type="number"
-                            placeholder="Height (cm)"
-                            value={packageData.height}
-                            onChange={(e) => handleChange('height', e.target.value)}
-                            required
-                            className="border p-2 rounded bg-transparent"
-                            />
+                            <div className='flex flex-col justify-start itemsstart gap-4'>
+                                <span>Enter package weight:</span>
+                                <input
+                                type="number"
+                                placeholder="kg"
+                                value={packageData.weight}
+                                onChange={(e) => handleChange('weight', e.target.value)}
+                                required
+                                className="border border-gray-300 rounded p-3 w-full mb-2 bg-transparent"
+                                />
+                            </div>
+
+                            <div className='flex flex-col justify-start items-start gap-4'>
+                                <span>Enter package length</span>
+                                <input
+                                type="number"
+                                placeholder="cm"
+                                value={packageData.length}
+                                onChange={(e) => handleChange('length', e.target.value)}
+                                required
+                                className="border p-2 rounded bg-transparent"
+                                />
+                            </div>
+
+                            <div className='flex flex-col justify-start items-start gap-4'>
+                                <span>Enter package width:</span>
+                                <input
+                                type="number"
+                                placeholder="cm"
+                                value={packageData.width}
+                                onChange={(e) => handleChange('width', e.target.value)}
+                                required
+                                className="border p-2 rounded bg-transparent"
+                                />
+                            </div>
+
+                            <div className='flex flex-col justify-start items-start gap-4'>
+                                <span>Enter package height:</span>
+                                <input
+                                type="number"
+                                placeholder="Height (cm)"
+                                value={packageData.height}
+                                onChange={(e) => handleChange('height', e.target.value)}
+                                required
+                                className="border p-2 rounded bg-transparent"
+                                />
+                            </div>
 
                             <YellowButton type="submit" variant="widthAuto">
                             Choose Payment Method
@@ -151,7 +173,9 @@ const AdditionalDetails = () => {
                             <div className='w-full border-b-2 border-b-gray-300 text-left py-2 mb-5'><h1 className='text-2xl font-semibold'>Shipping Summary</h1></div>
 
                             <div className="mb-3 flex flex-col justify-start items-start gap-2 bg-white rounded-lg shadow-lg w-full h-auto p-5">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-1">Shipper:</h3>
+                                <div className='w-full border-b-2 border-gray-300'>
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-1">Shipper:</h3>
+                                </div>
                                 <p>{shipmentInfo.from.fullName}</p>
                                 <p>{shipmentInfo.from.email}</p>
                                 <p>{shipmentInfo.from.phone}</p>
@@ -162,7 +186,9 @@ const AdditionalDetails = () => {
                             </div>
 
                             <div className='mb-3 flex flex-col justify-start items-start gap-2 bg-white rounded-lg shadow-lg w-full h-auto p-5'>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-1">Receiver:</h3>
+                                <div className='w-full border-b-2 border-gray-300'>
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-1">Receiver:</h3>
+                                </div>
                                 <p>{shipmentInfo.to.fullName}</p>
                                 <p>{shipmentInfo.to.email}</p>
                                 <p>{shipmentInfo.to.phone}</p>
