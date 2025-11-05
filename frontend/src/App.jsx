@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 
 // Importing Components
 import Header from "./components/NavBar/Header.jsx";
+import Footer from "./Footer/Footer.jsx";
 import { useState } from "react";
 
 // Importing pages
@@ -68,8 +69,10 @@ export function AgentGuard({ children }) {
   if (!user) return <Navigate to="/agent/login" replace />;
   if (user.role !== "agent") {
     // Nếu đăng nhập bằng role khác → đẩy về đúng dashboard
-    if (user.role === "customer") return <Navigate to="/customer/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "customer")
+      return <Navigate to="/customer/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/agent/login" replace />;
   }
 
@@ -83,8 +86,10 @@ export function CustomerGuard({ children }) {
 
   if (!user) return <Navigate to="/customer/login" replace />;
   if (user.role !== "customer") {
-    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "agent")
+      return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/customer/login" replace />;
   }
 
@@ -98,7 +103,9 @@ export function CustomerShipmentGuard({ children }) {
   if (!booted) return <p>Loading...</p>;
 
   if (!user) {
-    const redirect = encodeURIComponent(location.pathname + location.search + location.hash);
+    const redirect = encodeURIComponent(
+      location.pathname + location.search + location.hash
+    );
     return (
       <Navigate
         to={`/customer/login?redirect=${redirect}`}
@@ -109,8 +116,10 @@ export function CustomerShipmentGuard({ children }) {
   }
 
   if (user.role !== "customer") {
-    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "agent")
+      return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/customer/login" replace />;
   }
 
@@ -293,6 +302,9 @@ function App() {
             element={<CustomerRegister />}
           />
         </Routes>
+
+        <Footer />
+        {!hideHeader}
       </Router>
     </main>
   );

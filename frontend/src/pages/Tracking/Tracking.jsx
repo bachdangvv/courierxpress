@@ -25,7 +25,6 @@ const Tracking = () => {
   };
 
   return (
-    <>
       <main className="flex flex-col justify-center items-center max-w-[1300px] p-5 mx-auto mt-[100px]">
         <form
           onSubmit={trackOrder}
@@ -96,7 +95,6 @@ const Tracking = () => {
           </div>
         </form>
       </main>
-    </>
   );
 };
 
