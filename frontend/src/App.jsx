@@ -45,6 +45,8 @@ import AgentProfile from "./components/agentspage/AgentProfile.jsx";
 import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
 import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
 import CustomerDashboard from "./components/customerpage/CustomerDashboard.jsx";
+import CustomerProfile from "./components/customerpage/CustomerProfile.jsx";
+import CustomerHome from "./components/customerpage/CustomerHome.jsx";
 
 export function Guard({ role, children }) {
   const { user, booted } = useAuth();
@@ -164,13 +166,16 @@ function App() {
         <Routes>
           {/* ...existing routes... */}
           <Route
-            path="/customer/dashboard"
+            path="/customer"
             element={
               <CustomerGuard>
                 <CustomerDashboard />
               </CustomerGuard>
             }
-          />
+          >
+            <Route path="dashboard" element={<CustomerHome />} />
+            <Route path="profile" element={<CustomerProfile />} />
+          </Route>
           <Route
             path="/shipping-services/create-shipment"
             element={

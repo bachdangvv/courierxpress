@@ -1,6 +1,5 @@
 import React from "react";
-import CustomerHome from "./CustomerHome";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import {
   Home,
   PlusCircle,
@@ -35,7 +34,11 @@ export default function CustomerDashboard({ children }) {
       label: "Support",
       icon: <HelpCircle size={20} />,
     },
-    { path: "/customer/profile", label: "Profile", icon: <User size={20} /> },
+    {
+      path: "/customer/profile",
+      label: "Profile",
+      icon: <User size={20} />,
+    },
   ];
 
   // Get customer info from localStorage
@@ -66,7 +69,7 @@ export default function CustomerDashboard({ children }) {
         </nav>
         {/* Main content */}
         <main className="flex-1 p-8">
-          <CustomerHome />
+          <Outlet />
         </main>
       </div>
     </div>
