@@ -1,8 +1,14 @@
+// src/components/customerpage/CustomerRegister.jsx
 import React, { useState } from "react";
-import { Truck, Mail, Lock, User } from "lucide-react";
-import axios from "axios";
+import { Truck, Mail, Lock, User as UserIcon } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../auth"; // <-- adjust path if needed
 
 export default function CustomerRegister() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { register } = useAuth();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,19 +18,15 @@ export default function CustomerRegister() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = (e) =>
+    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Validation
+    // Basic client-side validation
     if (formData.password !== formData.confirmPassword) {
       setError("Invalid Password!");
       setLoading(false);
@@ -37,26 +39,27 @@ export default function CustomerRegister() {
     }
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/register", {
+      // Use cookie-based session via AuthProvider
+      await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
         role: "customer",
       });
-      // Save token and redirect to dashboard
-      localStorage.setItem("customerToken", res.data.token);
-      localStorage.setItem("customerUser", JSON.stringify(res.data.user));
-      alert("Đăng ký thành công! Chào mừng bạn đến với CourierXpress.");
-      window.location.href = "/customer/dashboard";
+
+      // Optional redirect support: /customer/register?redirect=/shipping-services/shipment-info
+      const params = new URLSearchParams(location.search);
+      const redirect = params.get("redirect");
+      navigate(redirect || "/customer/dashboard", { replace: true });
     } catch (err) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.response?.data?.errors) {
-        const errors = Object.values(err.response.data.errors).flat();
-        setError(errors.join(", "));
-      } else {
-        setError("Fail. Please try again!");
-      }
+      // Normalize Laravel validation / message formats
+      const msg =
+        err?.response?.data?.message ||
+        (err?.response?.data?.errors
+          ? Object.values(err.response.data.errors).flat().join(", ")
+          : "") ||
+        "Fail. Please try again!";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -97,7 +100,7 @@ export default function CustomerRegister() {
             {/* Name */}
             <div className="mb-4">
               <label className="block text-gray-700 font-medium mb-1">
-                <User className="inline w-4 h-4 mr-1" />
+                <UserIcon className="inline w-4 h-4 mr-1" />
                 Fullname
               </label>
               <input

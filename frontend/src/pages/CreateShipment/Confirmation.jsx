@@ -32,68 +32,107 @@ const Confirmation = () => {
     setDraft(JSON.parse(raw));
   }, [shipmentID, navigate, location.state]);
 
-  // Build payload once draft available
+  // Prepare payload to match your (extended) CustomerController@placeOrder
   const payload = useMemo(() => {
     if (!draft) return null;
+
+    // be liberal: send what we have; backend will validate/ignore extras safely
     return {
-      // basic
-      type: draft.type || "Parcel",
-      weight: draft?.packageData?.weight ? Number(draft.packageData.weight) : (draft?.weight ? Number(draft.weight) : undefined),
-      distance: draft?.distance ? Number(draft.distance) : undefined,
+      // Basic
+      type: draft?.type || "Parcel",
+      // prefer packageData.weight; fall back to plain weight if present
+      weight:
+        draft?.packageData?.weight != null
+          ? Number(draft.packageData.weight)
+          : draft?.weight != null
+          ? Number(draft.weight)
+          : undefined,
       size: draft?.size || undefined,
-      charge: draft?.charge ? Number(draft.charge) : undefined,
+
+      // Calculated
+      distance: draft?.distance != null ? Number(draft.distance) : undefined,
+      charge: draft?.charge != null ? Number(draft.charge) : undefined,
 
       // FROM (sender)
-      from_full_name: draft.from?.fullName,
-      from_email: draft.from?.email,
-      from_phone: draft.from?.phone,
-      from_country: draft.from?.country,
-      from_address: draft.from?.address,
-      from_city: draft.from?.city,
-      from_state: draft.from?.state,
-      from_zip: draft.from?.zip,
+      from_full_name: draft?.from?.fullName || "",
+      from_email: draft?.from?.email || "",
+      from_phone: draft?.from?.phone || "",
+      from_country: draft?.from?.country || "",
+      from_address: draft?.from?.address || "",
+      from_city: draft?.from?.city || "",
+      from_state: draft?.from?.state || "",
+      from_zip: draft?.from?.zip || "",
+      // coords if you kept them in earlier steps
+      sender_lat: draft?.from?.lat ? Number(draft.from.lat) : undefined,
+      sender_lng: draft?.from?.lng ? Number(draft.from.lng) : undefined,
 
       // TO (receiver)
-      to_full_name: draft.to?.fullName,
-      to_email: draft.to?.email,
-      to_phone: draft.to?.phone,
-      to_country: draft.to?.country,
-      to_address: draft.to?.address,
-      to_city: draft.to?.city,
-      to_state: draft.to?.state,
-      to_zip: draft.to?.zip,
+      to_full_name: draft?.to?.fullName || "",
+      to_email: draft?.to?.email || "",
+      to_phone: draft?.to?.phone || "",
+      to_country: draft?.to?.country || "",
+      to_address: draft?.to?.address || "",
+      to_city: draft?.to?.city || "",
+      to_state: draft?.to?.state || "",
+      to_zip: draft?.to?.zip || "",
+      to_lat: draft?.to?.lat ? Number(draft.to.lat) : undefined,
+      to_lng: draft?.to?.lng ? Number(draft.to.lng) : undefined,
 
       // PACKAGE
-      length_cm: Number(draft?.packageData?.length || 0),
-      width_cm: Number(draft?.packageData?.width || 0),
-      height_cm: Number(draft?.packageData?.height || 0),
+      length_cm:
+        draft?.packageData?.length != null ? Number(draft.packageData.length) : undefined,
+      width_cm:
+        draft?.packageData?.width != null ? Number(draft.packageData.width) : undefined,
+      height_cm:
+        draft?.packageData?.height != null ? Number(draft.packageData.height) : undefined,
       content_description: draft?.packageDescription || "",
 
       // PAYMENT
       payment_method: draft?.paymentMethod || undefined,
+      // payment_status defaults server-side (Unpaid)
     };
   }, [draft]);
 
+  const extractTrackingCode = (resData) => {
+    // Support multiple server shapes
+    return (
+      resData?.tracking_code ||
+      resData?.courier?.tracking_code ||
+      resData?.data?.tracking_code ||
+      resData?.reference_code ||
+      resData?.courier?.reference_code ||
+      ""
+    );
+  };
+
   const handleConfirm = async () => {
-     console.log("[Confirm] clicked"); 
-    if (!payload) return;
+    if (!payload || submitting) return;
     setSubmitting(true);
     setErr("");
 
     try {
-      // If this is the first stateful POST in the app lifecycle, ensure you've called /sanctum/csrf-cookie at login time (you already do in auth flow).
-      const { data } = await api.post("/api/customer/order", payload, { withCredentials: true });
+      // POST the order
+      const { data } = await api.post("/api/customer/order", payload, {
+        withCredentials: true,
+      });
 
-      // Clear the draft and go to tracking
+      // Clear draft
       localStorage.removeItem(`shipment_${shipmentID}`);
-      const tracking = data?.courier?.tracking_code || "";
+
+      // Go to tracking if possible
+      const tracking = extractTrackingCode(data);
       if (tracking) {
         navigate(`/shipping-services/tracking/${tracking}`, { replace: true });
       } else {
+        // Fallback: go to dashboard
         navigate("/customer/dashboard", { replace: true });
       }
     } catch (e) {
-      setErr(e.response?.data?.message || "Failed to create courier. Please try again.");
+      const msg =
+        e?.response?.data?.message ||
+        e?.response?.data?.error ||
+        "Failed to create courier. Please try again.";
+      setErr(msg);
     } finally {
       setSubmitting(false);
     }
@@ -126,7 +165,7 @@ const Confirmation = () => {
                     }
                   )}
                 >
-                  {i < currentStep && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                  {i < currentStep && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
 
                 <span
@@ -183,10 +222,22 @@ const Confirmation = () => {
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">Package</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div><span className="text-sm text-gray-500">Weight</span><div>{draft?.packageData?.weight || "-"} kg</div></div>
-                  <div><span className="text-sm text-gray-500">Length</span><div>{draft?.packageData?.length || "-"} cm</div></div>
-                  <div><span className="text-sm text-gray-500">Width</span><div>{draft?.packageData?.width || "-"} cm</div></div>
-                  <div><span className="text-sm text-gray-500">Height</span><div>{draft?.packageData?.height || "-"} cm</div></div>
+                  <div>
+                    <span className="text-sm text-gray-500">Weight</span>
+                    <div>{draft?.packageData?.weight || "-"} kg</div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">Length</span>
+                    <div>{draft?.packageData?.length || "-"} cm</div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">Width</span>
+                    <div>{draft?.packageData?.width || "-"} cm</div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">Height</span>
+                    <div>{draft?.packageData?.height || "-"} cm</div>
+                  </div>
                 </div>
                 {draft?.packageDescription ? (
                   <div className="mt-3">
@@ -196,19 +247,25 @@ const Confirmation = () => {
                 ) : null}
               </div>
 
-              {/* Payment */}
+              {/* Payment + Quote */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 mt-5">
                 <div className="border-b-2 border-gray-300 mb-3">
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">Payment</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
                     <span className="text-sm text-gray-500">Method</span>
                     <div className="capitalize">{draft?.paymentMethod || "-"}</div>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Charge</span>
-                    <div>{draft?.charge ? Number(draft.charge).toFixed(2) : "-"}</div>
+                    <span className="text-sm text-gray-500">Estimated Charge</span>
+                    <div>
+                      {draft?.charge != null ? Number(draft.charge).toFixed(2) : "-"}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">Estimated Distance</span>
+                    <div>{draft?.distance != null ? `${Number(draft.distance).toFixed(2)} km` : "-"}</div>
                   </div>
                 </div>
               </div>
@@ -229,18 +286,18 @@ const Confirmation = () => {
                 </YellowButton>
 
                 <button
-  type="button"
-  onClick={handleConfirm}
-  disabled={submitting}
-  className="px-5 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
->
-  {submitting ? "Creating..." : "Confirm & Create Courier"}
-</button>
+                  type="button"
+                  onClick={handleConfirm}
+                  disabled={submitting}
+                  className="px-5 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+                >
+                  {submitting ? "Creating..." : "Confirm & Create Courier"}
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Right Summary Column (mirrors other pages) */}
+          {/* Right Summary Column */}
           <div className="shipping-summary w-full h-full">
             <div className="w-full border-b-2 border-b-gray-300 text-left py-2 mb-5">
               <h1 className="text-2xl font-semibold">Shipping Summary</h1>

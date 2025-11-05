@@ -26,7 +26,11 @@ class Courier extends Model {
         'length_cm' => 'decimal:2',
         'width_cm' => 'decimal:2',
         'height_cm' => 'decimal:2',
-      'last_located_at' => 'datetime',];
+        'sender_lng' => 'decimal:7',
+        'sender_lat' => 'decimal:7',
+        'to_lng' => 'decimal:7',
+        'to_lat' => 'decimal:7',
+        'last_located_at' => 'datetime',];
 
   public function sender(){ return $this->belongsTo(Customer::class,'sender_id'); }
   public function agent(){ return $this->belongsTo(Agent::class); }
