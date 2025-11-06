@@ -184,16 +184,7 @@ const Payment = () => {
 
               {/* Optional price input (or compute server-side) */}
               <div className='grid grid-cols-[auto_1fr] gap-3 items-center w-full'>
-                <label className='text-sm text-gray-600'>Charge (USD):</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder='e.g. 12.50'
-                  value={charge}
-                  onChange={(e) => setCharge(e.target.value)}
-                  className='border border-gray-300 rounded p-3 w-full mb-2 bg-transparent'
-                />
+                <label className='text-sm text-gray-600'>Charge (USD): {charge}</label>
               </div>
             </div>
 

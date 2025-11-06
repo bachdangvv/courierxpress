@@ -19,7 +19,7 @@ import api from "../../api";
 export default function CustomerDashboard({ children }) {
   const location = useLocation();
   const navItems = [
-    { path: "/customer/dashboard", label: "Home", icon: <Home size={20} /> },
+    { path: "/customer/dashboard", label: "Dashboard", icon: <Home size={20} /> },
     {
       path: "/customer/support",
       label: "Support",
@@ -216,7 +216,7 @@ export default function CustomerDashboard({ children }) {
                                 Delivery Proof (Agent)
                               </h4>
                               <img
-                                src={`${import.meta.env.VITE_API_URL}/storage/${c.sender_image}`}
+                                src={`${import.meta.env.VITE_API_URL}/storage/${c.agent_image}`}
                                 alt="Agent proof"
                                 className="w-48 h-48 object-cover rounded-md border"
                               />

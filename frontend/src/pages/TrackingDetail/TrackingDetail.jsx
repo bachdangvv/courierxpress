@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Polyline, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -25,6 +25,22 @@ const TrackingDetail = () => {
   const [statusHistory, setStatusHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [loadingLocation, setLoadingLocation] = useState(false);
+
+  // ✅ Fetch Location Updates (try/catch thực sự)
+  const fetchLocations = useCallback(async (courierId) => {
+  setLoadingLocation(true);
+  try {
+    const { data } = await api.get(`/api/customer/couriers/${courierId}/locations`, {
+      withCredentials: true,
+    });
+    setLocations(Array.isArray(data) ? data : []);
+  } catch (e) {
+    console.error("❌ Lỗi khi tải Location Updates:", e);
+  } finally {
+    setLoadingLocation(false);
+  }
+}, []);
 
   useEffect(() => {
     let mounted = true;
@@ -45,7 +61,7 @@ const TrackingDetail = () => {
         // 🟢 2️⃣ Gọi API /api/customer/trackdetail/{id} (lấy vị trí)
         try {
           const { data: locData } = await api.get(
-            `/api/customer/trackdetail/${courierData.id}`,
+            `/api/customer/trackdetail/${encodeURIComponent(courierData.tracking_code)}`,
             { withCredentials: true }
           );
           if (!mounted) return;
@@ -53,6 +69,9 @@ const TrackingDetail = () => {
         } catch (e) {
           console.warn("⚠️ No detailed locations:", e);
         }
+
+        // 🟢 2️⃣ Gọi lấy vị trí đầu tiên
+        await fetchLocations(courierData.id);
 
         // 🟢 3️⃣ Gọi API /api/customer/trackhistory/{id} (lấy lịch sử trạng thái)
         try {
@@ -67,6 +86,8 @@ const TrackingDetail = () => {
         }
       } catch (e) {
         if (!mounted) return;
+
+        
 
         if (e?.response?.status === 401) {
           const redirect = encodeURIComponent(
@@ -86,7 +107,7 @@ const TrackingDetail = () => {
     return () => {
       mounted = false;
     };
-  }, [trackingCode, navigate]);
+  }, [trackingCode, navigate, fetchLocations]);
 
   if (loading)
     return (
@@ -218,31 +239,41 @@ const TrackingDetail = () => {
             </div>
           )}
 
-          {/* 📍 Location Updates */}
-          <h3 className="text-lg font-bold text-black mt-6 mb-2">📍 Location Updates</h3>
-          {locations.length > 0 ? (
-            locations.map((row, index) => (
-              <div
-                key={index}
-                className="tracking-history-element border border-black bg-white rounded-lg p-4 w-full"
-              >
-                <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-lg">
-                    {row.latitude}, {row.longitude}
-                  </h4>
-                  <span className="text-sm text-gray-500">
-                    {row.recorded_at
-                      ? new Date(row.recorded_at).toLocaleString()
-                      : "-"}
-                  </span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="w-full text-center text-black">
-              No tracking history yet.
-            </div>
-          )}
+         {/* 📍 Location Updates */}
+<div className="flex items-center justify-between mt-6 mb-2">
+  <h3 className="text-lg font-bold text-black">📍 Location Updates</h3>
+  <button
+    onClick={() => fetchLocations(courier.id)}
+    disabled={loadingLocation}
+    className="text-sm px-3 py-1 bg-white rounded border border-black hover:bg-gray-100 disabled:opacity-50"
+  >
+    {loadingLocation ? "Refreshing..." : "Refresh"}
+  </button>
+</div>
+
+{locations.length > 0 ? (
+  locations.map((row, index) => (
+    <div
+      key={index}
+      className="tracking-history-element border border-black bg-white rounded-lg p-4 w-full"
+    >
+      <div className="flex justify-between items-center">
+        <h4 className="font-bold text-lg">
+          {row.latitude}, {row.longitude}
+        </h4>
+        <span className="text-sm text-gray-500">
+          {row.recorded_at
+            ? new Date(row.recorded_at).toLocaleString()
+            : "-"}
+        </span>
+      </div>
+    </div>
+  ))
+) : (
+  <div className="w-full text-center text-black">
+    No tracking history yet.
+  </div>
+)}
         </div>
       </section>
     </main>
