@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Truck, User, LogIn } from "lucide-react";
 import "./Header.css";
-import { useAuth } from "../../auth"; // <-- update path if needed
+import { useAuth } from "../../auth";
 
 export default function Header() {
   const location = useLocation();
@@ -262,8 +262,8 @@ export default function Header() {
               ×
             </button>
 
-            <h3>Chọn loại tài khoản</h3>
-            <p>Vui lòng chọn vai trò của bạn để đăng nhập hoặc đăng ký:</p>
+            <h3>Choose Account to Connect</h3>
+            <p>Please choose type of account for signing in:</p>
 
             <div className="login-options">
               <button
@@ -273,7 +273,7 @@ export default function Header() {
                   navigate("/agent/login");
                 }}
               >
-                Đăng nhập / Đăng ký Agent
+                Sign in as Agent
               </button>
 
               <button
@@ -283,7 +283,7 @@ export default function Header() {
                   navigate("/customer/login");
                 }}
               >
-                Đăng nhập / Đăng ký Customer
+                Sign in / Register as Customer
               </button>
             </div>
           </div>

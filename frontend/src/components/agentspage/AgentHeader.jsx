@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Bell, LogOut, Edit2, Camera } from "lucide-react";
+import { useAuth } from "../../auth";
 
 export default function AgentHeader() {
   // Get agent info from localStorage
@@ -7,6 +8,7 @@ export default function AgentHeader() {
   const [name, setName] = useState(agentUser.name || "Agent");
   const [avatar, setAvatar] = useState(null);
   const [editingName, setEditingName] = useState(false);
+  const { logout } = useAuth();
 
   // Get first letter for default avatar
   const firstLetter = name ? name[0].toUpperCase() : "A";
@@ -30,10 +32,12 @@ export default function AgentHeader() {
   };
 
   // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("agentToken");
-    localStorage.removeItem("agentUser");
-    window.location.href = "/agent/login";
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      navigate("/", { replace: true });
+    }
   };
 
   return (

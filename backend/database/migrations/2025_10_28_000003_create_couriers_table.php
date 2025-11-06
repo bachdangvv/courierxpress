@@ -63,11 +63,15 @@ return new class extends Migration {
 
             // Tracking / references
             $t->string('tracking_code')->nullable()->unique();
-            $t->string('reference_code')->nullable()->unique();
 
             // Relations
             $t->foreignId('sender_id')->constrained('customers')->cascadeOnDelete();
             $t->foreignId('agent_id')->nullable()->constrained('agents')->nullOnDelete();
+
+            $t->index(['sender_lat','sender_lng'], 'couriers_sender_coords_idx');
+            $t->index('status', 'couriers_status_idx');
+            $t->index('agent_id', 'couriers_agent_id_idx');
+            
 
             $t->timestamps();
         });

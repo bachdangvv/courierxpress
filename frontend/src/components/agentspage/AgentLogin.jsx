@@ -41,8 +41,9 @@ export default function AgentLogin() {
             CourierXpress Agent Portal
           </h1>
           <p className="text-blue-100 leading-relaxed text-lg">
-            Connect – Delivery – Success with CourierXpress. Access to receive
-            and manage your orders.
+            Fast Connect – Instant Delivery – Safe Tracking with CourierXpress.
+            <br />
+            Access and Deliver with Ease!
           </p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/679/679720.png"
@@ -59,7 +60,7 @@ export default function AgentLogin() {
             <Truck className="w-10 h-10 text-blue-600" />
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Logging Agent
+            Sign in as Agent
           </h2>
 
           <form onSubmit={handleLogin}>
@@ -110,16 +111,6 @@ export default function AgentLogin() {
             Forgot password?{" "}
             <a href="/agent/reset" className="text-blue-600 hover:underline">
               Reset it here
-            </a>
-          </p>
-
-          <p className="text-sm text-center text-gray-500 mt-3">
-            Don't have an account?{" "}
-            <a
-              href="/agent/register"
-              className="text-blue-600 font-semibold hover:underline"
-            >
-              Sign up to become an Agent
             </a>
           </p>
         </div>
