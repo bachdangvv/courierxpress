@@ -14,7 +14,10 @@ return new class extends Migration {
             $table->unsignedSmallInteger('age')->nullable();
             $table->string('national_id')->nullable();
             $table->string('contact')->nullable();
-            $table->enum('status',['Available','Not Available','Delivering','Agent Assigned'])->default('Available')->index();
+            $table->decimal('agent_current_lng', 11, 7)->nullable();
+            $table->decimal('agent_current_lat', 10, 7)->nullable();
+            $table->enum('status',['Available','Not Available','Delivering OK','Delivering Full'])->default('Not Available')->index();
+            $table->index(['agent_current_lat','agent_current_lng'], 'agent_coords_idx');
             $table->timestamps();
         });
     }

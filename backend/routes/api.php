@@ -45,8 +45,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/agent/notifications',                [AgentController::class, 'notifications']);
         Route::post('/agent/couriers/{courier}/location', [AgentController::class, 'updateLocation']);
         Route::post('/agent/couriers/{courier}/status', [AgentController::class, 'updateCourierStatus']);
-        Route::post('/agent/availability', [AgentController::class, 'setAvailability']);
+        Route::post('/agent/availability', [AgentController::class, 'setStatus']);
         Route::get('/agent/placed', [AgentController::class, 'placedList']);
+        Route::get('/agent/couriers/active', [AgentController::class, 'activeCourier']);
+        Route::get('/agent/couriers/history', [AgentController::class, 'courierHistory']);
+        Route::post('/agent/couriers/{courier}/upload', [AgentController::class, 'uploadProof']);
     });
 
     // =========================
@@ -55,9 +58,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('web','can:customer')->group(function () {
         Route::post('/customer/order',                        [CustomerController::class, 'placeOrder']);      // place courier
         Route::get('/customer/couriers',                      [CustomerController::class, 'myCouriers']);      // history (paginated)
-        Route::get('/customer/couriers/{courier}/locations',  [CustomerController::class, 'courierLocations']); // map timeline
+        Route::get('/customer/couriers/{courier}/locations',  [CustomerController::class, 'updateLocation']); // map timeline
         Route::get('/customer/notifications',                 [CustomerController::class, 'notifications']);
         Route::get('/customer/track/{trackingCode}',          [CustomerController::class, 'trackByCode']);
+        Route::get('/customer/trackdetail/{tracking_code}', [CustomerController::class, 'trackDetail']);
+        Route::get('/customer/trackhistory/{courier}', [CustomerController::class, 'trackingHistory']);
+
+
     });
 });
 

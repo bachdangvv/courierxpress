@@ -5,6 +5,7 @@ import Heading from "../../components/MidLineHeading/MidLineHeading";
 import YellowButton from "../../components/YellowButton";
 import cn from "classnames";
 import api from "../../api";
+import { geocodeAddress } from "../../geocode";
 
 const steps = ["Shipment Details", "Additional Details", "Payment", "Confirmation"];
 
@@ -111,10 +112,75 @@ const Confirmation = () => {
     setErr("");
 
     try {
+
+      // --- Geocode người gửi ---
+    let senderCoords =
+      payload.sender_lat && payload.sender_lng
+        ? { lat: payload.sender_lat, lng: payload.sender_lng }
+        : null;
+
+    if (!senderCoords && draft.from?.address) {
+      const fullSenderAddress = [
+        draft.from.address,
+        draft.from.city,
+        draft.from.state,
+        draft.from.country,
+      ]
+        .filter(Boolean)
+        .join(", ");
+
+      senderCoords = await geocodeAddress(fullSenderAddress);
+      console.log("📍 Sender geocoded:", fullSenderAddress, "→", senderCoords);
+    }
+
+    // --- Geocode người nhận ---
+    let receiverCoords =
+      payload.to_lat && payload.to_lng
+        ? { lat: payload.to_lat, lng: payload.to_lng }
+        : null;
+
+    if (!receiverCoords && draft.to?.address) {
+      const fullReceiverAddress = [
+        draft.to.address,
+        draft.to.city,
+        draft.to.state,
+        draft.to.country,
+      ]
+        .filter(Boolean)
+        .join(", ");
+
+      receiverCoords = await geocodeAddress(fullReceiverAddress);
+      console.log("📍 Receiver geocoded:", fullReceiverAddress, "→", receiverCoords);
+    }
+
+    // --- Payload hoàn chỉnh gửi lên backend ---
+    const updatedPayload = {
+      ...payload,
+      sender_lat: senderCoords?.lat,
+      sender_lng: senderCoords?.lng,
+      to_lat: receiverCoords?.lat,
+      to_lng: receiverCoords?.lng,
+    };
+
+    console.log("🚀 Sending to backend:", JSON.stringify(updatedPayload, null, 2));
+
       // POST the order
-      const { data } = await api.post("/api/customer/order", payload, {
-        withCredentials: true,
-      });
+      // Lấy file ảnh từ global hoặc session
+const shipmentImg = window.selectedShipmentImage || null;
+
+// Dùng FormData thay cho JSON
+const formData = new FormData();
+Object.entries(updatedPayload).forEach(([key, val]) => {
+  if (val !== undefined && val !== null) formData.append(key, val);
+});
+if (shipmentImg) formData.append("image", shipmentImg);
+
+console.log("🚀 Sending multipart to backend:", [...formData.entries()]);
+
+const { data } = await api.post("/api/customer/order", formData, {
+  withCredentials: true,
+  headers: { "Content-Type": "multipart/form-data" },
+});
 
       // Clear draft
       localStorage.removeItem(`shipment_${shipmentID}`);

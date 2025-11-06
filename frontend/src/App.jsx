@@ -39,7 +39,7 @@ import AgentLogin from "./components/agentspage/AgentLogin.jsx";
 import AgentRegister from "./components/agentspage/AgentRegister.jsx";
 import AgentDashboard from "./components/agentspage/AgentDashboard.jsx";
 import DashboardHome from "./components/agentspage/DashboardHome.jsx";
-import AgentOrders from "./components/agentspage/AgentOrders.jsx";
+import AgentHistory from "./components/agentspage/AgentOrders.jsx";
 import AgentEarnings from "./components/agentspage/AgentEarnings.jsx";
 import AgentProfile from "./components/agentspage/AgentProfile.jsx";
 import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
@@ -253,14 +253,14 @@ function App() {
             <Route index element={<DashboardHome />} />
           </Route>
           <Route
-            path="/agent/orders"
+            path="/agent/history"
             element={
               <AgentGuard>
                 <AgentDashboard />
               </AgentGuard>
             }
           >
-            <Route index element={<AgentOrders />} />
+            <Route index element={<AgentHistory />} />
           </Route>
           <Route
             path="/agent/earnings"

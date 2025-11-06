@@ -17,7 +17,7 @@ class Courier extends Model {
         'to_full_name','to_email','to_phone','to_country','to_address','to_city','to_state','to_zip',
         'length_cm','width_cm','height_cm','content_description',
         'status','charge','payment_status','payment_method','tracking_code','reference_code',
-        'sender_id','agent_id',
+        'sender_id','agent_id','sender_lng','sender_lat','to_lng','to_lat','sender_image','agent_image',
   ];
 
   protected $casts = ['weight' => 'decimal:2',
@@ -26,14 +26,13 @@ class Courier extends Model {
         'length_cm' => 'decimal:2',
         'width_cm' => 'decimal:2',
         'height_cm' => 'decimal:2',
-        'sender_lng' => 'decimal:7',
-        'sender_lat' => 'decimal:7',
-        'to_lng' => 'decimal:7',
-        'to_lat' => 'decimal:7',
         'last_located_at' => 'datetime',];
 
   public function sender(){ return $this->belongsTo(Customer::class,'sender_id'); }
   public function agent(){ return $this->belongsTo(Agent::class); }
   public function status(){ return $this->belongsTo(Courier::class,'status'); }
+  public function scopeActive($q) {
+      return $q->whereIn('status', [self::STATUS_ASSIGNED, self::STATUS_DELIVERING]);
+    }
   public function locations(){ return $this->hasMany(CourierLocation::class); }
 }

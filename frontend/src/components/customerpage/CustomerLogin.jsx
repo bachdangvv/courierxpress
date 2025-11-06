@@ -46,8 +46,9 @@ export default function CustomerLogin() {
             CourierXpress Customer Portal
           </h1>
           <p className="text-blue-100 leading-relaxed text-lg">
-            Connect – Delivery – Success with CourierXpress. Join to send your
-            product!
+            Fast Connect – Instant Delivery – Safe Tracking with CourierXpress.
+            <br />
+            Join to send your product!
           </p>
           <img
             src="https://cdn-icons-png.flaticon.com/512/679/679720.png"
@@ -64,7 +65,7 @@ export default function CustomerLogin() {
             <Truck className="w-10 h-10 text-blue-600" />
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Logging Customer
+            Sign in as Customer
           </h2>
 
           <form onSubmit={handleLogin}>
@@ -124,7 +125,7 @@ export default function CustomerLogin() {
               href="/customer/CustomerRegister"
               className="text-blue-600 font-semibold hover:underline"
             >
-              Sign up to become a Customer
+              Register for Customer account
             </a>
           </p>
         </div>

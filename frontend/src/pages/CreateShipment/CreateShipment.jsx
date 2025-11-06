@@ -52,6 +52,7 @@ const CreateShipment = () => {
   const [currentStep] = useState(0);
   const [errMsg, setErrMsg] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  
 
   const [formData, setFormData] = useState({
     from: {
@@ -278,7 +279,7 @@ const CreateShipment = () => {
   disabled={searchingFrom}
   className="font-semibold w-full md:w-auto h-auto rounded-[25px] opacity-100 hover:border hover:opacity-[0.85] transition-500 border border-amber-400 bg-amber-400 p-2 px-50"
 >
-  {submitting ? "Searching..." : "Search now"}
+  {submitting ? "Searching..." : "Search"}
 </button>
               </div>
 
@@ -351,7 +352,7 @@ const CreateShipment = () => {
   disabled={searchingTo}
   className="font-semibold w-full md:w-auto h-auto rounded-[25px] opacity-100 hover:border hover:opacity-[0.85] transition-500 border border-amber-400 bg-amber-400 p-2 px-50"
 >
-  {submitting ? "Searching..." : "Search now"}
+  {submitting ? "Searching..." : "Search"}
 </button>
               </div>
 

@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Heading from '../../components/MidLineHeading/MidLineHeading';
 import YellowButton from '../../components/YellowButton';
 import cn from 'classnames';
+import { useRef } from "react";
 
 const AdditionalDetails = () => {
     // Hook
@@ -13,6 +14,15 @@ const AdditionalDetails = () => {
     const steps = ["Shipment Details", "Additional Details", "Payment", "Confirmation"];
     const [shipmentInfo, setShipmentInfo] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
+    const [image, setImage] = useState(null);
+    const fileInputRef = useRef(null);
+
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setImage(file);
+  }
+};
 
     // Package Data
     const [packageData, setPackageData] = useState({
@@ -52,12 +62,19 @@ const AdditionalDetails = () => {
             ...shipment,
             step: 2,
             packageData,
+            image: image ? image.name : null,
             updateAt: new Date().toISOString(),
         };
 
         setCurrentStep(2)
 
         localStorage.setItem(`shipment_${shipmentID}`, JSON.stringify(updatedShipment));
+
+                // Lưu file thật vào sessionStorage (không thể lưu file object trong localStorage)
+        if (image) {
+            sessionStorage.setItem(`shipment_img_${shipmentID}`, JSON.stringify({ name: image.name }));
+            window.selectedShipmentImage = image; // gắn file thật vào global để Confirmation đọc
+        }
         
         navigate(`/shipping-services/payment/${shipmentID}`);
     };
@@ -160,6 +177,25 @@ const AdditionalDetails = () => {
                                 required
                                 className="border p-2 rounded bg-transparent"
                                 />
+                            </div>
+
+                            <div className="flex flex-col justify-start items-start gap-4">
+                                <span>Upload package photo:</span>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    required
+                                    className="border p-2 rounded bg-transparent"
+                                />
+                                {image && (
+                                    <img
+                                        src={URL.createObjectURL(image)}
+                                        alt="Preview"
+                                        className="mt-2 max-h-40 rounded border"
+                                    />
+                                )}
                             </div>
 
                             <YellowButton type="submit" variant="widthAuto">

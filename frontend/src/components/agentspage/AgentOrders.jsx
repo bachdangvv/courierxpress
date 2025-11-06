@@ -1,114 +1,197 @@
-import React from "react";
-import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "../../auth";
-import { useEcho } from "../../realtime";
-import { Package, MapPin, Clock } from "lucide-react";
-import api from '../../api';
+import React, { useEffect, useState } from "react";
+import api from "../../api";
+import { format } from "date-fns";
+import { CheckCircle2, XCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Heading from "../../components/MidLineHeading/MidLineHeading";
 
-export default function AgentOrders() {
-    const { user } = useAuth();
-      const echo = useEcho();
-      const [noti,setNoti]=useState([]);
-      const [list,setList]=useState({data:[]});
-    const [selected, setSelected] = useState([]);
-    const [track,setTrack]=useState([]);
+const AgentHistory = () => {
+  const [rows, setRows] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
 
-    const load = async ()=> {
-    const [n, l] = await Promise.all([
-      api.get('/agent/notifications'),
-      api.get('/agent/placed')
-    ]);
-    setNoti(n.data.data); setList(l.data);
-  };
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data } = await api.get("/api/agent/couriers/history", {
+          withCredentials: true,
+        });
+        setRows(data.data || data); // Support paginate or plain list
+      } catch (e) {
+        console.error(e);
+        setErr(e.response?.data?.message || "Failed to load history");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  useEffect(()=>{ load(); },[]);
-
-  useEffect(()=> {
-    if(!echo || !user?.agent?.id) return;
-    const c = echo.private(`agent.${user.agent.id}`)
-      .listen('.status.updated', load);
-    return ()=> c.stopListening('.status.updated');
-  },[echo,user]);
-
-  useEffect(()=> {
-    if(!echo || !selected) return;
-    const ch = echo.private(`courier.${selected}`);
-    const cb = (e)=> setTrack(prev=>[...prev, [e.latitude, e.longitude]]);
-    ch.listen('.location.updated', cb);
-    return ()=> ch.stopListening('.location.updated');
-  },[echo,selected]);
-
-  const openCourier = async (id)=>{
-    setSelected(id);
-    const { data } = await api.get(`/agent/couriers/${id}/locations`);
-    setTrack(data.map(p=>[parseFloat(p.latitude),parseFloat(p.longitude)]));
+  const toggleExpand = (id) => {
+    setExpandedId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6">Đơn hàng của tôi</h2>
-
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Mã đơn
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Khách hàng
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Địa chỉ
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Trạng thái
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thời gian
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {list.data.map(c=> 
-              <tr key={c.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <Package className="w-5 h-5 text-blue-600 mr-2" />
-                    <span className="font-medium">{c.id}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {c.sender_id}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span>
-                      {c.from} → {c.to}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                      c.status
-                    )}`}
-                  >
-                    {c.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    {c.time}
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+    <main className="flex flex-col items-center w-full max-w-6xl mx-auto p-6 mt-[80px]">
+      <div className="w-full mb-8">
+        <Heading variant="left">Courier History</Heading>
+        <p className="text-gray-500">All completed or canceled deliveries.</p>
       </div>
+
+      {loading && <p>Loading...</p>}
+      {err && (
+        <div className="p-3 bg-red-50 border border-red-300 text-red-700 rounded-lg">
+          {err}
+        </div>
+      )}
+
+      {!loading && !err && (
+        <div className="overflow-x-auto w-full bg-white rounded-xl shadow-lg border border-gray-200">
+          <table className="min-w-full text-sm text-left">
+            <thead className="bg-emerald-600 text-white">
+              <tr>
+                <th className="px-6 py-3">#</th>
+                <th className="px-6 py-3">Tracking</th>
+                <th className="px-6 py-3">Sender</th>
+                <th className="px-6 py-3">Receiver</th>
+                <th className="px-6 py-3">Status</th>
+                <th className="px-6 py-3">Updated</th>
+                <th className="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="text-center text-gray-500 py-6 italic"
+                  >
+                    No completed or canceled couriers.
+                  </td>
+                </tr>
+              )}
+
+              {rows.map((c) => {
+                const expanded = expandedId === c.id;
+                return (
+                  <React.Fragment key={c.id}>
+                    <tr
+                      className="border-b hover:bg-gray-50 transition cursor-pointer"
+                      onClick={() => toggleExpand(c.id)}
+                    >
+                      <td className="px-6 py-3 font-medium text-gray-800">
+                        {c.id}
+                      </td>
+                      <td className="px-6 py-3 text-gray-700">
+                        {c.tracking_code || "-"}
+                      </td>
+                      <td className="px-6 py-3">{c.from_full_name}</td>
+                      <td className="px-6 py-3">{c.to_full_name}</td>
+                      <td className="px-6 py-3">
+                        {c.status === "Done" ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold">
+                            <CheckCircle2 className="w-4 h-4" /> Done
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-red-600 font-semibold">
+                            <XCircle className="w-4 h-4" /> Canceled
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-3 text-gray-500">
+                        {format(new Date(c.updated_at), "dd/MM/yyyy HH:mm")}
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        {expanded ? (
+                          <ChevronUp className="w-5 h-5 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-500" />
+                        )}
+                      </td>
+                    </tr>
+
+                    {expanded && (
+                      <tr className="bg-gray-50 border-b">
+                        <td colSpan="7" className="p-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Sender Info */}
+                            <div>
+                              <h3 className="text-lg font-semibold text-emerald-700 mb-2">
+                                Sender
+                              </h3>
+                              <p>{c.from_full_name}</p>
+                              <p>{c.from_email}</p>
+                              <p>{c.from_phone}</p>
+                              <p>{c.from_address}</p>
+                              <p>{c.from_city}</p>
+                            </div>
+
+                            {/* Receiver Info */}
+                            <div>
+                              <h3 className="text-lg font-semibold text-emerald-700 mb-2">
+                                Receiver
+                              </h3>
+                              <p>{c.to_full_name}</p>
+                              <p>{c.to_email}</p>
+                              <p>{c.to_phone}</p>
+                              <p>{c.to_address}</p>
+                              <p>{c.to_city}</p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                            <div>
+                              <h4 className="font-semibold text-gray-700">
+                                Charge
+                              </h4>
+                              <p>{c.charge ? `$${Number(c.charge).toFixed(2)}` : "-"}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-700">
+                                Weight
+                              </h4>
+                              <p>{c.weight ? `${Number(c.weight)} kg` : "-"}</p>
+                            </div>
+                          </div>
+                          {/* 📸 Images Section */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+  {c.sender_image && (
+    <div>
+      <h4 className="font-semibold text-gray-700 mb-2">Sender Image</h4>
+      <img
+        src={`${import.meta.env.VITE_API_URL}/storage/${c.sender_image}`}
+        alt="Sender Image"
+        className="w-full max-w-md rounded-lg border object-cover"
+      />
     </div>
+  )}
+  {c.agent_image && (
+    <div>
+      <h4 className="font-semibold text-gray-700 mb-2">Agent Image</h4>
+      <img
+        src={`${import.meta.env.VITE_API_URL}/storage/${c.agent_image}`}
+        alt="Agent Proof"
+        className="w-full max-w-md rounded-lg border object-cover"
+      />
+    </div>
+  )}
+</div>
+
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+    </main>
   );
-}
+};
+
+export default AgentHistory;

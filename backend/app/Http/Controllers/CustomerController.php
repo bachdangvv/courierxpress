@@ -9,6 +9,9 @@ use App\Models\NotificationCustom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use App\Jobs\AutoAssignCourier;
+use App\Models\CourierStatusHistory;
+
 
 class CustomerController extends Controller
 {
@@ -50,31 +53,55 @@ class CustomerController extends Controller
             'width_cm'  => ['required','numeric','min:0'],
             'height_cm' => ['required','numeric','min:0'],
             'content_description' => ['nullable','string','max:2000'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:4096'],
 
             // Payment
             'payment_method' => ['nullable','string','max:50'],
+
+            'sender_lat'     => ['nullable','numeric','between:-90,90'],
+            'sender_lng'     => ['nullable','numeric','between:-180,180'],
+            'to_lat'        => ['nullable','numeric','between:-90,90'],
+            'to_lng'        => ['nullable','numeric','between:-180,180'],
         ]);
 
-        // Build create array
-        $create = array_merge($data, [
-            // sender
-            'sender_id'       => $r->user()->customer->id, // you already use customers table
-            // status/payment
-            'status'          => defined(Courier::class.'::STATUS_PENDING')
-                                ? Courier::STATUS_PENDING : 'Pending',
-            'payment_status'  => 'Unpaid',
-            // tracking/reference
-            'tracking_code'   => 'TRK-'.Str::upper(Str::random(8)),
-            'reference_code'  => Str::upper(Str::random(10)),
-            // timestamps
-            'last_located_at' => now(),
-        ]);
+        // Xử lý upload ảnh TRƯỚC KHI tạo courier
+    $path = null;
+    if ($r->hasFile('image')) {
+        $path = $r->file('image')->store('couriers', 'public');
+    }
 
-        $courier = Courier::create($create);
+    // Chuẩn bị dữ liệu tạo
+    $create = array_merge($data, [
+        'sender_id'      => $r->user()->customer->id,
+        'status'         => defined(Courier::class.'::STATUS_PENDING') ? Courier::STATUS_PENDING : 'Pending',
+        'payment_status' => 'Unpaid',
+        'tracking_code'  => 'BMT-'.Str::upper(Str::random(8)),
+        'reference_code' => Str::upper(Str::random(10)),
+        'last_located_at'=> now(),
+    ]);
+
+    // Nếu có ảnh thì thêm vào create
+    if ($path) {
+        $create['sender_image'] = $path;
+    }
+
+    // ✅ Tạo courier
+    $courier = Courier::create($create);
+
+    CourierStatusHistory::create([
+    'courier_id' => $courier->id,
+    'status' => $courier->status,
+    'changed_at' => now(),
+]);
+
+    \Log::info('📦 Received order payload', $r->all());
+    \Log::info('✅ Stored sender image path', ['path' => $path]);
 
         // Notify + broadcast
         $this->notify($r->user()->id, $courier->id, "Courier #{$courier->id} placed.");
         event(new CourierStatusUpdated($courier));
+
+        AutoAssignCourier::dispatch($courier->id)->onQueue('assignments');
 
         return response()->json([
             'message' => 'Order placed',
@@ -99,6 +126,62 @@ class CustomerController extends Controller
     }
 
     return response()->json($courier);
+}
+
+public function trackDetail($trackingCode, Request $r)
+{
+    Gate::authorize('customer');
+
+    $customerId = $r->user()->customer->id;
+
+    $courier = \App\Models\Courier::where('tracking_code', $trackingCode)
+        ->where('sender_id', $customerId)
+        ->with(['agent:id,name', 'locations' => function($q) {
+            $q->orderBy('recorded_at', 'asc');
+        }])
+        ->first();
+
+    if (!$courier) {
+        return response()->json(['message' => 'Tracking not found'], 404);
+    }
+
+    // Nếu chưa có location log thì trả về vị trí gốc
+    $points = $courier->locations->map(fn($loc) => [
+        'lat' => $loc->latitude,
+        'lng' => $loc->longitude,
+        'recorded_at' => $loc->recorded_at,
+    ]);
+
+    if ($points->isEmpty()) {
+        $points = collect([[
+            'lat' => $courier->sender_lat,
+            'lng' => $courier->sender_lng,
+            'recorded_at' => $courier->last_located_at,
+        ]]);
+    }
+
+    return response()->json([
+        'courier' => [
+            'id' => $courier->id,
+            'tracking_code' => $courier->tracking_code,
+            'status' => $courier->status,
+            'sender_lat' => $courier->sender_lat,
+            'sender_lng' => $courier->sender_lng,
+            'last_located_at' => $courier->last_located_at,
+            'points' => $points,
+            'agent' => $courier->agent,
+        ],
+    ]);
+}
+
+public function trackingHistory(Courier $courier, Request $r)
+{
+    Gate::authorize('customer');
+    abort_unless($courier->sender_id === $r->user()->customer->id, 403);
+
+    return CourierStatusHistory::where('courier_id', $courier->id)
+        ->orderBy('changed_at', 'asc')
+        ->get();
 }
 
     public function myCouriers(Request $r) {

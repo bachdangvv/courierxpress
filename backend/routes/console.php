@@ -1,8 +1,14 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+use App\Models\Courier;
+use App\Jobs\AutoAssignCourier;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::call(function () {
+    Courier::where('status', Courier::STATUS_PENDING)
+        ->whereNotNull('sender_lat')
+        ->whereNotNull('sender_lng')
+        ->limit(50)
+        ->pluck('id')
+        ->each(fn ($id) => AutoAssignCourier::dispatch($id)->onQueue('assignments'));
+})->everyMinute();
