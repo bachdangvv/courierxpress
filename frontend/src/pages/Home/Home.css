@@ -27,6 +27,15 @@
   position: relative;
 }
 
+.hero-nav-link::before {
+  width: 0;
+}
+
+.hero-nav-link:hover::before {
+  width: 100%;
+  transition: 500ms ease-in-out;
+}
+
 .hero-person-img {
   object-fit: cover;
 }
@@ -34,23 +43,6 @@
 .feature-card,
 .branding-card {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-.hero-nav-link::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  height: 4px;
-  cursor: pointer;
-  background-color: rgba(255, 197, 2, 1);
-}
-
-.hero-nav-link:hover::before {
-  width: 100%;
-  cursor: pointer;
-  transition: 500ms ease-in-out;
 }
 
 .tracking-btn:hover,

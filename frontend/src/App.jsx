@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 
 // Importing Components
 import Header from "./components/NavBar/Header.jsx";
+import Footer from "./Footer/Footer.jsx";
 import { useState } from "react";
 
 // Importing pages
@@ -26,6 +27,7 @@ import Payment from "./pages/CreateShipment/Payment.jsx";
 import Confirmation from "./pages/CreateShipment/Confirmation.jsx";
 import Tracking from "./pages/Tracking/Tracking.jsx";
 import TrackingDetail from "./pages/TrackingDetail/TrackingDetail.jsx";
+import Contact from "./pages/Contact/Contact.jsx";
 import Stories from "./pages/Stories/Stories.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import Login from "./pages/login.jsx";
@@ -43,6 +45,8 @@ import AgentProfile from "./components/agentspage/AgentProfile.jsx";
 import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
 import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
 import CustomerDashboard from "./components/customerpage/CustomerDashboard.jsx";
+import CustomerProfile from "./components/customerpage/CustomerProfile.jsx";
+import CustomerHome from "./components/customerpage/CustomerHome.jsx";
 
 export function Guard({ role, children }) {
   const { user, booted } = useAuth();
@@ -67,8 +71,10 @@ export function AgentGuard({ children }) {
   if (!user) return <Navigate to="/agent/login" replace />;
   if (user.role !== "agent") {
     // Nếu đăng nhập bằng role khác → đẩy về đúng dashboard
-    if (user.role === "customer") return <Navigate to="/customer/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "customer")
+      return <Navigate to="/customer/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/agent/login" replace />;
   }
 
@@ -82,8 +88,10 @@ export function CustomerGuard({ children }) {
 
   if (!user) return <Navigate to="/customer/login" replace />;
   if (user.role !== "customer") {
-    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "agent")
+      return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/customer/login" replace />;
   }
 
@@ -97,7 +105,9 @@ export function CustomerShipmentGuard({ children }) {
   if (!booted) return <p>Loading...</p>;
 
   if (!user) {
-    const redirect = encodeURIComponent(location.pathname + location.search + location.hash);
+    const redirect = encodeURIComponent(
+      location.pathname + location.search + location.hash
+    );
     return (
       <Navigate
         to={`/customer/login?redirect=${redirect}`}
@@ -108,8 +118,10 @@ export function CustomerShipmentGuard({ children }) {
   }
 
   if (user.role !== "customer") {
-    if (user.role === "agent") return <Navigate to="/agent/dashboard" replace />;
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "agent")
+      return <Navigate to="/agent/dashboard" replace />;
+    if (user.role === "admin")
+      return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/customer/login" replace />;
   }
 
@@ -154,13 +166,16 @@ function App() {
         <Routes>
           {/* ...existing routes... */}
           <Route
-            path="/customer/dashboard"
+            path="/customer"
             element={
               <CustomerGuard>
                 <CustomerDashboard />
               </CustomerGuard>
             }
-          />
+          >
+            <Route path="dashboard" element={<CustomerHome />} />
+            <Route path="profile" element={<CustomerProfile />} />
+          </Route>
           <Route
             path="/shipping-services/create-shipment"
             element={
@@ -181,6 +196,7 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/shipping-services" element={<ShippingServices />} />
           <Route
             path="/shipping-services/additional-details/:shipmentID"
@@ -291,6 +307,9 @@ function App() {
             element={<CustomerRegister />}
           />
         </Routes>
+
+        <Footer />
+        {!hideHeader}
       </Router>
     </main>
   );
