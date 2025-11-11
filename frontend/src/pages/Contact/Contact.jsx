@@ -37,9 +37,7 @@ const Contact = () => {
             <section className='support-resource-section flex flex-col justify-start items-center gap-5 w-full h-auto mb-[80px]'>
                 <div className='support-resource-heading flex flex-col justify-start items-center w-full h-auto gap-5'>
                     <Heading>CourierXpress Online Support</Heading>
-                    <span className='text-xl text-gray-800'>
-                        You've got questions, we've got answers.
-                    </span>
+                    <span className='text-xl text-gray-800'>You've got questions, we've got answers.</span>
                 </div>
 
                 <div className='support-resource-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center gap-5 w-full h-auto max-w-[1200px]'>

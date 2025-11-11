@@ -46,7 +46,7 @@ import CustomerLogin from "./components/customerpage/CustomerLogin.jsx";
 import CustomerRegister from "./components/customerpage/CustomerRegister.jsx";
 import CustomerDashboard from "./components/customerpage/CustomerDashboard.jsx";
 import CustomerProfile from "./components/customerpage/CustomerProfile.jsx";
-import CustomerHome from "./components/customerpage/CustomerHome.jsx";
+import CustomerHome from "./components/customerpage/CustomerDashboard.jsx";
 
 export function Guard({ role, children }) {
   const { user, booted } = useAuth();
@@ -153,11 +153,8 @@ function App() {
     path === "/customer/login" ||
     path === "/customer/register" ||
     path === "/customer/CustomerRegister" ||
-    path === "/customer/dashboard" ||
     path.startsWith("/agent/dashboard") ||
-    path.startsWith("/agent/orders") ||
-    path.startsWith("/agent/earnings") ||
-    path.startsWith("/agent/profile");
+    path.startsWith("/agent/history");
 
   return (
     <main>
@@ -165,17 +162,23 @@ function App() {
         {!hideHeader && <Header />}
         <Routes>
           {/* ...existing routes... */}
+
           <Route
-            path="/customer"
+            path="/customer/dashboard"
             element={
               <CustomerGuard>
-                <CustomerDashboard />
+                <CustomerHome />
               </CustomerGuard>
             }
-          >
-            <Route path="dashboard" element={<CustomerHome />} />
-            <Route path="profile" element={<CustomerProfile />} />
-          </Route>
+          />
+          <Route
+            path="/customer/profile"
+            element={
+              <CustomerGuard>
+                <CustomerProfile />
+              </CustomerGuard>
+            }
+          />
           <Route
             path="/shipping-services/create-shipment"
             element={

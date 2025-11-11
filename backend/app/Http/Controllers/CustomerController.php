@@ -15,6 +15,14 @@ use App\Models\CourierStatusHistory;
 
 class CustomerController extends Controller
 {
+
+    public function locations(Courier $courier)
+{
+    return CourierLocation::where('courier_id', $courier->id)
+        ->orderBy('recorded_at', 'desc')
+        ->get(['latitude', 'longitude', 'recorded_at']);
+}
+
     public function placeOrder(Request $r)
     {
         Gate::authorize('customer');
@@ -136,43 +144,61 @@ public function trackDetail($trackingCode, Request $r)
 
     $courier = \App\Models\Courier::where('tracking_code', $trackingCode)
         ->where('sender_id', $customerId)
-        ->with(['agent:id,name', 'locations' => function($q) {
-            $q->orderBy('recorded_at', 'asc');
-        }])
+        ->with([
+            'agent:id,name',
+            'locations' => function($q) {
+                $q->orderBy('recorded_at', 'asc');
+            }
+        ])
         ->first();
 
     if (!$courier) {
         return response()->json(['message' => 'Tracking not found'], 404);
     }
 
-    // Nếu chưa có location log thì trả về vị trí gốc
-    $points = $courier->locations->map(fn($loc) => [
+    // 🟢 Sender Location
+    $sender = [
+        'lat' => $courier->sender_lat,
+        'lng' => $courier->sender_lng,
+        'label' => 'Sender',
+    ];
+
+    // 🟢 Receiver Location
+    $receiver = [
+        'lat' => $courier->to_lat,
+        'lng' => $courier->to_lng,
+        'label' => 'Receiver',
+    ];
+
+    // 🟢 Agent (courier) path from CourierLocation
+    $agentPath = $courier->locations->map(fn($loc) => [
         'lat' => $loc->latitude,
         'lng' => $loc->longitude,
         'recorded_at' => $loc->recorded_at,
-    ]);
+    ])->values();
 
-    if ($points->isEmpty()) {
-        $points = collect([[
+    // 🟢 Nếu agent chưa di chuyển, thêm vị trí khởi đầu
+    if ($agentPath->isEmpty() && $courier->sender_lat && $courier->sender_lng) {
+        $agentPath->push([
             'lat' => $courier->sender_lat,
             'lng' => $courier->sender_lng,
             'recorded_at' => $courier->last_located_at,
-        ]]);
+        ]);
     }
 
     return response()->json([
-        'courier' => [
-            'id' => $courier->id,
-            'tracking_code' => $courier->tracking_code,
-            'status' => $courier->status,
-            'sender_lat' => $courier->sender_lat,
-            'sender_lng' => $courier->sender_lng,
-            'last_located_at' => $courier->last_located_at,
-            'points' => $points,
-            'agent' => $courier->agent,
+        'tracking_code' => $courier->tracking_code,
+        'status' => $courier->status,
+        'sender' => $sender,
+        'receiver' => $receiver,
+        'agent' => [
+            'id' => $courier->agent?->id,
+            'name' => $courier->agent?->name,
         ],
+        'agent_locations' => $agentPath,
     ]);
 }
+
 
 public function trackingHistory(Courier $courier, Request $r)
 {
