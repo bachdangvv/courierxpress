@@ -167,7 +167,7 @@ function App() {
             path="/customer/dashboard"
             element={
               <CustomerGuard>
-                <CustomerHome />
+                <CustomerDashboard />
               </CustomerGuard>
             }
           />

@@ -7,7 +7,7 @@ import AgentHeader from "./AgentHeader";
 export default function AgentDashboard() {
   return (
     // dùng min-h-screen và overflow-hidden để tránh trang bị tràn ngang
-    <div className="flex min-h-screen bg-gray-50 font-sans overflow-hidden mt-[70px]">
+    <div className="flex min-h-screen bg-gray-50 font-sans overflow-hidden">
       {/* Sidebar -> không cho phép co lại */}
       <AgentSidebar />
 
