@@ -83,7 +83,7 @@
 
 .logo-text {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 700; 
   color: #FFC400;
   transition: color 0.3s;
 }
@@ -93,15 +93,15 @@
 }
 
 .rixetix-header.scrolled .logo-icon {
-  color: #450693;
+  color: #E50046;
 }
 
 .rixetix-header.scrolled .logo-text {
-  color: #450693;
+  color: #FFC400;
 }
 
 .rixetix-header.scrolled .logo-highlight {
-  color: #FFC400;
+  color: #08CB00;
 }
 
 /* NAVIGATION */
