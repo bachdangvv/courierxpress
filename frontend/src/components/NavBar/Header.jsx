@@ -84,6 +84,7 @@ export default function Header() {
           <button
             className="mobile-menu-btn"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            style={{ color: "#08CB00" }}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
