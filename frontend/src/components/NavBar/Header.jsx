@@ -15,8 +15,15 @@ export default function Header() {
   const [showServices, setShowServices] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // NEW
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const userMenuRef = useRef(null);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 80);
@@ -58,6 +65,9 @@ export default function Header() {
     }
   };
 
+  /* helper: close menu after navigation on mobile */
+  const closeMobile = () => setIsMobileMenuOpen(false);
+
   return (
     <>
       <header className={`rixetix-header ${isScrolled ? "scrolled" : ""}`}>
@@ -81,7 +91,6 @@ export default function Header() {
           {/* Nav Links */}
           <nav
             className={`nav-links ${isMobileMenuOpen ? "open" : ""}`}
-            onClick={() => setIsMobileMenuOpen(false)}
           >
             <ul className="nav-list">
               {navItems.map((item) => (
@@ -91,17 +100,32 @@ export default function Header() {
                     location.pathname === item.path ? "active" : ""
                   }`}
                 >
-                  <Link to={item.path}>{item.label}</Link>
+                  <Link to={item.path} onClick={closeMobile}>{item.label}</Link>
                 </li>
               ))}
 
               {/* SERVICES */}
+              
               <li
-                className="nav-item relative"
-                onMouseEnter={() => setShowServices(true)}
-                onMouseLeave={() => setShowServices(false)}
+                className={`nav-item relative ${showServices ? "open" : ""}`}
+                onMouseEnter={() => !isMobile && setShowServices(true)}
+                onMouseLeave={() => !isMobile && setShowServices(false)}
               >
                 <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowServices(v => !v);
+                    setShowMore(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setShowServices(v => !v);
+                      setShowMore(false);
+                    }
+                  }}
                   className={`cursor-pointer ${
                     [
                       "/shipping-services/shipment-info",
@@ -116,53 +140,68 @@ export default function Header() {
                   Services
                 </span>
 
-                <ul
-                  className={`dropdown-menu absolute left-0 mt-2 w-44 rounded z-10 ${
-                    showServices ? "dropdown-open" : "dropdown-closed"
-                  }`}
+                {/* prevent clicks inside from bubbling */}
+                <div
+                  className={`accordion-panel ${showServices ? "open" : ""}`}
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <li>
-                    <Link to="/shipping-services/shipment-info">
-                      Create Order
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/shipping-services">Shipping Services</Link>
-                  </li>
-                  <li>
-                    <Link to="/shipping-services/tracking">Tracking Order</Link>
-                  </li>
-                </ul>
+                  <div className="accordion-inner">
+                    <ul
+                      className={`dropdown-menu ${!isMobile && showServices ? "dropdown-open" : "dropdown-closed"
+                        }`}
+                    >
+                      <li><Link to="/shipping-services/shipment-info" onClick={closeMobile}>Create Order</Link></li>
+                      <li><Link to="/shipping-services" onClick={closeMobile}>Shipping Services</Link></li>
+                      <li><Link to="/shipping-services/tracking" onClick={closeMobile}>Tracking Order</Link></li>
+                    </ul>
+                  </div>
+                </div>
               </li>
 
               {/* MORE */}
               <li
-                className="nav-item relative"
-                onMouseEnter={() => setShowMore(true)}
-                onMouseLeave={() => setShowMore(false)}
+                className={`nav-item relative ${showMore ? "open" : ""}`}
+                onMouseEnter={() => !isMobile && setShowMore(true)}
+                onMouseLeave={() => !isMobile && setShowMore(false)}
               >
                 <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowMore(v => !v);
+                    setShowServices(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setShowMore(v => !v);
+                      setShowServices(false);
+                    }
+                  }}
                   className={`cursor-pointer ${
-                    location.pathname === "/about" ||
-                    location.pathname === "/stories"
-                      ? "active"
-                      : ""
+                    ["/about", "/stories"].includes(location.pathname) ? "active" : ""
                   }`}
                 >
                   More
                 </span>
-                <ul
-                  className={`dropdown-menu absolute left-0 mt-2 w-36 rounded z-10 ${
-                    showMore ? "dropdown-open" : "dropdown-closed"
-                  }`}
+
+                {/* prevent clicks inside from bubbling */}
+                <div
+                  className={`accordion-panel ${showMore ? "open" : ""}`}
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <li>
-                    <Link to="/about">About</Link>
-                  </li>
-                  <li>
-                    <Link to="/stories">Stories</Link>
-                  </li>
-                </ul>
+                  <div className="accordion-inner">
+                    <ul
+                      className={`dropdown-menu absolute left-0 mt-2 w-36 rounded z-10 ${
+                        showMore ? "dropdown-open" : "dropdown-closed"
+                      }`}
+                    >
+                      <li><Link to="/about" onClick={closeMobile}>About</Link></li>
+                      <li><Link to="/stories" onClick={closeMobile}>Stories</Link></li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
           </nav>
@@ -177,7 +216,7 @@ export default function Header() {
               Login
             </button>
           ) : (
-            <div className="relative" ref={userMenuRef}>
+            <div className="relative user-menu" ref={userMenuRef}>
               <button
                 className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-md transition"
                 onClick={() => setOpenUserMenu((v) => !v)}
