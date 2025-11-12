@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Truck, User, LogIn } from "lucide-react";
+import { Truck, User, LogIn, Menu, X } from "lucide-react"; // thêm Menu & X
 import "./Header.css";
 import { useAuth } from "../../auth";
 
@@ -10,13 +10,12 @@ export default function Header() {
   const { user, logout } = useAuth();
 
   const [showLogin, setShowLogin] = useState(false);
-  const [activeTab, setActiveTab] = useState("employee");
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showServices, setShowServices] = useState(false);
-
-  // user dropdown
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // NEW
+
   const userMenuRef = useRef(null);
 
   useEffect(() => {
@@ -25,12 +24,8 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close user dropdown on route change
-  useEffect(() => {
-    setOpenUserMenu(false);
-  }, [location.pathname]);
+  useEffect(() => setOpenUserMenu(false), [location.pathname]);
 
-  // Close user dropdown on outside click
   useEffect(() => {
     function onDocClick(e) {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -51,13 +46,10 @@ export default function Header() {
     if (role === "customer") return "/customer/dashboard";
     if (role === "agent") return "/agent/dashboard";
     if (role === "admin") return "/admin/dashboard";
-    return "/"; // fallback
+    return "/";
   };
 
-  const handleGotoDashboard = () => {
-    navigate(dashboardPath(user?.role));
-  };
-
+  const handleGotoDashboard = () => navigate(dashboardPath(user?.role));
   const handleLogout = async () => {
     try {
       await logout();
@@ -68,18 +60,29 @@ export default function Header() {
 
   return (
     <>
-      {/* HEADER */}
       <header className={`rixetix-header ${isScrolled ? "scrolled" : ""}`}>
         <div className="container header-inner">
+          {/* Logo */}
           <Link to="/" className="logo">
             <Truck className="logo-icon" />
             <div className="logo-text">
-              Courier
-              <span className="logo-highlight">Xpress</span>
+              Courier<span className="logo-highlight">Xpress</span>
             </div>
           </Link>
 
-          <nav className="nav-links">
+          {/* Hamburger Icon */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Nav Links */}
+          <nav
+            className={`nav-links ${isMobileMenuOpen ? "open" : ""}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             <ul className="nav-list">
               {navItems.map((item) => (
                 <li
@@ -92,6 +95,7 @@ export default function Header() {
                 </li>
               ))}
 
+              {/* SERVICES */}
               <li
                 className="nav-item relative"
                 onMouseEnter={() => setShowServices(true)}
@@ -108,9 +112,6 @@ export default function Header() {
                       ? "active"
                       : ""
                   }`}
-                  tabIndex={0}
-                  onFocus={() => setShowServices(true)}
-                  onBlur={() => setShowServices(false)}
                 >
                   Services
                 </span>
@@ -119,42 +120,22 @@ export default function Header() {
                   className={`dropdown-menu absolute left-0 mt-2 w-44 rounded z-10 ${
                     showServices ? "dropdown-open" : "dropdown-closed"
                   }`}
-                  onMouseEnter={() => setShowServices(true)}
-                  onMouseLeave={() => setShowServices(false)}
                 >
                   <li>
-                    <Link
-                      to="/shipping-services/shipment-info"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowServices(true)}
-                    >
+                    <Link to="/shipping-services/shipment-info">
                       Create Order
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/shipping-services"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowServices(true)}
-                    >
-                      Shipping Services
-                    </Link>
+                    <Link to="/shipping-services">Shipping Services</Link>
                   </li>
                   <li>
-                    <Link
-                      to="/shipping-services/tracking"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowServices(true)}
-                    >
-                      Tracking Order
-                    </Link>
+                    <Link to="/shipping-services/tracking">Tracking Order</Link>
                   </li>
                 </ul>
               </li>
 
+              {/* MORE */}
               <li
                 className="nav-item relative"
                 onMouseEnter={() => setShowMore(true)}
@@ -167,9 +148,6 @@ export default function Header() {
                       ? "active"
                       : ""
                   }`}
-                  tabIndex={0}
-                  onFocus={() => setShowMore(true)}
-                  onBlur={() => setShowMore(false)}
                 >
                   More
                 </span>
@@ -177,38 +155,22 @@ export default function Header() {
                   className={`dropdown-menu absolute left-0 mt-2 w-36 rounded z-10 ${
                     showMore ? "dropdown-open" : "dropdown-closed"
                   }`}
-                  onMouseEnter={() => setShowMore(true)}
-                  onMouseLeave={() => setShowMore(false)}
                 >
                   <li>
-                    <Link
-                      to="/about"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowMore(true)}
-                    >
-                      About
-                    </Link>
+                    <Link to="/about">About</Link>
                   </li>
                   <li>
-                    <Link
-                      to="/stories"
-                      className="dropdown-link block px-4 py-2 hover:bg-blue-100 text-gray-700 focus:bg-blue-100"
-                      tabIndex={0}
-                      onFocus={() => setShowMore(true)}
-                    >
-                      Stories
-                    </Link>
+                    <Link to="/stories">Stories</Link>
                   </li>
                 </ul>
               </li>
             </ul>
           </nav>
 
-          {/* Right side: Login or User menu */}
+          {/* Right side */}
           {!user ? (
             <button
-              className="login-btn flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+              className="login-btn flex items-center gap-2"
               onClick={() => setShowLogin(true)}
             >
               <LogIn size={18} />
@@ -226,7 +188,6 @@ export default function Header() {
                 </span>
               </button>
 
-              {/* User dropdown */}
               <ul
                 className={`dropdown-menu absolute right-0 mt-2 w-48 rounded z-20 ${
                   openUserMenu ? "dropdown-open" : "dropdown-closed"
@@ -254,17 +215,15 @@ export default function Header() {
         </div>
       </header>
 
-      {/* LOGIN / REGISTER POPUP */}
+      {/* LOGIN POPUP (giữ nguyên như cũ) */}
       {showLogin && !user && (
         <div className="login-overlay">
           <div className="login-box">
             <button className="close-btn" onClick={() => setShowLogin(false)}>
               ×
             </button>
-
             <h3>Choose Account to Connect</h3>
             <p>Please choose type of account for signing in:</p>
-
             <div className="login-options">
               <button
                 className="option-btn agent-btn"
