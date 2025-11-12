@@ -1,5 +1,5 @@
 .home-hero-container {
-  background-color: rgba(121, 82, 63, 1);
+  background-color: #172774;
   position: relative;
   z-index: 1;
 }
@@ -16,7 +16,7 @@
 }
 
 .sup-header {
-  background-color: rgb(120, 81, 63);
+  background-color: #172774;
   height: 150px;
   position: relative;
   z-index: 10;

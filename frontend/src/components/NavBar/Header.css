@@ -15,7 +15,7 @@
 }
 
 .dropdown-menu li a {
-  color: #0D1164 !important;
+  color: #172774 !important;
   font-weight: 400;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .logo-icon {
-  color: #FFC400;
+  color: #08CB00;
   font-size: 1.6rem;
   transition: color 0.3s;
 }
@@ -89,7 +89,7 @@
 }
 
 .logo-highlight {
-  color: #450693;
+  color: #E50046;
 }
 
 .rixetix-header.scrolled .logo-icon {
@@ -113,7 +113,7 @@
 }
 
 .nav-item a {
-  color: #0D1164;
+  color: #fbbf24;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s;
@@ -124,7 +124,7 @@
 }
 
 .rixetix-header.scrolled .nav-item a {
-  color: #0D1164;
+  color: #fbbf24;
 }
 
 .rixetix-header.scrolled .nav-item a:hover {
@@ -142,7 +142,7 @@
 }
 
 .nav-item.relative span {
-  color: #0D1164;
+  color: #fbbf24;
   font-weight: 600;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .rixetix-header.scrolled .nav-item.relative span {
-  color: #0D1164;
+  color: #fbbf24;
 }
 
 .rixetix-header.scrolled .nav-item.relative span:hover {
@@ -341,7 +341,7 @@
   .nav-item a,
   .nav-item span {
     font-size: 1.1rem;
-    color: #0D1164;
+    color: #E50046;
     padding: 0.7rem 0.5rem; 
     display: block;
   }
@@ -393,7 +393,7 @@
     gap: 6px; 
     cursor: pointer;
     vertical-align: middle;
-    color: #0D1164;
+    color: #E50046;
   }
 
   .nav-item.relative > span::after {
