@@ -1,28 +1,38 @@
 // src/layouts/AgentDashboard.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Menu } from "lucide-react";
 import AgentSidebar from "./AgentSidebar";
-import AgentHeader from "./AgentHeader";
 
 export default function AgentDashboard() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    // dùng min-h-screen và overflow-hidden để tránh trang bị tràn ngang
-    <div className="flex min-h-screen bg-gray-50 font-sans overflow-hidden">
-      {/* Sidebar -> không cho phép co lại */}
-      <AgentSidebar />
+    <div className="relative min-h-screen bg-gray-50 font-sans">
+      {/* Sidebar drawer */}
+      <AgentSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 min-w-0">
-        {/* min-w-0 là quan trọng: cho phép children flex item co/giãn đúng, ngăn tràn */}
-        <AgentHeader />
+      {/* Top bar với hamburger luôn hiện */}
+      <header className="flex items-center gap-3 px-4 py-3 bg-white border-b">
+        <button
+          type="button"
+          onClick={() => setSidebarOpen((v) => !v)}
+          className="inline-flex items-center justify-center p-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500/40"
+        >
+          <Menu size={20} />
+        </button>
+        <span className="font-semibold text-gray-800">Agent Dashboard</span>
+      </header>
 
-        {/* Nội dung từng trang con: giới hạn chiều ngang, căn giữa */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-          <div className="max-w-[1400px] mx-auto min-w-0">
-            <Outlet />
-          </div>
-        </main>
-      </div>
+      {/* Nội dung chính */}
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <div className="max-w-[1400px] mx-auto min-w-0">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
