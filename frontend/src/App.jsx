@@ -305,10 +305,7 @@ function App() {
           {/* Customer Routes */}
           <Route path="/customer/login" element={<CustomerLogin />} />
           <Route path="/customer/register" element={<CustomerRegister />} />
-          <Route
-            path="/customer/CustomerRegister"
-            element={<CustomerRegister />}
-          />
+          
         </Routes>
 
         <Footer />

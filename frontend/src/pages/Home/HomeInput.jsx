@@ -4,22 +4,40 @@ import trackingData from '../../data/tracking.json';
 import YellowButton from "../../components/YellowButton";
 
 export default function HomeInput() {
-    const [trackingCode, setTrackingCode] = useState("");
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
+    // const [trackingCode, setTrackingCode] = useState("");
+    // const [error, setError] = useState("");
+    // const navigate = useNavigate();
 
-    const trackOrder = (e) => {
+    // const trackOrder = (e) => {
+    //     e.preventDefault();
+    //     const found = trackingData.find(
+    //         (item) => item.trackingCode.toLowerCase() === trackingCode.trim().toLowerCase()
+    //     );
+
+    //     if(found) {
+    //         navigate(`shipping-services/tracking/${trackingCode}`);
+    //     } else {
+    //         setError('Invalid Tracking Code');
+    //     }
+    // };
+     const [trackingCode, setTrackingCode] = useState("");
+      const [error, setError] = useState("");
+      const navigate = useNavigate();
+
+    
+     
+    
+      const trackOrder = (e) => {
         e.preventDefault();
-        const found = trackingData.find(
-            (item) => item.trackingCode.toLowerCase() === trackingCode.trim().toLowerCase()
-        );
-
-        if(found) {
-            navigate(`shipping-services/tracking/${trackingCode}`);
-        } else {
-            setError('Invalid Tracking Code');
+        const code = trackingCode.trim();
+        if (!code) {
+          setError("Please enter a valid tracking code.");
+          return;
         }
-    };
+        // Go straight to detail page; it will fetch from API
+        navigate(`/shipping-services/tracking/${encodeURIComponent(code)}`);
+      };
+    
 
     return (
         <form onSubmit={trackOrder} className="w-full">
