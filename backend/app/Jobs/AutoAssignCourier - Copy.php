@@ -16,8 +16,6 @@ class AutoAssignCourier implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $courierId;
-
-    // radius still here if you want in future, but not used anymore
     public float $radiusKm;
 
     public function __construct(int $courierId, float $radiusKm = 5.0)
@@ -30,57 +28,62 @@ class AutoAssignCourier implements ShouldQueue
     {
         $courier = Courier::find($this->courierId);
         if (!$courier) return;
-
-        // Only auto-assign if still pending and not already assigned
         if ($courier->agent_id || $courier->status !== Courier::STATUS_PENDING) return;
+        if (is_null($courier->sender_lat) || is_null($courier->sender_lng)) return;
 
-        // Get candidate agents:
-        //  - status in {Available, Delivering OK}
-        //  - later we enforce capacity < 4
-        //  - random order so it's fair
+        $lat = (float) $courier->sender_lat;
+        $lng = (float) $courier->sender_lng;
+
+        // Haversine on agent_current_lat/lng
+        $h = "(6371 * acos(cos(radians(?)) * cos(radians(agent_current_lat)) * cos(radians(agent_current_lng) - radians(?)) + sin(radians(?)) * sin(radians(agent_current_lat))))";
+
+        // Only candidates with status in {Available, Delivering OK} and coords set
         $candidates = Agent::query()
             ->whereIn('status', [Agent::AVAILABLE, Agent::DELIVERING_OK])
-            ->inRandomOrder()
+            ->whereNotNull('agent_current_lat')
+            ->whereNotNull('agent_current_lng')
+            ->select('agents.*')
+            ->selectRaw("$h AS distance_km", [$lat, $lng, $lat])
+            ->whereRaw("$h <= ?", [$lat, $lng, $lat, $this->radiusKm])
+            ->orderBy('distance_km', 'asc')
             ->limit(30)
             ->get()
             ->map(function ($a) {
                 $a->active_count = $a->activeCouriersCount();
                 return $a;
             })
-            ->filter(fn ($a) => $a->active_count < 4); // enforce capacity
+            ->filter(fn($a) => $a->active_count < 4) // capacity
+            ->sortBy([['active_count','asc'],['distance_km','asc']]);
 
         foreach ($candidates as $agent) {
             $ok = DB::transaction(function () use ($courier, $agent) {
-                // Lock the agent row to avoid race conditions
                 $locked = Agent::where('id', $agent->id)->lockForUpdate()->first();
                 if (!$locked) return false;
 
                 // Re-check eligibility under lock
                 if (!in_array($locked->status, [Agent::AVAILABLE, Agent::DELIVERING_OK])) return false;
-
+                if (is_null($locked->agent_current_lat) || is_null($locked->agent_current_lng)) return false;
                 $active = $locked->activeCouriersCount();
                 if ($active >= 4) return false;
 
-                // Assign courier to this agent
+                // Assign
                 $courier->agent_id = $locked->id;
                 $courier->status   = Courier::STATUS_ASSIGNED;
                 $courier->save();
 
-                // Normalize agent status (may become Delivering Full, etc.)
+                // Normalize resulting state (may flip to Delivering Full if now 4)
                 $locked->normalizeStatusAfterCapacityChange();
 
                 return true;
             });
 
-            \Log::info("AutoAssignCourier trying random agent", [
-                'courierId' => $this->courierId,
-                'agentId'   => $agent->id,
-                'ok'        => $ok,
-            ]);
+            \Log::info("AutoAssignCourier running", [
+    'courierId' => $this->courierId,
+    'radiusKm'  => $this->radiusKm,
+]);
 
             if ($ok) {
-                // If you broadcast events, you can do it here:
-                // event(new CourierStatusUpdated($courier));
+                // event(new CourierStatusUpdated($courier)); // broadcast if needed
                 return;
             }
         }

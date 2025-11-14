@@ -10,6 +10,7 @@ use App\Models\NotificationCustom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\CourierStatusHistory;
+use Illuminate\Support\Facades\DB;
 
 class AgentController extends Controller
 {
@@ -28,36 +29,88 @@ class AgentController extends Controller
     
 public function setStatus(Request $r)
 {
-    \Gate::authorize('agent');
+    Gate::authorize('agent');
 
     $data = $r->validate([
         'status' => 'required|in:Available,Not Available,Delivering OK,Delivering Full',
-        'lat' => 'nullable|numeric',
-        'lng' => 'nullable|numeric',
+        'lat'    => 'nullable|numeric',
+        'lng'    => 'nullable|numeric',
     ]);
 
     /** @var Agent $agent */
     $agent = $r->user()->agent;
 
-    // Always allow switch to Not Available
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Not Available
+    |--------------------------------------------------------------------------
+    | Rule:
+    |  - If agent has any DELIVERING courier => cannot go Not Available.
+    |  - If only has ASSIGNED couriers => can go Not Available, but all
+    |    those ASSIGNED couriers will be reverted to PENDING.
+    */
     if ($data['status'] === Agent::NOT_AVAILABLE) {
-        $agent->status = Agent::NOT_AVAILABLE;
-        $agent->save();
-        return response()->json(['agent' => $agent->fresh(), 'message' => 'Switched to Not Available']);
+        // check if there is any delivering courier
+        $hasDelivering = $agent->couriers()
+            ->where('status', Courier::STATUS_DELIVERING)
+            ->exists();
+
+        if ($hasDelivering) {
+            return response()->json([
+                'message' => 'You still have delivering couriers. Finish them before switching to Not Available.',
+            ], 422);
+        }
+
+        // no delivering — handle assigned couriers
+        $assignedCouriers = $agent->couriers()
+            ->where('status', Courier::STATUS_ASSIGNED)
+            ->get();
+
+        DB::transaction(function () use ($agent, $assignedCouriers) {
+            // revert all assigned to pending & optionally unassign agent
+            foreach ($assignedCouriers as $courier) {
+                $courier->status  = Courier::STATUS_PENDING;
+                $courier->agent_id = null; // if you want to free the courier from this agent
+                $courier->save();
+            }
+
+            $agent->status = Agent::NOT_AVAILABLE;
+            $agent->save();
+
+            // If you have normalizeStatusAfterCapacityChange(), you can call it here
+            // $agent->normalizeStatusAfterCapacityChange();
+        });
+
+        return response()->json([
+            'agent'   => $agent->fresh(),
+            'message' => 'Switched to Not Available. Assigned couriers were set back to Pending.',
+        ]);
     }
 
-    // Available is only reachable from Not Available + requires coords
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Available
+    |--------------------------------------------------------------------------
+    | Available is only reachable from Not Available + requires coords.
+    | After that, status is normalized to Delivering OK / Full.
+    */
     if ($data['status'] === Agent::AVAILABLE) {
         if ($agent->status !== Agent::NOT_AVAILABLE) {
-            return response()->json(['message' => 'Can only switch to Available from Not Available'], 422);
-        }
-        if (!isset($data['lat'], $data['lng'])) {
-            return response()->json(['message' => 'lat & lng are required when going Available'], 422);
+            return response()->json([
+                'message' => 'Can only switch to Available from Not Available',
+            ], 422);
         }
 
-        $agent->agent_current_lat = (float)$data['lat'];
-        $agent->agent_current_lng = (float)$data['lng'];
-        // Temporarily mark Available, then immediately normalize to Delivering OK/Full:
+        if (!isset($data['lat'], $data['lng'])) {
+            return response()->json([
+                'message' => 'lat & lng are required when going Available',
+            ], 422);
+        }
+
+        $agent->agent_current_lat = (float) $data['lat'];
+        $agent->agent_current_lng = (float) $data['lng'];
+
+        // Temporarily mark Available
         $agent->status = Agent::AVAILABLE;
         $agent->save();
 
@@ -70,11 +123,20 @@ public function setStatus(Request $r)
         }
         $agent->save();
 
-        return response()->json(['agent' => $agent->fresh(), 'message' => 'Became Available (computed to '.$agent->status.')']);
+        return response()->json([
+            'agent'   => $agent->fresh(),
+            'message' => 'Became Available (computed to ' . $agent->status . ')',
+        ]);
     }
 
-    // Manual set to Delivering OK / Full is not allowed (computed states)
-    return response()->json(['message' => 'Delivering states are computed automatically'], 422);
+    /*
+    |--------------------------------------------------------------------------
+    | Manual Delivering OK / Full is not allowed (computed only)
+    |--------------------------------------------------------------------------
+    */
+    return response()->json([
+        'message' => 'Delivering states are computed automatically',
+    ], 422);
 }
 
 public function activeCourier(Request $r)

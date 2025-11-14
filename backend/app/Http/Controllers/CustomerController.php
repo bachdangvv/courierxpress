@@ -86,7 +86,6 @@ class CustomerController extends Controller
         'status'         => defined(Courier::class.'::STATUS_PENDING') ? Courier::STATUS_PENDING : 'Pending',
         'payment_status' => 'Unpaid',
         'tracking_code'  => 'BMT-'.Str::upper(Str::random(8)),
-        'reference_code' => Str::upper(Str::random(10)),
         'last_located_at'=> now(),
     ]);
 

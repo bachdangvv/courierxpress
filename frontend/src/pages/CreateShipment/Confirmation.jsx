@@ -100,8 +100,6 @@ const Confirmation = () => {
       resData?.tracking_code ||
       resData?.courier?.tracking_code ||
       resData?.data?.tracking_code ||
-      resData?.reference_code ||
-      resData?.courier?.reference_code ||
       ""
     );
   };
