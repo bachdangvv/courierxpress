@@ -65,6 +65,10 @@ export default function Header() {
     }
   };
 
+  const handleGotoProfile = () => {
+      navigate("/customer/profile");
+  };
+
   /* helper: close menu after navigation on mobile */
   const closeMobile = () => setIsMobileMenuOpen(false);
 
@@ -241,6 +245,20 @@ export default function Header() {
                     Dashboard
                   </button>
                 </li>
+
+                {user?.role === "customer" && (
+              <>
+                <li>
+                  <button
+                    className="dropdown-link w-full text-left px-4 py-2 hover:bg-blue-100 text-gray-700"
+                    onClick={handleGotoProfile}
+                  >
+                    Profile
+                  </button>
+                </li>
+              </>
+            )}
+
                 <li>
                   <button
                     className="dropdown-link w-full text-left px-4 py-2 hover:bg-blue-100 text-gray-700"

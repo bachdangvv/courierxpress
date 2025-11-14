@@ -63,7 +63,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customer/track/{trackingCode}',          [CustomerController::class, 'trackByCode']);
         Route::get('/customer/trackdetail/{tracking_code}', [CustomerController::class, 'trackDetail']);
         Route::get('/customer/trackhistory/{courier}', [CustomerController::class, 'trackingHistory']);
-
+        Route::get('/customer/profile', [CustomerController::class, 'show']);
+        Route::put('/customer/profile', [CustomerController::class, 'update']);
 
     });
 });

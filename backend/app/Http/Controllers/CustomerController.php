@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Events\CourierStatusUpdated;
 use App\Models\Courier;
 use App\Models\CourierLocation;
@@ -227,6 +229,8 @@ public function trackingHistory(Courier $courier, Request $r)
         return $courier->locations()->orderBy('recorded_at')->get();
     }
 
+    
+
     public function notifications(Request $r) {
         Gate::authorize('customer');
         return NotificationCustom::where('user_id',$r->user()->id)->latest()->paginate(20);
@@ -239,4 +243,114 @@ public function trackingHistory(Courier $courier, Request $r)
             'message'=>$msg
         ]);
     }
+
+    public function show(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user || !$user->isCustomer()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        // Get or create customer profile
+        $customer = $user->customer;
+        if (!$customer) {
+            $customer = Customer::create([
+                'user_id' => $user->id,
+                'name'    => $user->name,
+                'email'   => $user->email,
+            ]);
+        }
+
+        return response()->json([
+            'name'    => $customer->name ?? $user->name,
+            'email'   => $user->email,   // from users table
+            'phone'   => $customer->phone,
+            'address' => $customer->address,
+        ]);
+    }
+
+    /**
+     * PUT /api/customer/profile
+     * Update profile info and/or change password in one endpoint.
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user || !$user->isCustomer()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        // Validate both profile fields and password fields (all optional)
+        $data = $request->validate([
+            // profile fields
+            'name'    => 'sometimes|required|string|max:255',
+            'phone'   => 'sometimes|nullable|string|max:50',
+            'address' => 'sometimes|nullable|string|max:255',
+
+            // password fields
+            'currentPassword' => 'sometimes|required_with:newPassword,confirmPassword|string',
+            'newPassword'     => 'sometimes|required_with:currentPassword,confirmPassword|string|min:6',
+            'confirmPassword' => 'sometimes|required_with:currentPassword,newPassword|same:newPassword',
+        ]);
+
+        $updatedProfile = false;
+        $changedPassword = false;
+
+        // --- Update profile info (name / phone / address) ---
+        if ($request->hasAny(['name', 'phone', 'address'])) {
+            $customer = $user->customer;
+            if (!$customer) {
+                $customer = new Customer([
+                    'user_id' => $user->id,
+                    'email'   => $user->email,
+                ]);
+            }
+
+            if ($request->has('name')) {
+                $customer->name = $data['name'];
+                $user->name = $data['name'];   // keep user.name in sync
+            }
+            if ($request->has('phone')) {
+                $customer->phone = $data['phone'] ?? null;
+            }
+            if ($request->has('address')) {
+                $customer->address = $data['address'] ?? null;
+            }
+
+            $customer->save();
+            $user->save();
+            $updatedProfile = true;
+        }
+
+        // --- Change password if requested ---
+        if ($request->filled('currentPassword') || $request->filled('newPassword')) {
+            // Check current password
+            if (!Hash::check($data['currentPassword'], $user->password)) {
+                return response()->json([
+                    'message' => 'Current password is incorrect.',
+                ], 422);
+            }
+
+            // Use mutator on User model to hash
+            $user->password = $data['newPassword'];
+            $user->save();
+            $changedPassword = true;
+        }
+
+        if (!$updatedProfile && !$changedPassword) {
+            return response()->json([
+                'message' => 'Nothing to update.',
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => trim(
+                ($updatedProfile ? 'Profile updated. ' : '') .
+                ($changedPassword ? 'Password changed.' : '')
+            ),
+        ]);
+    }
+
 }
